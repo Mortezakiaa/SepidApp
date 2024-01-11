@@ -1,8 +1,9 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 
 // utils
-import axios from '../utils/axios';
+import axios from '@utils/axios.ts';
 import { isValidToken, setSession } from '../utils/jwt';
+import ApiService from '@utils/axios.ts';
 
 // ----------------------------------------------------------------------
 
@@ -52,7 +53,7 @@ const reducer = (state, action) => (handlers[action.type] ? handlers[action.type
 const AuthContext = createContext({
   ...initialState,
   method: 'jwt',
-  login: (phone_number: string) => Promise.resolve(),
+  login: (phone_number: string) => ApiService,
   logout: () => Promise.resolve(),
   register: () => Promise.resolve(),
 });

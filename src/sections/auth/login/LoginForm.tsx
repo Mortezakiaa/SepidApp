@@ -21,6 +21,7 @@ export default function LoginForm() {
 
   const LoginSchema = object().shape({
     phone_number: string().required('شماره تماس اجباری است'),
+    code: string(),
   });
 
   const methods = useForm<LoginDto>({
@@ -48,6 +49,10 @@ export default function LoginForm() {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <Stack spacing={3}>
+        {!!errors.root && <Alert severity="error">{errors.root.message}</Alert>}
+        <RHFTextField name="phone_number" label="شماره تماس" />
+      </Stack>
       <Stack spacing={3}>
         {!!errors.root && <Alert severity="error">{errors.root.message}</Alert>}
         <RHFTextField name="phone_number" label="شماره تماس" />

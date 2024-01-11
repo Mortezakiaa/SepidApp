@@ -16,7 +16,7 @@ type propTypes = {
 const Page = forwardRef(({ children, title = '', meta, ...other }: propTypes, ref) => (
   <>
     <Head>
-      <title>{`${title} | Minimal-UI`}</title>
+      <title>{` سپید | ${title}`}</title>
       {meta}
     </Head>
 

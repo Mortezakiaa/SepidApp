@@ -1,12 +1,6 @@
-import { capitalCase } from 'change-case';
-// next
-
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Card, Stack, Container, Typography } from '@mui/material';
-import Link from '@components/Link';
-// routes
-import { PATH_AUTH } from '@routes/paths.tsx';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
@@ -64,26 +58,13 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
-  const { method } = useAuth();
-
-  const smUp = useResponsive('up', 'sm');
-
   const mdUp = useResponsive('up', 'md');
-
   return (
     <GuestGuard>
-      <Page title="Login">
+      <Page title="ورود">
         <RootStyle>
           <HeaderStyle>
             <Logo />
-            {smUp && (
-              <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-                حساب کاربری ندارید? {''}
-                <Link href={PATH_AUTH.register} variant="subtitle2">
-                  یک حساب بسازید
-                </Link>
-              </Typography>
-            )}
           </HeaderStyle>
 
           {mdUp && (
@@ -105,14 +86,6 @@ export default function Login() {
                 </Box>
               </Stack>
               <LoginForm />
-              {!smUp && (
-                <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                  حساب کاربری ندارید?{' '}
-                  <Link href={PATH_AUTH.register} variant="subtitle2">
-                    یک حساب ایجاد نمایید
-                  </Link>
-                </Typography>
-              )}
             </ContentStyle>
           </Container>
         </RootStyle>
