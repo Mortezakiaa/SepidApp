@@ -13,7 +13,7 @@ class Axios {
 
   async get<T = any>(url: string, headers?: AxiosHeadersType) {
     try {
-      const res = await this.axios.get<T>(url, { headers: headers });
+      const res = await this.axios.get<ResponseModel<T>>(url, { headers: headers });
       return res.data;
     } catch (e) {
       if (e instanceof AxiosError) throw e.response;
@@ -23,7 +23,7 @@ class Axios {
 
   async post<T = any>(url: string, data: Partial<T> | any, headers?: AxiosHeadersType) {
     try {
-      const res = await this.axios.post<T>(url, data, { headers });
+      const res = await this.axios.post<ResponseModel<T>>(url, data, { headers });
       return res.data;
     } catch (e) {
       if (e instanceof AxiosError) throw e.response?.data;
@@ -33,7 +33,7 @@ class Axios {
 
   async patch<T = any>(url: string, data: Partial<T> | any, headers?: AxiosHeadersType) {
     try {
-      const res = await this.axios.patch<T>(url, data, { headers });
+      const res = await this.axios.patch<ResponseModel<T>>(url, data, { headers });
       return res.data;
     } catch (e) {
       if (e instanceof AxiosError) throw e.response?.data;
@@ -43,7 +43,7 @@ class Axios {
 
   async delete<T = any>(url: string, headers?: AxiosHeadersType) {
     try {
-      const res = await this.axios.delete<T>(url, { headers });
+      const res = await this.axios.delete<ResponseModel<T>>(url, { headers });
       return res.data;
     } catch (e) {
       if (e instanceof AxiosError) throw e.response?.data;

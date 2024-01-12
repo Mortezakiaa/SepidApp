@@ -61,7 +61,7 @@ export default function UserProfile() {
 
   const [findFriends, setFindFriends] = useState('');
 
-  const handleFindFriends = (value) => {
+  const handleFindFriends = (value: string) => {
     setFindFriends(value);
   };
 
@@ -89,14 +89,14 @@ export default function UserProfile() {
   ];
 
   return (
-    <Page title="User: Profile">
+    <Page title="حساب کاربری">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Profile"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'User', href: PATH_DASHBOARD.user.root },
-            { name: user?.displayName || '' },
+            { name: user?.full_name || '' },
           ]}
         />
         <Card

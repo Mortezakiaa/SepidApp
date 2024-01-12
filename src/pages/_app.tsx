@@ -4,29 +4,6 @@ import '../locales/i18n';
 // highlight
 import '../utils/highlight';
 
-// scroll bar
-import 'simplebar/src/simplebar.css';
-
-// lightbox
-import 'react-image-lightbox/style.css';
-
-// map
-import 'mapbox-gl/dist/mapbox-gl.css';
-
-// editor
-import 'react-quill/dist/quill.snow.css';
-
-// slick-carousel
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
-// lazy image
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import 'react-lazy-load-image-component/src/effects/opacity.css';
-import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-
-// fullcalendar
-import '@fullcalendar/common/main.min.css';
 import cookie from 'cookie';
 // next
 import Head from 'next/head';
@@ -60,8 +37,8 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ClientProvider from '@contexts/ClientProvider.tsx';
-import { NextPageContext, GetStaticPropsContext } from 'next/types';
-import '../../public/fonts/peyda/peyda.css';
+import '@/theme/index.css';
+import { Toaster } from 'react-hot-toast';
 // ----------------------------------------------------------------------
 
 type propsType = {
@@ -70,6 +47,11 @@ type propsType = {
   settings: object;
 };
 const queryClient = new QueryClient();
+declare module '@tanstack/react-query' {
+  interface Register {
+    defaultError: ResponseModel<any>;
+  }
+}
 
 export default function MyApp(props: propsType) {
   const { Component, pageProps, settings } = props;
@@ -82,8 +64,8 @@ export default function MyApp(props: propsType) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ClientProvider>
-        <AuthProvider>
-          <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <CollapseDrawerProvider>
                 <SettingsProvider defaultSettings={settings}>
@@ -94,8 +76,9 @@ export default function MyApp(props: propsType) {
                           <ThemeLocalization>
                             <RtlLayout>
                               <ChartStyle />
+                              <Toaster position={'bottom-right'} toastOptions={{ duration: 3000 }} />
                               {process.env.NODE_ENV !== 'production' && <ReactQueryDevtools initialIsOpen={false} />}
-                              <Settings />
+                              {/*<Settings />*/}
                               <ProgressBar />
                               {getLayout(<Component {...pageProps} />)}
                             </RtlLayout>
@@ -107,8 +90,8 @@ export default function MyApp(props: propsType) {
                 </SettingsProvider>
               </CollapseDrawerProvider>
             </LocalizationProvider>
-          </QueryClientProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </QueryClientProvider>
       </ClientProvider>
     </>
   );

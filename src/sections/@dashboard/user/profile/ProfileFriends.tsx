@@ -12,7 +12,7 @@ import SearchNotFound from '../../../../components/SearchNotFound';
 type ProfileFriendsPropTypes = {
   friends: any[];
   findFriends: string;
-  onFindFriends: () => void;
+  onFindFriends: (value: string) => void;
 };
 
 export default function ProfileFriends({ friends, findFriends, onFindFriends }: ProfileFriendsPropTypes) {
@@ -78,7 +78,7 @@ function FriendCard({ friend }: FriendCardPropTypes) {
       }}
     >
       <Avatar alt={name} src={avatarUrl} sx={{ width: 64, height: 64, mb: 3 }} />
-      <Link variant="subtitle1" color="text.primary">
+      <Link href={'/'} variant="subtitle1" color="text.primary">
         {name}
       </Link>
 

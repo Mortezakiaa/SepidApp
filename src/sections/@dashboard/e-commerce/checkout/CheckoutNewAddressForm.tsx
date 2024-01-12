@@ -15,7 +15,7 @@ type CheckoutNewAddressFormPropTypes = {
   open: boolean;
   onClose: () => void;
   onNextStep: () => void;
-  onCreateBilling: () => void;
+  onCreateBilling: (value: string) => void;
 };
 
 export default function CheckoutNewAddressForm({

@@ -1,32 +1,18 @@
 // form
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Stack, Alert } from '@mui/material';
+import { Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from '@/hooks/useAuth';
-import useIsMountedRef from '@/hooks/useIsMountedRef';
 // components
 import { FormProvider, RHFTextField } from '@components/hook-form';
-import { object, string } from 'yup';
-import { LoginDto } from '@/types/models';
-
-// ----------------------------------------------------------------------
+import { useEffect } from 'react';
+import { AnimatePresence, m } from 'framer-motion';
 
 export default function LoginForm() {
-  const { login } = useAuth();
-
-  const isMountedRef = useIsMountedRef();
-
-  const LoginSchema = object().shape({
-    phone_number: string().required('شماره تماس اجباری است'),
-    code: string(),
-  });
-
-  const methods = useForm<LoginDto>({
-    resolver: yupResolver(LoginSchema),
-  });
+  const { user, login, loginStepTwo } = useAuth();
+  const methods = useForm<LoginDto>();
 
   const {
     reset,
@@ -35,14 +21,23 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
   } = methods;
 
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
+
   const onSubmit = async (data: LoginDto) => {
     try {
-      await login(data.phone_number);
+      if (login.data) {
+        await loginStepTwo.mutateAsync({ phone_number: data.phone_number, code: data.code });
+      } else {
+        await login.mutateAsync({ phone_number: data.phone_number });
+      }
     } catch (error) {
       console.error(error);
       reset();
-      if (isMountedRef.current) {
-        setError('root', { ...error, message: error.message });
+      // toast.error(error.errorData);
+      for (let key in error.errorData) {
+        setError(key as 'phone_number' | 'code', { message: error.errorData[key] });
       }
     }
   };
@@ -50,13 +45,17 @@ export default function LoginForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        {!!errors.root && <Alert severity="error">{errors.root.message}</Alert>}
-        <RHFTextField name="phone_number" label="شماره تماس" />
+        <RHFTextField disabled={!!login.data || login.isPending} name="phone_number" label="شماره تماس" />
       </Stack>
-      <Stack spacing={3}>
-        {!!errors.root && <Alert severity="error">{errors.root.message}</Alert>}
-        <RHFTextField name="phone_number" label="شماره تماس" />
-      </Stack>
+      <AnimatePresence>
+        {login.data && (
+          <m.div initial={{ y: -50 }} animate={{ y: 0 }} exit={{ y: -50 }}>
+            <Stack sx={{ marginTop: 3 }} spacing={3}>
+              <RHFTextField name="code" label="کد یکبار مصرف" />
+            </Stack>
+          </m.div>
+        )}
+      </AnimatePresence>
 
       <LoadingButton
         sx={{ marginTop: 5 }}

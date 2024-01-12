@@ -8,7 +8,7 @@ import useSettings from '../../hooks/useSettings';
 // utils
 import cssStyles from '../../utils/cssStyles';
 // config
-import { NAVBAR, defaultSettings } from '../../config';
+import { NAVBAR, defaultSettings } from '@/config.ts';
 //
 import Iconify from '../Iconify';
 import Scrollbar from '../Scrollbar';
@@ -25,7 +25,7 @@ import SettingColorPresets from './SettingColorPresets';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(m.div)(({ theme }) => ({
-  ...cssStyles(theme).bgBlur({ color: theme.palette.background.paper, opacity: 0.92 }),
+  ...cssStyles(theme).bgBlur({ color: theme.palette.background.paper, opacity: '0.92' }),
   top: 0,
   right: 0,
   bottom: 0,

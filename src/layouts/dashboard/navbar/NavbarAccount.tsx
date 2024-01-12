@@ -2,7 +2,7 @@
 
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import Link from '@components/Link';
 // hooks
 import useAuth from '../../../hooks/useAuth';
@@ -11,6 +11,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import MyAvatar from '../../../components/MyAvatar';
 import { boolean } from '@/_mock/boolean.tsx';
+import { translateRole } from '@utils/translateRole.ts';
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +34,8 @@ type propTypes = {
 
 export default function NavbarAccount({ isCollapse }: propTypes) {
   const { user } = useAuth();
+
+  if (!user) return <Skeleton height={100} />;
 
   return (
     <Link href={PATH_DASHBOARD.user.account} underline="none" color="inherit">
@@ -59,10 +62,10 @@ export default function NavbarAccount({ isCollapse }: propTypes) {
           }}
         >
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
+            {user?.full_name || user?.id}
           </Typography>
           <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
-            {user?.role}
+            {translateRole[user.role]}
           </Typography>
         </Box>
       </RootStyle>

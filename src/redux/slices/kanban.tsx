@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import omit from 'lodash/omit';
 // utils
-import axios from '../../utils/axios';
+import axios from '@utils/axios.ts';
 //
 
 // ----------------------------------------------------------------------

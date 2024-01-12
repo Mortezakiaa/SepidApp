@@ -47,14 +47,14 @@ function labelPriceRange(range) {
 }
 
 type ShopTagFilteredPropTypes = {
-  filters: any;
-  isShowReset: boolean;
-  onRemoveGender: () => void;
-  onRemoveCategory: () => void;
-  onRemoveColor: () => void;
-  onRemovePrice: () => void;
-  onRemoveRating: () => void;
-  onResetAll: () => void;
+  filters?: any;
+  isShowReset?: boolean;
+  onRemoveGender?: () => void;
+  onRemoveCategory?: () => void;
+  onRemoveColor?: () => void;
+  onRemovePrice?: () => void;
+  onRemoveRating?: () => void;
+  onResetAll?: () => void;
 };
 
 export default function ShopTagFiltered({

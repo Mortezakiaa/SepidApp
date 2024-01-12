@@ -9,7 +9,7 @@ import { Box, Stack, Drawer, IconButton, Link } from '@mui/material';
 // hooks
 import useResponsive from '@hooks/useResponsive';
 // utils
-import axios from '@utils/axios';
+import axios from '@utils/axios.ts';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // components

@@ -1,18 +1,24 @@
-import { useContext } from 'react';
-//
-import { AuthContext } from '../contexts/JWTContext';
-// import { AuthContext } from '../contexts/Auth0Context';
-// import { AuthContext } from '../contexts/FirebaseContext';
-// import { AuthContext } from '../contexts/AwsCognitoContext';
-
 // ----------------------------------------------------------------------
 
+import useLoginMutation, { useLoginStepTwoMutation } from '@/react-query/auth/useLoginMutation.ts';
+import useInitAuth from '@/react-query/auth/useInitAuth.ts';
+import { setSession, getToken } from '@utils/jwt.tsx';
+import { axiosInstance } from '@utils/axios.ts';
+
 const useAuth = () => {
-  const context = useContext(AuthContext);
+  const login = useLoginMutation();
 
-  if (!context) throw new Error('Auth context must be use inside AuthProvider');
+  const loginStepTwo = useLoginStepTwoMutation();
 
-  return context;
+  const { data: user } = useInitAuth();
+
+  function logout() {
+    window.localStorage.removeItem('accessToken');
+    setSession(null);
+    axiosInstance.defaults.headers.common.Authorization = '';
+  }
+
+  return { login, loginStepTwo, user, logout, getToken };
 };
 
 export default useAuth;

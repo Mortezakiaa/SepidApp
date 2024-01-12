@@ -4,15 +4,12 @@ import orderBy from 'lodash/orderBy';
 import { useForm } from 'react-hook-form';
 // @mui
 import { Container, Typography, Stack } from '@mui/material';
-// redux
-import { useDispatch, useSelector } from '../../../redux/store';
-import { getProducts, filterProducts } from '../../../redux/slices/product';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // hooks
-import useSettings from '../../../hooks/useSettings';
+import useSettings from '@/hooks/useSettings';
 // layouts
-import Layout from '../../../layouts';
+import Layout from '@/layouts';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
@@ -38,20 +35,18 @@ EcommerceShop.getLayout = function getLayout(page: React.ReactNode) {
 export default function EcommerceShop() {
   const { themeStretch } = useSettings();
 
-  const dispatch = useDispatch();
-
   const [openFilter, setOpenFilter] = useState(false);
 
-  const { products, sortBy, filters } = useSelector((state) => state.product);
+  const { products, sortBy, filters } = { products: [], sortBy: 'ASC', filters: {} };
 
   const filteredProducts = applyFilter(products, sortBy, filters);
 
   const defaultValues = {
-    gender: filters.gender,
-    category: filters.category,
-    colors: filters.colors,
-    priceRange: filters.priceRange,
-    rating: filters.rating,
+    // gender: filters.gender,
+    // category: filters.category,
+    // colors: filters.colors,
+    // priceRange: filters.priceRange,
+    // rating: filters.rating,
   };
 
   const methods = useForm({
@@ -62,20 +57,12 @@ export default function EcommerceShop() {
 
   const values = watch();
 
-  const isDefault =
-    !values.priceRange &&
-    !values.rating &&
-    values.gender.length === 0 &&
-    values.colors.length === 0 &&
-    values.category === 'All';
-
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(filterProducts(values));
-  }, [dispatch, values]);
+  const isDefault = false;
+  // !values.priceRange &&
+  // !values.rating &&
+  // values.gender.length === 0 &&
+  // values.colors.length === 0 &&
+  // values.category === 'All';
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -90,26 +77,26 @@ export default function EcommerceShop() {
     handleCloseFilter();
   };
 
-  const handleRemoveGender = (value) => {
-    const newValue = filters.gender.filter((item) => item !== value);
-    setValue('gender', newValue);
+  const handleRemoveGender = () => {
+    // const newValue = filters.gender.filter((item) => item !== value);
+    // setValue('gender', newValue);
   };
 
   const handleRemoveCategory = () => {
-    setValue('category', 'All');
+    // setValue('category', 'All');
   };
 
-  const handleRemoveColor = (value) => {
-    const newValue = filters.colors.filter((item) => item !== value);
-    setValue('colors', newValue);
+  const handleRemoveColor = () => {
+    // const newValue = filters.colors.filter((item) => item !== value);
+    // setValue('colors', newValue);
   };
 
   const handleRemovePrice = () => {
-    setValue('priceRange', '');
+    // setValue('priceRange', '');
   };
 
   const handleRemoveRating = () => {
-    setValue('rating', '');
+    // setValue('rating', '');
   };
 
   return (
@@ -137,7 +124,7 @@ export default function EcommerceShop() {
           <ShopProductSearch />
 
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-            <FormProvider methods={methods}>
+            <FormProvider onSubmit={() => {}} methods={methods}>
               <ShopFilterSidebar
                 onResetAll={handleResetFilter}
                 isOpen={openFilter}

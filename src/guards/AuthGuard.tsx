@@ -14,7 +14,11 @@ type propsType = {
 };
 
 export default function AuthGuard({ children }: propsType) {
-  const { isAuthenticated, isInitialized } = useAuth();
+  const { getToken } = useAuth();
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const { pathname, push } = useRouter();
 
@@ -27,11 +31,11 @@ export default function AuthGuard({ children }: propsType) {
     }
   }, [pathname, push, requestedLocation]);
 
-  if (!isInitialized) {
+  if (!isClient) {
     return <LoadingScreen />;
   }
 
-  if (!isAuthenticated) {
+  if (!getToken()) {
     if (pathname !== requestedLocation) {
       setRequestedLocation(pathname);
     }

@@ -4,9 +4,6 @@ import { paramCase } from 'change-case';
 import { useRouter } from 'next/router';
 // @mui
 import { Container } from '@mui/material';
-// redux
-import { useDispatch, useSelector } from '@/redux/store';
-import { getProducts } from '@/redux/slices/product';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths';
 // hooks
@@ -30,19 +27,13 @@ EcommerceProductEdit.getLayout = function getLayout(page: React.ReactNode) {
 export default function EcommerceProductEdit() {
   const { themeStretch } = useSettings();
 
-  const dispatch = useDispatch();
-
   const { query } = useRouter();
 
   const { name } = query;
 
-  const { products } = useSelector((state) => state.product);
+  const { products } = { products: [] };
 
   const currentProduct = products.find((product) => paramCase(product.name) === name);
-
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
 
   return (
     <Page title="Ecommerce: Edit product">

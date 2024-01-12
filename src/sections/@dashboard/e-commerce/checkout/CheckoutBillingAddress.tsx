@@ -2,10 +2,8 @@ import { useState } from 'react';
 // @mui
 import { Box, Grid, Card, Button, Typography } from '@mui/material';
 // redux
-import { useDispatch, useSelector } from '../../../../redux/store';
-import { onBackStep, onNextStep, createBilling } from '../../../../redux/slices/product';
 // _mock_
-import { _addressBooks } from '../../../../_mock';
+import { _addressBooks } from '@/_mock';
 // components
 import Label from '../../../../components/Label';
 import Iconify from '../../../../components/Iconify';
@@ -16,9 +14,7 @@ import CheckoutNewAddressForm from './CheckoutNewAddressForm';
 // ----------------------------------------------------------------------
 
 export default function CheckoutBillingAddress() {
-  const dispatch = useDispatch();
-
-  const { checkout } = useSelector((state) => state.product);
+  const checkout = [];
 
   const { total, discount, subtotal } = checkout;
 
@@ -32,17 +28,11 @@ export default function CheckoutBillingAddress() {
     setOpen(false);
   };
 
-  const handleNextStep = () => {
-    dispatch(onNextStep());
-  };
+  const handleNextStep = () => {};
 
-  const handleBackStep = () => {
-    dispatch(onBackStep());
-  };
+  const handleBackStep = () => {};
 
-  const handleCreateBilling = (value) => {
-    dispatch(createBilling(value));
-  };
+  const handleCreateBilling = (value) => {};
 
   return (
     <>
@@ -98,7 +88,7 @@ function AddressItem({ address, onNextStep, onCreateBilling }: AddressItemPropTy
   const { receiver, fullAddress, addressType, phone, isDefault } = address;
 
   const handleCreateBilling = () => {
-    onCreateBilling(address);
+    // onCreateBilling(address);
     onNextStep();
   };
 

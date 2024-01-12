@@ -1,23 +1,28 @@
 // @mui
-import { styled } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 import { List, Box, ListSubheader } from '@mui/material';
 //
 import { NavListRoot } from './NavList';
+import { OverrideProps } from '@mui/material/OverridableComponent';
 
 // ----------------------------------------------------------------------
 
-export const ListSubheaderStyle = styled((props) => <ListSubheader disableSticky disableGutters {...props} />)(
-  ({ theme }) => ({
-    ...theme.typography.overline,
-    paddingTop: theme.spacing(3),
-    paddingLeft: theme.spacing(2),
-    paddingBottom: theme.spacing(1),
-    color: theme.palette.text.primary,
-    transition: theme.transitions.create('opacity', {
-      duration: theme.transitions.duration.shorter,
-    }),
-  })
-);
+type ListSubheaderPropType = {
+  theme?: Theme;
+  children?: React.ReactNode;
+};
+export const ListSubheaderStyle = styled((props: ListSubheaderPropType) => (
+  <ListSubheader disableSticky disableGutters {...props} />
+))(({ theme }) => ({
+  ...theme.typography.overline,
+  paddingTop: theme.spacing(3),
+  paddingLeft: theme.spacing(2),
+  paddingBottom: theme.spacing(1),
+  color: theme.palette.text.primary,
+  transition: theme.transitions.create('opacity', {
+    duration: theme.transitions.duration.shorter,
+  }),
+}));
 
 // ----------------------------------------------------------------------
 

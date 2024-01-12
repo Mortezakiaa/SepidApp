@@ -11,7 +11,7 @@ import Link from '@components/Link';
 // hooks
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // utils
-import axios from '../../../utils/axios';
+import axios from '@utils/axios.ts';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components

@@ -8,7 +8,7 @@ import { Grid, Button, Container, Stack, Link } from '@mui/material';
 import useSettings from '../../../hooks/useSettings';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // utils
-import axios from '../../../utils/axios';
+import axios from '@utils/axios.ts';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // layouts

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import sum from 'lodash/sum';
 import uniqBy from 'lodash/uniqBy';
 // utils
-import axios from '../../utils/axios';
+import axios from '@utils/axios.ts';
 //
 
 // ----------------------------------------------------------------------

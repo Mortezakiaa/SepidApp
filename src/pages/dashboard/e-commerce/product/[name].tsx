@@ -7,9 +7,6 @@ import { alpha, styled } from '@mui/material/styles';
 import { Box, Tab, Card, Grid, Divider, Container, Typography } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 // redux
-import { useDispatch, useSelector } from '@/redux/store.tsx';
-import { getProduct, addCart, onGotoStep } from '@/redux/slices/product.tsx';
-// routes
 import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // hooks
 import useSettings from '@hooks/useSettings';
@@ -73,27 +70,17 @@ EcommerceProductDetails.getLayout = function getLayout(page: React.ReactNode) {
 export default function EcommerceProductDetails() {
   const { themeStretch } = useSettings();
 
-  const dispatch = useDispatch();
-
   const [value, setValue] = useState('1');
 
   const { query } = useRouter();
 
   const { name } = query;
 
-  const { product, error, checkout } = useSelector((state) => state.product);
+  const { product, error, checkout } = { checkout: [], error: null, product: [] };
 
-  useEffect(() => {
-    dispatch(getProduct(name));
-  }, [dispatch, name]);
+  const handleAddCart = (product) => {};
 
-  const handleAddCart = (product) => {
-    dispatch(addCart(product));
-  };
-
-  const handleGotoStep = (step) => {
-    dispatch(onGotoStep(step));
-  };
+  const handleGotoStep = (step) => {};
 
   return (
     <Page title="Ecommerce: Product Details">

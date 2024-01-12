@@ -1,5 +1,5 @@
 // @mui
-import { styled } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar } from '@mui/material';
 // hooks
 import useOffSetTop from '../../../hooks/useOffSetTop';
@@ -21,9 +21,16 @@ import NotificationsPopover from './NotificationsPopover';
 
 // ----------------------------------------------------------------------
 
+type RootPropsType = {
+  isCollapse?: boolean;
+  isOffset?: boolean;
+  verticalLayout?: boolean;
+  theme?: Theme;
+};
 const RootStyle = styled(AppBar, {
-  shouldForwardProp: (prop) => prop !== 'isCollapse' && prop !== 'isOffset' && prop !== 'verticalLayout',
-})(({ isCollapse, isOffset, verticalLayout, theme }: any) => ({
+  shouldForwardProp: (prop: keyof RootPropsType) =>
+    prop !== 'isCollapse' && prop !== 'isOffset' && prop !== 'verticalLayout',
+})<RootPropsType>(({ isCollapse, isOffset, verticalLayout, theme }: RootPropsType) => ({
   ...cssStyles(theme).bgBlur(),
   boxShadow: 'none',
   height: HEADER.MOBILE_HEIGHT,
@@ -81,9 +88,9 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <LanguagePopover />
-          <NotificationsPopover />
-          <ContactsPopover />
+          {/*<LanguagePopover />*/}
+          {/*<NotificationsPopover />*/}
+          {/*<ContactsPopover />*/}
           <AccountPopover />
         </Stack>
       </Toolbar>

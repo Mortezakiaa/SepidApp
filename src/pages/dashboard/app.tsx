@@ -11,8 +11,6 @@ import Page from '../../components/Page';
 // sections
 import {
   AppWidget,
-  AppWelcome,
-  AppFeatured,
   AppNewInvoice,
   AppTopAuthors,
   AppTopRelated,
@@ -39,16 +37,16 @@ export default function GeneralApp() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="General: App">
+    <Page title="داشبورد">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            <AppWelcome displayName={user?.displayName} />
-          </Grid>
+          {/*<Grid item xs={12} md={8}>*/}
+          {/*  <AppWelcome displayName={user?.full_name || ` کاربر شماره${user.id} `} />*/}
+          {/*</Grid>*/}
 
-          <Grid item xs={12} md={4}>
-            <AppFeatured />
-          </Grid>
+          {/*<Grid item xs={12} md={4}>*/}
+          {/*  <AppFeatured />*/}
+          {/*</Grid>*/}
 
           <Grid item xs={12} md={4}>
             <AppWidgetSummary
@@ -88,28 +86,28 @@ export default function GeneralApp() {
             <AppAreaInstalled />
           </Grid>
 
-          <Grid item xs={12} lg={8}>
-            <AppNewInvoice />
-          </Grid>
+          {/*<Grid item xs={12} lg={8}>*/}
+          {/*  <AppNewInvoice />*/}
+          {/*</Grid>*/}
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppTopRelated />
-          </Grid>
+          {/*<Grid item xs={12} md={6} lg={4}>*/}
+          {/*  <AppTopRelated />*/}
+          {/*</Grid>*/}
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppTopInstalledCountries />
-          </Grid>
+          {/*<Grid item xs={12} md={6} lg={4}>*/}
+          {/*  <AppTopInstalledCountries />*/}
+          {/*</Grid>*/}
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppTopAuthors />
-          </Grid>
+          {/*<Grid item xs={12} md={6} lg={4}>*/}
+          {/*  <AppTopAuthors />*/}
+          {/*</Grid>*/}
 
-          <Grid item xs={12} md={6} lg={4}>
-            <Stack spacing={3}>
-              <AppWidget title="Conversion" total={38566} icon={'eva:person-fill'} chartData={48} />
-              <AppWidget title="Applications" total={55566} icon={'eva:email-fill'} color="warning" chartData={75} />
-            </Stack>
-          </Grid>
+          {/*<Grid item xs={12} md={6} lg={4}>*/}
+          {/*  <Stack spacing={3}>*/}
+          {/*    <AppWidget title="Conversion" total={38566} icon={'eva:person-fill'} chartData={48} />*/}
+          {/*    <AppWidget title="Applications" total={55566} icon={'eva:email-fill'} color="warning" chartData={75} />*/}
+          {/*  </Stack>*/}
+          {/*</Grid>*/}
         </Grid>
       </Container>
     </Page>

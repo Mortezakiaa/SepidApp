@@ -7,8 +7,6 @@ import { Container } from '@mui/material';
 import { PATH_DASHBOARD } from '@routes/paths';
 // hooks
 import useSettings from '@hooks/useSettings';
-// _mock_
-import { _userList } from '@_mock';
 // layouts
 import Layout from '@/layouts';
 // components
@@ -16,6 +14,7 @@ import Page from '@components/Page';
 import HeaderBreadcrumbs from '@components/HeaderBreadcrumbs';
 // sections
 import UserNewEditForm from '@sections/@dashboard/user/UserNewEditForm';
+import useAuth from '@hooks/useAuth.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -27,12 +26,10 @@ UserEdit.getLayout = function getLayout(page: React.ReactNode) {
 
 export default function UserEdit() {
   const { themeStretch } = useSettings();
-
+  const { user } = useAuth();
   const { query } = useRouter();
 
   const { name } = query;
-
-  const currentUser = _userList.find((user) => paramCase(user.name) === name);
 
   return (
     <Page title="User: Edit user">
@@ -42,11 +39,11 @@ export default function UserEdit() {
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'User', href: PATH_DASHBOARD.user.list },
-            { name: capitalCase(name) },
+            { name: capitalCase(name as string) },
           ]}
         />
 
-        <UserNewEditForm isEdit currentUser={currentUser} />
+        <UserNewEditForm isEdit currentUser={user} />
       </Container>
     </Page>
   );

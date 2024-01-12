@@ -1,18 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import { axiosInstance } from '@utils/axios.ts';
-import { TokenInfoType } from '@/types/models';
 
 // ----------------------------------------------------------------------
-
-const isValidToken = (accessToken: string) => {
-  if (!accessToken) {
-    return false;
-  }
-  const decoded = jwtDecode<any>(accessToken);
-  const currentTime = Date.now() / 1000;
-
-  return decoded.exp > currentTime;
-};
 
 const handleTokenExpired = (exp: number) => {
   const currentTime = Date.now();
@@ -22,6 +11,16 @@ const handleTokenExpired = (exp: number) => {
     delete axiosInstance.defaults.headers.common.Authorization;
     window.location.reload();
   }
+};
+
+const getToken = () => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (accessToken) {
+    const { exp } = jwtDecode<TokenInfoType>(accessToken);
+    handleTokenExpired(exp);
+    return accessToken;
+  }
+  return null;
 };
 
 const setSession = (accessToken?: string) => {
@@ -37,4 +36,4 @@ const setSession = (accessToken?: string) => {
   }
 };
 
-export { isValidToken, setSession };
+export { setSession, getToken };

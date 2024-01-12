@@ -10,7 +10,7 @@ import { PATH_DASHBOARD } from '@routes/paths';
 import useSettings from '@hooks/useSettings';
 import useIsMountedRef from '@hooks/useIsMountedRef';
 // utils
-import axios from '@utils/axios';
+import axios from '@utils/axios.ts';
 // layouts
 import Layout from '@/layouts';
 // components
