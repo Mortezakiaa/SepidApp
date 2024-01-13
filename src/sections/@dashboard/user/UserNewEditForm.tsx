@@ -10,20 +10,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Box, Card, Grid, Stack, Switch, Typography, FormControlLabel } from '@mui/material';
 // utils
-import { fData } from '../../../utils/formatNumber';
+import { fData } from '@utils/formatNumber.tsx';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
-// _mock
-import { countries } from '../../../_mock';
+import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // components
-import Label from '../../../components/Label';
-import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } from '../../../components/hook-form';
+import Label from '@components/Label';
+import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } from '@/components/hook-form';
+import useFetchProvinces from '@/react-query/cities/useFetchProvinces.ts';
+import useFetchCities from '@/react-query/cities/useFetchCities.ts';
+import useChooseProvince from '@/zustand/cities/useChooseProvince.ts';
 
 // ----------------------------------------------------------------------
 
 type UserNewEditFormPropTypes = {
-  isEdit: boolean;
-  currentUser: any;
+  isEdit?: boolean;
+  currentUser?: boolean;
 };
 
 export default function UserNewEditForm({ isEdit = false, currentUser }: UserNewEditFormPropTypes) {
@@ -36,10 +37,10 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
     email: Yup.string().required('Email is required').email(),
     phoneNumber: Yup.string().required('Phone number is required'),
     address: Yup.string().required('Address is required'),
-    country: Yup.string().required('country is required'),
+    state: Yup.string().required('country is required'),
     company: Yup.string().required('Company is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
+    province: Yup.number().required('State is required'),
+    city: Yup.number().required('City is required'),
     role: Yup.string().required('Role Number is required'),
     avatarUrl: Yup.mixed().test('required', 'Avatar is required', (value) => value !== ''),
   });
@@ -60,7 +61,6 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
       company: currentUser?.company || '',
       role: currentUser?.role || '',
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentUser]
   );
 
@@ -100,6 +100,10 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
       console.error(error);
     }
   };
+  const { data: provinces } = useFetchProvinces();
+  const { data: cities } = useFetchCities();
+  const setProvinceId = useChooseProvince((state) => state.setProvinceId);
+  const provinceId = useChooseProvince((state) => state.provinceId);
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -217,15 +221,30 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
               <RHFTextField name="email" label="Email Address" />
               <RHFTextField name="phoneNumber" label="Phone Number" />
 
-              <RHFSelect name="country" label="Country" placeholder="Country">
+              <RHFSelect
+                onChange={(e) => {
+                  setProvinceId(+e.target.value);
+                }}
+                name="province"
+                label="استان"
+                placeholder="استان"
+              >
                 <option value="" />
-                {countries.map((option) => (
-                  <option key={option.code} value={option.label}>
-                    {option.label}
+                {provinces?.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.name}
                   </option>
                 ))}
               </RHFSelect>
 
+              <RHFSelect disabled={!provinceId} name="city" label="شهر" placeholder="شهر">
+                <option value="" />
+                {cities?.result?.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+              </RHFSelect>
               <RHFTextField name="state" label="State/Region" />
               <RHFTextField name="city" label="City" />
               <RHFTextField name="address" label="Address" />

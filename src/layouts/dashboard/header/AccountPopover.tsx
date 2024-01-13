@@ -24,10 +24,10 @@ const MENU_OPTIONS = [
     label: 'داشبورد',
     linkTo: '/',
   },
-  {
-    label: 'پروفایل',
-    linkTo: PATH_DASHBOARD.user.profile,
-  },
+  // {
+  //   label: 'پروفایل',
+  //   linkTo: PATH_DASHBOARD.user.profile,
+  // },
   {
     label: 'حساب کاربری',
     linkTo: PATH_DASHBOARD.user.account,
@@ -129,7 +129,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          Logout
+          خروج
         </MenuItem>
       </MenuPopover>
     </>

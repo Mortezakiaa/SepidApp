@@ -7,7 +7,7 @@ import Link from '@components/Link';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // components
 import MyAvatar from '../../../components/MyAvatar';
 import { boolean } from '@/_mock/boolean.tsx';

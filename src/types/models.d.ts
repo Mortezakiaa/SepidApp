@@ -3,6 +3,28 @@ interface LoginDto {
   code?: string;
 }
 
+interface City {
+  id: number;
+
+  name: string;
+
+  slug: string;
+
+  province_id: number;
+
+  province: Province;
+
+  pharmacies: Pharmacy[];
+}
+interface Province {
+  id: number;
+
+  name: string;
+
+  slug: string;
+
+  cities: City[];
+}
 interface TokenInfoType {
   context: {
     id: number;

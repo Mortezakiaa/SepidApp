@@ -49,7 +49,7 @@ const navConfig = [
         path: PATH_DASHBOARD.user.root,
         icon: ICONS.user,
         children: [
-          { title: 'پروفایل', path: PATH_DASHBOARD.user.profile },
+          // { title: 'پروفایل', path: PATH_DASHBOARD.user.profile },
           // { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'لیست کاربران', path: PATH_DASHBOARD.user.list },
           { title: 'ساخت کاربر', path: PATH_DASHBOARD.user.new },
