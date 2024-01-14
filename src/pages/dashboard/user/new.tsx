@@ -24,10 +24,10 @@ export default function UserCreate() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="User: Create a new user">
+    <Page title="کاربر : ساخت کاربر جدید">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Create a new user"
+          heading="ساخت کاربر جدید"
           links={[
             { name: 'داشبورد', href: PATH_DASHBOARD.root },
             { name: 'کاربر', href: PATH_DASHBOARD.user.list },

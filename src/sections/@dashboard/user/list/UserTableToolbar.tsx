@@ -7,8 +7,8 @@ import Iconify from '../../../../components/Iconify';
 type UserTableToolbarPropTypes = {
   filterName: string;
   filterRole: string;
-  onFilterName: () => void;
-  onFilterRole: () => void;
+  onFilterName: (name: string) => void;
+  onFilterRole: (role: string) => void;
   optionsRole: string[];
 };
 

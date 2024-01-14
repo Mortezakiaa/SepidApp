@@ -18,12 +18,12 @@ const visuallyHidden = {
 // ----------------------------------------------------------------------
 
 type TableHeadCustomPropTypes = {
-  onSort: () => void;
+  onSort: (id: number) => void;
   orderBy: string;
   headLabel: any[];
   rowCount: number;
   numSelected: number;
-  onSelectAllRows: () => void;
+  onSelectAllRows: (checked: boolean) => void;
   order: ['asc', 'desc'];
   sx?: SxProps;
 };

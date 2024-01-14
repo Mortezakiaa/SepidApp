@@ -9,7 +9,7 @@ type TableSelectedActionsPropTypes = {
   actions: ReactNode;
   rowCount: number;
   numSelected: number;
-  onSelectAllRows: () => void;
+  onSelectAllRows: (checked: boolean) => void;
 };
 
 export default function TableSelectedActions({
