@@ -105,7 +105,7 @@ function SnackbarIcon({ icon, color }: SnackbarIconPropTypes) {
     <Box
       component="span"
       sx={{
-        mr: 1.5,
+        // mr: 1.5,
         width: 40,
         height: 40,
         display: 'flex',

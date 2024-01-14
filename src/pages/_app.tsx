@@ -76,7 +76,10 @@ export default function MyApp(props: propsType) {
                           <ThemeLocalization>
                             <RtlLayout>
                               <ChartStyle />
-                              <Toaster position={'bottom-right'} toastOptions={{ duration: 3000 }} />
+                              <Toaster
+                                position={'bottom-right'}
+                                toastOptions={{ duration: 3000, style: { background: '#090909', color: '#dcdcdc' } }}
+                              />
                               {process.env.NODE_ENV !== 'production' && <ReactQueryDevtools initialIsOpen={false} />}
                               {/*<Settings />*/}
                               <ProgressBar />

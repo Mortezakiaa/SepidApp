@@ -29,9 +29,9 @@ export default function UserCreate() {
         <HeaderBreadcrumbs
           heading="Create a new user"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.list },
-            { name: 'New user' },
+            { name: 'داشبورد', href: PATH_DASHBOARD.root },
+            { name: 'کاربر', href: PATH_DASHBOARD.user.list },
+            { name: 'ساخت کاربر جدید' },
           ]}
         />
         <UserNewEditForm />

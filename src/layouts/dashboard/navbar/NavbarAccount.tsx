@@ -62,7 +62,7 @@ export default function NavbarAccount({ isCollapse }: propTypes) {
           }}
         >
           <Typography variant="subtitle2" noWrap>
-            {user?.full_name || user?.id}
+            {user?.full_name || user?.phone_number}
           </Typography>
           <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
             {translateRole[user.role]}

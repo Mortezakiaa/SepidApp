@@ -3,6 +3,46 @@ interface LoginDto {
   code?: string;
 }
 
+interface PharmacyInfo {
+  phone_number: string;
+  address: string;
+}
+
+interface SoftwareInfo {
+  previous_version: string;
+  system_count: number;
+  printer_count: number;
+}
+interface BaseEntity {
+  id: number;
+
+  createdAt: Date;
+
+  updatedAt: Date;
+
+  deletedAt: Date;
+}
+
+interface Pharmacy extends BaseEntity {
+  name: string;
+
+  info: PharmacyInfo;
+
+  software_info: SoftwareInfo;
+
+  city_id: number;
+
+  is_active: boolean;
+
+  end_date: Date;
+
+  members: User[];
+
+  orders: Order[];
+
+  city: City;
+}
+
 interface City {
   id: number;
 
