@@ -16,7 +16,7 @@ export default function TableNoData({ isNotFound }: TableNoDataPropTypes) {
         <TableRow>
           <TableCell colSpan={9}>
             <EmptyContent
-              title="No Data"
+              title="داده ای وجود ندارد"
               sx={{
                 '& span.MuiBox-root': { height: 160 },
               }}

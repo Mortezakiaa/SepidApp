@@ -1,7 +1,3 @@
-import { paramCase } from 'change-case';
-import { useState } from 'react';
-// next
-
 import { useRouter } from 'next/router';
 // @mui
 import {
@@ -12,58 +8,58 @@ import {
   Table,
   Switch,
   Button,
-  Tooltip,
   Divider,
   TableBody,
   Container,
-  IconButton,
   TableContainer,
   TablePagination,
   FormControlLabel,
+  Typography,
+  Backdrop,
 } from '@mui/material';
 import Link from '@components/Link';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // hooks
-import useTabs from '../../../hooks/useTabs';
-import useSettings from '../../../hooks/useSettings';
-import useTable, { getComparator, emptyRows } from '../../../hooks/useTable';
+import useSettings from '@/hooks/useSettings';
+import useTable, { getComparator, emptyRows } from '@/hooks/useTable';
 // _mock_
 import { _userList } from '@/_mock';
 // layouts
 import Layout from '@/layouts';
 // components
-import Page from '../../../components/Page';
-import Iconify from '../../../components/Iconify';
-import Scrollbar from '../../../components/Scrollbar';
-import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../components/table';
+import Page from '@/components/Page';
+import Iconify from '@/components/Iconify';
+import Scrollbar from '@/components/Scrollbar';
+import HeaderBreadcrumbs from '@/components/HeaderBreadcrumbs';
+import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '@/components/table';
 // sections
 import { UserTableToolbar, UserTableRow } from '@/sections/@dashboard/user/list';
+import useFetchUsers from '@/react-query/user/useFetchUsers';
+import { RoleEnum } from '@/enums/role.enum';
+import useFilterUser from '@/zustand/users/useFilterUser';
+import { useShallow } from 'zustand/react/shallow';
+import useDeleteUser from '@/react-query/user/useDeleteUser';
+import UserTableRowSkeleton from '@/sections/@dashboard/user/list/UserTableRowSkeleton';
+import useUsersTabState from '@/zustand/users/useUserSetTab';
+import { UserStatusEnum } from '@/types/enums/user-status.enum';
+import { Icon } from '@iconify/react';
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = ['all', 'active', 'banned'];
-
-const ROLE_OPTIONS = [
-  'all',
-  'ux designer',
-  'full stack designer',
-  'backend developer',
-  'project manager',
-  'leader',
-  'ui designer',
-  'ui/ux designer',
-  'front end developer',
-  'full stack developer',
+const STATUS_OPTIONS = [
+  { value: 'All', label: 'همه' },
+  { value: UserStatusEnum.ACTIVE, label: 'فعال' },
+  { value: UserStatusEnum.INACTIVE, label: 'غیرفعال' },
 ];
 
+const ROLE_OPTIONS = ['all', RoleEnum.ADMIN, RoleEnum.PHARMACY, RoleEnum.SUPPORT, RoleEnum.USER];
+
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', align: 'left' },
-  { id: 'company', label: 'Company', align: 'left' },
-  { id: 'role', label: 'Role', align: 'left' },
-  { id: 'isVerified', label: 'Verified', align: 'center' },
-  { id: 'status', label: 'Status', align: 'left' },
+  { id: 'full_name', label: 'نام و نام خانوادگی', align: 'left' },
+  { id: 'role', label: 'نقش', align: 'left' },
+  { id: 'status', label: 'وضعیت', align: 'left' },
+  { id: 'pharmacy', label: 'داروخانه', align: 'center' },
   { id: '' },
 ];
 
@@ -83,11 +79,6 @@ export default function UserList() {
     rowsPerPage,
     setPage,
     //
-    selected,
-    setSelected,
-    onSelectRow,
-    onSelectAllRows,
-    //
     onSort,
     onChangeDense,
     onChangePage,
@@ -98,70 +89,57 @@ export default function UserList() {
 
   const { push } = useRouter();
 
-  const {} = useFetchUsers();
+  const { data: users, isLoading, error } = useFetchUsers();
+  const tableData = users?.result || [];
+  const { activeTab, setTab } = useUsersTabState(
+    useShallow((state) => ({ activeTab: state.activeTab, setTab: state.setActiveTab }))
+  );
 
-  const [tableData, setTableData] = useState(_userList);
-
-  const [filterName, setFilterName] = useState('');
-
-  const [filterRole, setFilterRole] = useState('all');
-
-  const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
+  const { setFullName, setRole, fullName, role } = useFilterUser(
+    useShallow((state) => ({
+      setRole: state.setRole,
+      setFullName: state.setFullName,
+      role: state.role,
+      fullName: state.fullName,
+    }))
+  );
+  const { mutate: deleteUser, isPending } = useDeleteUser();
 
   const handleFilterName = (filterName) => {
-    setFilterName(filterName);
+    setFullName(filterName);
     setPage(0);
   };
 
   const handleFilterRole = (event) => {
-    setFilterRole(event.target.value);
+    setRole(event.target.value);
   };
 
-  const handleDeleteRow = (id) => {
-    const deleteRow = tableData.filter((row) => row.id !== id);
-    setSelected([]);
-    setTableData(deleteRow);
-  };
-
-  const handleDeleteRows = (selected) => {
-    const deleteRows = tableData.filter((row) => !selected.includes(row.id));
-    setSelected([]);
-    setTableData(deleteRows);
+  const handleDeleteRow = (id: number) => {
+    deleteUser(id);
   };
 
   const handleEditRow = (id) => {
-    push(PATH_DASHBOARD.user.edit(paramCase(id)));
+    push(PATH_DASHBOARD.user.edit(+id));
   };
-
-  const dataFiltered = applySortFilter({
-    tableData,
-    comparator: getComparator(order, orderBy),
-    filterName,
-    filterRole,
-    filterStatus,
-  });
 
   const denseHeight = dense ? 52 : 72;
 
-  const isNotFound =
-    (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterRole) ||
-    (!dataFiltered.length && !!filterStatus);
+  const isNotFound = !tableData.length;
 
   return (
-    <Page title="User: List">
+    <Page title="کاربران">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="User List"
+          heading="لیست کاربران"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.root },
-            { name: 'List' },
+            { name: 'داشبورد', href: PATH_DASHBOARD.root },
+            { name: 'کاربر', href: PATH_DASHBOARD.user.root },
+            { name: 'لیست' },
           ]}
           action={
             <Link href={PATH_DASHBOARD.user.new}>
               <Button variant="contained" startIcon={<Iconify icon={'eva:plus-fill'} />}>
-                New User
+                کاربر جدید
               </Button>
             </Link>
           }
@@ -172,20 +150,20 @@ export default function UserList() {
             allowScrollButtonsMobile
             variant="scrollable"
             scrollButtons="auto"
-            value={filterStatus}
-            onChange={onChangeFilterStatus}
+            value={activeTab}
+            onChange={setTab}
             sx={{ px: 2, bgcolor: 'background.default' }}
           >
             {STATUS_OPTIONS.map((tab) => (
-              <Tab disableRipple key={tab} label={tab} value={tab} />
+              <Tab disableRipple key={tab.value} label={tab.label} value={tab.value} />
             ))}
           </Tabs>
 
           <Divider />
 
           <UserTableToolbar
-            filterName={filterName}
-            filterRole={filterRole}
+            filterName={fullName}
+            filterRole={role}
             onFilterName={handleFilterName}
             onFilterRole={handleFilterRole}
             optionsRole={ROLE_OPTIONS}
@@ -193,59 +171,45 @@ export default function UserList() {
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
-              {selected.length > 0 && (
-                <TableSelectedActions
-                  dense={dense}
-                  numSelected={selected.length}
-                  rowCount={tableData.length}
-                  onSelectAllRows={(checked) =>
-                    onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
-                  actions={
-                    <Tooltip title="Delete">
-                      <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
-                        <Iconify icon={'eva:trash-2-outline'} />
-                      </IconButton>
-                    </Tooltip>
-                  }
-                />
-              )}
-
               <Table size={dense ? 'small' : 'medium'}>
                 <TableHeadCustom
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
                   rowCount={tableData.length}
-                  numSelected={selected.length}
                   onSort={onSort}
-                  onSelectAllRows={(checked) =>
-                    onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
                 />
 
-                <TableBody>
-                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <UserTableRow
-                      key={row.id}
-                      row={row}
-                      selected={selected.includes(row.id)}
-                      onSelectRow={() => onSelectRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                      onEditRow={() => handleEditRow(row.name)}
-                    />
-                  ))}
+                {isLoading ? (
+                  <TableBody>
+                    {Array.from(Array(5)).map((_, index) => (
+                      <UserTableRowSkeleton key={index} />
+                    ))}
+                  </TableBody>
+                ) : error ? (
+                  <Backdrop open={true}>
+                    <Box sx={{ border: '1px solid red', padding: 5, borderRadius: 5 }}>
+                      <Icon color="red" width={100} icon={'material-symbols:error-outline'} />
 
-                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, tableData.length)} />
+                      <Typography>{error?.errorData || 'خطایی رخ داده است'}</Typography>
+                    </Box>
+                  </Backdrop>
+                ) : (
+                  <TableBody>
+                    {tableData.map((row) => (
+                      <UserTableRow
+                        key={row.id}
+                        row={row}
+                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onEditRow={() => handleEditRow(row.id)}
+                      />
+                    ))}
 
-                  <TableNoData isNotFound={isNotFound} />
-                </TableBody>
+                    <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, tableData.length)} />
+
+                    <TableNoData isNotFound={isNotFound} />
+                  </TableBody>
+                )}
               </Table>
             </TableContainer>
           </Scrollbar>
@@ -254,7 +218,7 @@ export default function UserList() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={dataFiltered.length}
+              count={tableData.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={onChangePage}
@@ -263,7 +227,7 @@ export default function UserList() {
 
             <FormControlLabel
               control={<Switch checked={dense} onChange={onChangeDense} />}
-              label="Dense"
+              label="فشرده"
               sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
             />
           </Box>
@@ -274,29 +238,3 @@ export default function UserList() {
 }
 
 // ----------------------------------------------------------------------
-
-function applySortFilter({ tableData, comparator, filterName, filterStatus, filterRole }) {
-  const stabilizedThis = tableData.map((el, index) => [el, index]);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  tableData = stabilizedThis.map((el) => el[0]);
-
-  if (filterName) {
-    tableData = tableData.filter((item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
-  }
-
-  if (filterStatus !== 'all') {
-    tableData = tableData.filter((item) => item.status === filterStatus);
-  }
-
-  if (filterRole !== 'all') {
-    tableData = tableData.filter((item) => item.role === filterRole);
-  }
-
-  return tableData;
-}

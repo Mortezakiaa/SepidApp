@@ -2,7 +2,7 @@ import { paramCase, capitalCase } from 'change-case';
 // next
 import { useRouter } from 'next/router';
 // @mui
-import { Container } from '@mui/material';
+import { Container, Skeleton } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths';
 // hooks
@@ -14,7 +14,7 @@ import Page from '@components/Page';
 import HeaderBreadcrumbs from '@components/HeaderBreadcrumbs';
 // sections
 import UserNewEditForm from '@sections/@dashboard/user/UserNewEditForm';
-import useAuth from '@hooks/useAuth.tsx';
+import useFetchSingleUser from '@/react-query/user/useFetchSingleUser';
 
 // ----------------------------------------------------------------------
 
@@ -26,24 +26,22 @@ UserEdit.getLayout = function getLayout(page: React.ReactNode) {
 
 export default function UserEdit() {
   const { themeStretch } = useSettings();
-  const { user } = useAuth();
   const { query } = useRouter();
-
-  const { name } = query;
+  const { id } = query;
+  const { data: user, isLoading } = useFetchSingleUser(+id);
 
   return (
-    <Page title="User: Edit user">
+    <Page title="ویرایش کاربر">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Edit user"
+          heading="ویرایش کاربر"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.list },
-            { name: capitalCase(name as string) },
+            { name: 'داشبورد', href: PATH_DASHBOARD.root },
+            { name: 'کاربر', href: PATH_DASHBOARD.user.list },
+            { name: id.toString() },
           ]}
         />
-
-        <UserNewEditForm isEdit currentUser={user} />
+        {isLoading ? <Skeleton width={'100%'} height={'100%'} /> : <UserNewEditForm isEdit currentUser={user} />}
       </Container>
     </Page>
   );

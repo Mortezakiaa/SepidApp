@@ -15,7 +15,7 @@ import { fData } from '@utils/formatNumber.tsx';
 import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // components
 import Label from '@components/Label';
-import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } from '@/components/hook-form';
+import { FormProvider, RHFCheckbox, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } from '@/components/hook-form';
 import useFetchProvinces from '@/react-query/cities/useFetchProvinces.ts';
 import useFetchCities from '@/react-query/cities/useFetchCities.ts';
 import useChooseProvince from '@/zustand/cities/useChooseProvince.ts';
@@ -23,6 +23,8 @@ import useFetchPharmacies from '@/react-query/pharmacy/useFetchPharmacies.ts';
 import useCreateUser from '@/react-query/user/useCreateUser.ts';
 import toast from 'react-hot-toast';
 import { RoleEnum } from '@/enums/role.enum.ts';
+import useUpdateUser from '@/react-query/user/useUpdateUser';
+import { UserStatusEnum } from '@/types/enums/user-status.enum';
 
 // ----------------------------------------------------------------------
 
@@ -46,6 +48,8 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
     () => ({
       full_name: currentUser?.full_name || '',
       pharmacy_id: currentUser?.pharmacy_id || null,
+      phone_number: currentUser?.phone_number || '',
+      status: currentUser?.status || UserStatusEnum.ACTIVE,
     }),
     [currentUser]
   );
@@ -65,21 +69,20 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
   console.log(errors);
 
   const { mutateAsync: createUser } = useCreateUser();
-
+  const { mutateAsync: updateUser } = useUpdateUser();
   useEffect(() => {
-    if (isEdit && currentUser) {
-      reset(defaultValues);
-    }
     if (!isEdit) {
       reset(defaultValues);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEdit, currentUser]);
 
   const onSubmit = async (data: Partial<User>) => {
     try {
-      console.log(data);
-      await createUser(data);
+      if (isEdit) {
+        await updateUser({ id: currentUser?.id, body: data });
+      } else {
+        await createUser(data);
+      }
       reset();
       toast.success(!isEdit ? 'کاربر با موفقیت ساخته شد!' : 'اطلاعات کاربر با موفقیت تغییر کرد!');
       push(PATH_DASHBOARD.user.list);
@@ -88,16 +91,16 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
       if (typeof e.errorData === 'string') toast.error(e.errorData);
       if (typeof e.errorData === 'object') {
         for (let key in e.errorData) {
-          setError(key, { message: e.errorData[key] });
+          setError(key as 'full_name' | 'pharmacy_id' | 'root' | `root.${string}`, { message: e.errorData[key] });
         }
       }
     }
   };
 
-  const { data: provinces } = useFetchProvinces();
-  const { data: cities } = useFetchCities();
-  const setProvinceId = useChooseProvince((state) => state.setProvinceId);
-  const provinceId = useChooseProvince((state) => state.provinceId);
+  // const { data: provinces } = useFetchProvinces();
+  // const { data: cities } = useFetchCities();
+  // const setProvinceId = useChooseProvince((state) => state.setProvinceId);
+  // const provinceId = useChooseProvince((state) => state.provinceId);
 
   // const handleDrop = useCallback(
   //   (acceptedFiles) => {
@@ -249,8 +252,16 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
                   </option>
                 ))}
               </RHFSelect>
+
               <RHFSelect name="role" label="نقش" placeholder="یک نقش انتخاب کنید">
                 {Object.values(RoleEnum)?.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </RHFSelect>
+              <RHFSelect name="status" label="وضعیت" placeholder="یک وضعیت انتخاب کنید">
+                {Object.values(UserStatusEnum)?.map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>

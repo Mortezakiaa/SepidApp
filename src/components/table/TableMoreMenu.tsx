@@ -11,7 +11,7 @@ type TableMoreMenuPropTypes = {
   actions: ReactNode;
   open: any;
   onClose: () => void;
-  onOpen: () => void;
+  onOpen: (value: string) => void;
 };
 
 export default function TableMoreMenu({ actions, open, onClose, onOpen }: TableMoreMenuPropTypes) {

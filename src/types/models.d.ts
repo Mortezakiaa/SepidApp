@@ -8,6 +8,16 @@ interface PharmacyInfo {
   address: string;
 }
 
+type PaginationType = {
+  activePage: number;
+  totalPages: number;
+  setPage: (pageNumber: number) => void;
+  setTotal: (total: number) => void;
+  next: () => void;
+  previous: () => void;
+  first: () => void;
+};
+
 interface SoftwareInfo {
   previous_version: string;
   system_count: number;
@@ -76,37 +86,12 @@ interface LoginRes {
   access_token: string;
   user: User;
 }
-interface ResponseModel<T> {
-  statusCode: number;
-  data: T extends any[] ? BulkDataRes<T> : T;
-  error: boolean;
-  errorData: any;
-}
-
-interface BulkDataRes<T> {
-  result: T;
-  pagination: {
-    currentPage?: number;
-    nextPage?: number;
-    prevPage?: number;
-    hasNextPage?: boolean;
-    hasPrevPage?: boolean;
-    lastPage?: number;
-    count?: number;
-    take?: number;
-  };
-}
 
 enum RoleEnum {
   ADMIN = 'ADMIN',
   SUPPORT = 'SUPPORT',
   PHARMACY = 'PHARMACY',
   USER = 'USER',
-}
-
-enum UserStatusEnum {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
 }
 
 enum PermissionEnum {
@@ -134,6 +119,8 @@ interface User {
   pharmacy_id: number;
 
   status: UserStatusEnum;
+
+  pharmacy: Pharmacy;
 
   permissions: PermissionEnum[];
 
