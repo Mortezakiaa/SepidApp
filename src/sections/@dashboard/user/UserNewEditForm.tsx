@@ -1,21 +1,17 @@
 import * as Yup from 'yup';
-import { useCallback, useEffect, useMemo } from 'react';
-import { useSnackbar } from 'notistack';
+import { useEffect, useMemo } from 'react';
 // next
 import { useRouter } from 'next/router';
 // form
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Box, Card, Grid, Stack, Switch, Typography, FormControlLabel } from '@mui/material';
-// utils
-import { fData } from '@utils/formatNumber.tsx';
+import { Box, Card, Grid, Stack } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // components
-import Label from '@components/Label';
-import { FormProvider, RHFSelect, RHFSwitch, RHFTextField, RHFUploadAvatar } from '@/components/hook-form';
+import { FormProvider, RHFSelect, RHFTextField } from '@/components/hook-form';
 import useFetchProvinces from '@/react-query/cities/useFetchProvinces.ts';
 import useFetchCities from '@/react-query/cities/useFetchCities.ts';
 import useChooseProvince from '@/zustand/cities/useChooseProvince.ts';
