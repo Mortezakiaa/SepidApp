@@ -2,7 +2,7 @@
 
 import useLoginMutation, { useLoginStepTwoMutation } from '@/react-query/auth/useLoginMutation.ts';
 import useInitAuth from '@/react-query/auth/useInitAuth.ts';
-import { setSession, getToken } from '@utils/jwt.tsx';
+import { setSession, getToken } from '@utils/jwt.ts';
 import { axiosInstance } from '@utils/axios.ts';
 
 const useAuth = () => {

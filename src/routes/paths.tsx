@@ -34,6 +34,13 @@ export const PATH_PAGE = {
 
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
+  pharmacy: {
+    root: path(ROOTS_DASHBOARD, '/pharmacy'),
+    list: path(ROOTS_DASHBOARD, '/pharmacy/list'),
+    new: path(ROOTS_DASHBOARD, '/pharmacy/new'),
+    edit: (id) => path(ROOTS_DASHBOARD, `/pharmacy/${id}/edit`),
+    demoEdit: path(ROOTS_DASHBOARD, `/pharmacy/1/edit`),
+  },
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),

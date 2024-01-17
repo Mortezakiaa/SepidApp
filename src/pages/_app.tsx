@@ -9,9 +9,6 @@ import cookie from 'cookie';
 import Head from 'next/head';
 import App, { AppContext } from 'next/app';
 // @mui
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-// redux
 // utils
 import { getSettings } from '../utils/settings';
 // contexts
@@ -39,6 +36,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ClientProvider from '@contexts/ClientProvider.tsx';
 import '@/theme/index.css';
 import { Toaster } from 'react-hot-toast';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFnsJalali } from '@mui/x-date-pickers/AdapterDateFnsJalali';
 // ----------------------------------------------------------------------
 
 type propsType = {
@@ -46,7 +46,7 @@ type propsType = {
   pageProps: object;
   settings: object;
 };
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } } });
 declare module '@tanstack/react-query' {
   interface Register {
     defaultError: ResponseModel<any>;
@@ -66,7 +66,7 @@ export default function MyApp(props: propsType) {
       <ClientProvider>
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <LocalizationProvider dateAdapter={AdapterDateFnsJalali}>
               <CollapseDrawerProvider>
                 <SettingsProvider defaultSettings={settings}>
                   <ThemeProvider>

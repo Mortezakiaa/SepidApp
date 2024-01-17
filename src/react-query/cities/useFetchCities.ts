@@ -6,8 +6,8 @@ export default function useFetchCities() {
   const id = useChooseProvince((state) => state.provinceId);
   async function fetchCities() {
     if (!id) return null;
-    const res = await ApiService.get<City[]>(`/province/${id}/cities`);
-    return res.data;
+    const res = await ApiService.get<City[]>(`/province/${id}/cities`, { take: 100 });
+    return res.data.result;
   }
   return useQuery({ queryKey: ['cities', id], queryFn: fetchCities });
 }

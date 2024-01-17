@@ -1,48 +1,50 @@
 // next
 import { useRouter } from 'next/router';
 // @mui
-import { Container } from '@mui/material';
+import { Container, Skeleton } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths';
 // hooks
 import useSettings from '@hooks/useSettings';
 // layouts
 import Layout from '@/layouts';
-
 // components
 import Page from '@components/Page';
 import HeaderBreadcrumbs from '@components/HeaderBreadcrumbs';
 // sections
-import InvoiceNewEditForm from '@sections/@dashboard/invoice/new-edit-form';
+import PharmacyNewEditForm from '@sections/@dashboard/pharmacy/PharmacyNewEditForm.tsx';
+import useFetchSinglePharmacy from '@/react-query/pharmacy/useFetchSinglePharmacy.ts';
 
 // ----------------------------------------------------------------------
 
-InvoiceEdit.getLayout = function getLayout(page: React.ReactNode) {
+PharmacyEdit.getLayout = function getLayout(page: React.ReactNode) {
   return <Layout>{page}</Layout>;
 };
 
 // ----------------------------------------------------------------------
 
-export default function InvoiceEdit() {
+export default function PharmacyEdit() {
   const { themeStretch } = useSettings();
-
   const { query } = useRouter();
-
   const { id } = query;
+  const { data: pharmacy, isLoading } = useFetchSinglePharmacy(+id);
 
   return (
-    <Page title="ویرایش فاکتورها">
+    <Page title="ویرایش داروخانه">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="ویرایش فاکتور"
+          heading="ویرایش داروخانه"
           links={[
             { name: 'داشبورد', href: PATH_DASHBOARD.root },
-            { name: 'فاکتورها', href: PATH_DASHBOARD.invoice.list },
-            { name: 'Factor_id' || '' },
+            { name: 'داروخانه', href: PATH_DASHBOARD.pharmacy.list },
+            { name: id.toString() },
           ]}
         />
-
-        <InvoiceNewEditForm isEdit currentInvoice={{}} />
+        {isLoading ? (
+          <Skeleton width={'100%'} height={'100%'} />
+        ) : (
+          <PharmacyNewEditForm isEdit currentPharmacy={pharmacy} />
+        )}
       </Container>
     </Page>
   );

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from '@utils/axios.ts';
-import { setSession } from '@utils/jwt.tsx';
+import { setSession } from '@utils/jwt.ts';
 import { useRouter } from 'next/router';
 
 export default function useLoginMutation() {
@@ -11,7 +11,7 @@ export default function useLoginMutation() {
 }
 export function useLoginStepTwoMutation() {
   const queryClient = useQueryClient();
-  const router = useRouter()
+  const router = useRouter();
   return useMutation({
     mutationKey: ['auth_login_step_two'],
     mutationFn: async (loginDto: LoginDto) => {
@@ -20,10 +20,10 @@ export function useLoginStepTwoMutation() {
     },
     onSuccess: (data) => {
       if (data.access_token) {
-        setSession(data.access_token);
+        setSession(data.access_token, data.user);
         queryClient.invalidateQueries({ queryKey: ['user'] });
-        router.push('/dashboard')
-      } 
+        router.push('/dashboard');
+      }
     },
   });
 }

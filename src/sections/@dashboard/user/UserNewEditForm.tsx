@@ -12,9 +12,6 @@ import { Box, Card, Grid, Stack } from '@mui/material';
 import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // components
 import { FormProvider, RHFSelect, RHFTextField } from '@/components/hook-form';
-import useFetchProvinces from '@/react-query/cities/useFetchProvinces.ts';
-import useFetchCities from '@/react-query/cities/useFetchCities.ts';
-import useChooseProvince from '@/zustand/cities/useChooseProvince.ts';
 import useFetchPharmacies from '@/react-query/pharmacy/useFetchPharmacies.ts';
 import useCreateUser from '@/react-query/user/useCreateUser.ts';
 import toast from 'react-hot-toast';
@@ -74,6 +71,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
 
   const onSubmit = async (data: Partial<User>) => {
     try {
+      console.log(data);
       if (isEdit) {
         await updateUser({ id: currentUser?.id, body: data });
       } else {
@@ -115,13 +113,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
   // );
 
   return (
-    <FormProvider
-      methods={methods}
-      onSubmit={handleSubmit((data) => {
-        console.log(data);
-        onSubmit(data);
-      })}
-    >
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         {/*<Grid item xs={12} md={4}>*/}
         {/*  <Card sx={{ py: 10, px: 3 }}>*/}

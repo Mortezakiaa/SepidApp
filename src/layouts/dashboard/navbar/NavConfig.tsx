@@ -3,6 +3,7 @@ import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // components
 import Label from '../../../components/Label';
 import SvgIconStyle from '../../../components/SvgIconStyle';
+import { getTokenInfo, getUserInfo } from '@utils/jwt.ts';
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +23,7 @@ const ICONS = {
   ecommerce: getIcon('ic_ecommerce'),
   analytics: getIcon('ic_analytics'),
   dashboard: getIcon('ic_dashboard'),
+  pharmacy: getIcon('ic_pharmacy'),
 };
 
 const navConfig = [
@@ -53,8 +55,23 @@ const navConfig = [
           // { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'لیست کاربران', path: PATH_DASHBOARD.user.list },
           { title: 'ساخت کاربر', path: PATH_DASHBOARD.user.new },
-          { title: 'ویرایش کاربر', path: PATH_DASHBOARD.user.demoEdit },
-          { title: 'حساب کاربری', path: PATH_DASHBOARD.user.account },
+          { title: 'ویرایش کاربر', path: PATH_DASHBOARD.user.edit(getTokenInfo()?.id) },
+          // { title: 'حساب کاربری', path: PATH_DASHBOARD.user.account },
+        ],
+      },
+      {
+        title: 'داروخانه ها',
+        path: PATH_DASHBOARD.pharmacy.root,
+        icon: ICONS.pharmacy,
+        children: [
+          { title: 'لیست داروخانه ها', path: PATH_DASHBOARD.pharmacy.list },
+          { title: 'ساخت داروخانه ها', path: PATH_DASHBOARD.pharmacy.new },
+          // {
+          //   title: 'ویرایش داروخانه ها',
+          //   path: getUserInfo()?.pharmacy_id
+          //     ? PATH_DASHBOARD.pharmacy.edit(getUserInfo().pharmacy_id)
+          //     : PATH_DASHBOARD.pharmacy.list,
+          // },
         ],
       },
 
@@ -74,17 +91,17 @@ const navConfig = [
       // },
 
       // INVOICE
-      // {
-      //   title: 'invoice',
-      //   path: PATH_DASHBOARD.invoice.root,
-      //   icon: ICONS.invoice,
-      //   children: [
-      //     { title: 'list', path: PATH_DASHBOARD.invoice.list },
-      //     { title: 'details', path: PATH_DASHBOARD.invoice.demoView },
-      //     { title: 'create', path: PATH_DASHBOARD.invoice.new },
-      //     { title: 'edit', path: PATH_DASHBOARD.invoice.demoEdit },
-      //   ],
-      // },
+      {
+        title: 'فاکتور ها',
+        path: PATH_DASHBOARD.invoice.root,
+        icon: ICONS.invoice,
+        children: [
+          { title: 'لیست', path: PATH_DASHBOARD.invoice.list },
+          { title: 'اطلاعات', path: PATH_DASHBOARD.invoice.demoView },
+          { title: 'ساخت', path: PATH_DASHBOARD.invoice.new },
+          { title: 'ویرایش', path: PATH_DASHBOARD.invoice.demoEdit },
+        ],
+      },
       //
       // // BLOG
       // {

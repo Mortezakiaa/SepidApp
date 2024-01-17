@@ -32,88 +32,85 @@ import Scrollbar from '@/components/Scrollbar';
 import HeaderBreadcrumbs from '@/components/HeaderBreadcrumbs';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '@/components/table';
 // sections
-import { UserTableToolbar, UserTableRow } from '@/sections/@dashboard/user/list';
-import useFetchUsers from '@/react-query/user/useFetchUsers';
-import { RoleEnum } from '@/enums/role.enum';
-import useFilterUser from '@/zustand/users/useFilterUser';
 import { useShallow } from 'zustand/react/shallow';
 import useDeleteUser from '@/react-query/user/useDeleteUser';
-import UserTableRowSkeleton from '@/sections/@dashboard/user/list/UserTableRowSkeleton';
-import useUsersTabState from '@/zustand/users/useUserSetTab';
-import { UserStatusEnum } from '@/types/enums/user-status.enum';
 import { Icon } from '@iconify/react';
+import useFetchPharmacies from '@/react-query/pharmacy/useFetchPharmacies.ts';
+import usePharmacySetTab from '@/zustand/pharmacies/usePharmacySetTab.ts';
+import useFilterPharmacy from '@/zustand/pharmacies/useFilterPharmacy.ts';
+import PharmacyTableToolbar from '@sections/@dashboard/pharmacy/list/PharmacyTableToolbar.tsx';
+import PharmacyTableRow from '@sections/@dashboard/pharmacy/list/PharmacyTableRow.tsx';
+import PharmacyTableRowSkeleton from '@sections/@dashboard/pharmacy/list/PharmacyTableRowSkeleton.tsx';
+import useDeletePharmacy from '@/react-query/pharmacy/useDeletePharmacy.ts';
+import usePharmacyPagination from '@/zustand/pharmacies/usePharmacyPagination.ts';
 
 // ----------------------------------------------------------------------
 
 const STATUS_OPTIONS = [
   { value: 'All', label: 'همه' },
-  { value: UserStatusEnum.ACTIVE, label: 'فعال' },
-  { value: UserStatusEnum.INACTIVE, label: 'غیرفعال' },
+  { value: 'active', label: 'فعال' },
+  { value: 'inactive', label: 'غیرفعال' },
 ];
 
-const ROLE_OPTIONS = ['all', RoleEnum.ADMIN, RoleEnum.PHARMACY, RoleEnum.SUPPORT, RoleEnum.USER];
-
 const TABLE_HEAD = [
-  { id: 'full_name', label: 'نام و نام خانوادگی', align: 'left' },
-  { id: 'role', label: 'نقش', align: 'left' },
-  { id: 'status', label: 'وضعیت', align: 'left' },
-  { id: 'pharmacy', label: 'داروخانه', align: 'center' },
+  { id: 'name', label: 'نام', align: 'left' },
+  { id: 'city', label: 'شهر', align: 'left' },
+  { id: 'is_active', label: 'وضعیت', align: 'left' },
+  { id: 'end_date', label: 'تاریخ پایان اعتبار', align: 'center' },
   { id: '' },
 ];
 
 // ----------------------------------------------------------------------
 
-UserList.getLayout = function getLayout(page: React.ReactNode) {
+PharmacyList.getLayout = function getLayout(page: React.ReactNode) {
   return <Layout>{page}</Layout>;
 };
 // ----------------------------------------------------------------------
 
-export default function UserList() {
+export default function PharmacyList() {
   const {
     dense,
-    page,
     order,
     orderBy,
-    rowsPerPage,
-    setPage,
     //
     onSort,
     onChangeDense,
-    onChangePage,
-    onChangeRowsPerPage,
   } = useTable();
 
   const { themeStretch } = useSettings();
 
   const { push } = useRouter();
 
-  const { data: users, isLoading, error } = useFetchUsers();
-  const tableData = users?.result || [];
-  const { activeTab, setTab } = useUsersTabState(
+  const { data: pharmacies, isLoading, error } = useFetchPharmacies();
+  const tableData = pharmacies?.result || [];
+  const { rowPerPage, page, setPage, changeRowPerPage } = usePharmacyPagination(
+    useShallow((state) => ({
+      page: state.activePage,
+      rowPerPage: state.rowPerPage,
+      setPage: state.setPage,
+      changeRowPerPage: state.setRowPerPage,
+    }))
+  );
+
+  const { activeTab, setTab } = usePharmacySetTab(
     useShallow((state) => ({ activeTab: state.activeTab, setTab: state.setActiveTab }))
   );
 
-  const { setFullName, setRole, fullName, role } = useFilterUser(
+  const { setName, name } = useFilterPharmacy(
     useShallow((state) => ({
-      setRole: state.setRole,
-      setFullName: state.setFullName,
-      role: state.role,
-      fullName: state.fullName,
+      setName: state.setName,
+      name: state.name,
     }))
   );
-  const { mutate: deleteUser, isPending } = useDeleteUser();
+  const { mutate: deletePharmacy } = useDeletePharmacy();
 
   const handleFilterName = (filterName) => {
-    setFullName(filterName);
+    setName(filterName);
     setPage(0);
   };
 
-  const handleDeleteRow = (id: number) => {
-    deleteUser(id);
-  };
-
   const handleEditRow = (id) => {
-    push(PATH_DASHBOARD.user.edit(+id));
+    push(PATH_DASHBOARD.pharmacy.edit(+id));
   };
 
   const denseHeight = dense ? 52 : 72;
@@ -121,19 +118,19 @@ export default function UserList() {
   const isNotFound = !tableData.length;
 
   return (
-    <Page title="کاربران">
+    <Page title="داروخانه ها">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="لیست کاربران"
+          heading="لیست داروخانه ها"
           links={[
             { name: 'داشبورد', href: PATH_DASHBOARD.root },
-            { name: 'کاربر', href: PATH_DASHBOARD.user.root },
+            { name: 'داروخانه', href: PATH_DASHBOARD.pharmacy.root },
             { name: 'لیست' },
           ]}
           action={
-            <Link href={PATH_DASHBOARD.user.new}>
+            <Link href={PATH_DASHBOARD.pharmacy.new}>
               <Button variant="contained" startIcon={<Iconify icon={'eva:plus-fill'} />}>
-                کاربر جدید
+                داروخانه جدید
               </Button>
             </Link>
           }
@@ -148,20 +145,14 @@ export default function UserList() {
             onChange={setTab}
             sx={{ px: 2, bgcolor: 'background.default' }}
           >
-            {STATUS_OPTIONS.map((tab) => (
-              <Tab disableRipple key={tab.value} label={tab.label} value={tab.value} />
+            {STATUS_OPTIONS.map((tab, index) => (
+              <Tab disableRipple key={index} label={tab.label} value={tab.value} />
             ))}
           </Tabs>
 
           <Divider />
 
-          <UserTableToolbar
-            filterName={fullName}
-            filterRole={role}
-            onFilterName={handleFilterName}
-            onFilterRole={setRole}
-            optionsRole={ROLE_OPTIONS}
-          />
+          <PharmacyTableToolbar filterName={name} onFilterName={handleFilterName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
@@ -177,7 +168,7 @@ export default function UserList() {
                 {isLoading ? (
                   <TableBody>
                     {Array.from(Array(5)).map((_, index) => (
-                      <UserTableRowSkeleton key={index} />
+                      <PharmacyTableRowSkeleton key={index} />
                     ))}
                   </TableBody>
                 ) : error ? (
@@ -191,15 +182,15 @@ export default function UserList() {
                 ) : (
                   <TableBody>
                     {tableData.map((row) => (
-                      <UserTableRow
+                      <PharmacyTableRow
                         key={row.id}
                         row={row}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
+                        onDeleteRow={() => deletePharmacy(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
                       />
                     ))}
 
-                    <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, tableData.length)} />
+                    {/*<TableEmptyRows height={denseHeight} emptyRows={rowPerPage} />*/}
 
                     <TableNoData isNotFound={isNotFound} />
                   </TableBody>
@@ -213,11 +204,11 @@ export default function UserList() {
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
               labelRowsPerPage={'تعداد ردیف در هر صفحه : '}
-              count={tableData.length}
-              rowsPerPage={rowsPerPage}
+              count={(pharmacies?.pagination?.lastPage || 0) * rowPerPage}
+              rowsPerPage={rowPerPage}
               page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
+              onPageChange={(_, thisPage) => setPage(thisPage)}
+              onRowsPerPageChange={(event) => changeRowPerPage(+event.target.value)}
             />
 
             <FormControlLabel

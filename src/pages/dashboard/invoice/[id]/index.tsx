@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 import { Container } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths';
-// _mock_
-import { _invoices } from '@_mock';
 // hooks
 import useSettings from '@hooks/useSettings';
 // layouts
@@ -31,24 +29,22 @@ export default function InvoiceDetails() {
 
   const { id } = query;
 
-  const invoice = _invoices.find((invoice) => invoice.id === id);
-
   return (
-    <Page title="Invoice: View">
+    <Page title="فاکتور ها">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Invoice Details"
+          heading="جزییات فاکتور"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'داشبورد', href: PATH_DASHBOARD.root },
             {
-              name: 'Invoices',
+              name: 'فاکتور ها',
               href: PATH_DASHBOARD.invoice.root,
             },
-            { name: invoice?.invoiceNumber || '' },
+            { name: 'Factor_ID' || '' },
           ]}
         />
 
-        <Invoice invoice={invoice} />
+        <Invoice invoice={{}} />
       </Container>
     </Page>
   );

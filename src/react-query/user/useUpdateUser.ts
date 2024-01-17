@@ -10,7 +10,8 @@ export default function useUpdateUser() {
     mutationKey: ['updateUser'],
     mutationFn: ({ id, body }: { id: number; body: Partial<User> }) => updateUser(id, body),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users', 'user'] });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });
 }

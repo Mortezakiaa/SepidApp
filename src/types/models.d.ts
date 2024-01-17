@@ -16,6 +16,8 @@ type PaginationType = {
   next: () => void;
   previous: () => void;
   first: () => void;
+  rowPerPage: number;
+  setRowPerPage: (rowPerPage: number) => void;
 };
 
 interface SoftwareInfo {
@@ -78,6 +80,8 @@ interface Province {
 interface TokenInfoType {
   context: {
     id: number;
+    role: RoleEnum;
+    permissions: PermissionEnum;
   };
   exp: number;
   iat: number;

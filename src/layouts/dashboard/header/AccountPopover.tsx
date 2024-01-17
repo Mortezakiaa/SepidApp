@@ -16,6 +16,7 @@ import MyAvatar from '../../../components/MyAvatar';
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
 import Link from '@components/Link.tsx';
+import { getTokenInfo } from '@utils/jwt.ts';
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +31,7 @@ const MENU_OPTIONS = [
   // },
   {
     label: 'حساب کاربری',
-    linkTo: PATH_DASHBOARD.user.account,
+    linkTo: PATH_DASHBOARD.user.edit(getTokenInfo()?.id),
   },
 ];
 

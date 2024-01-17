@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 // utils
-import { setSession } from '../utils/jwt';
+import { setSession } from '@utils/jwt.ts';
 import useAuth from '@hooks/useAuth.tsx';
 
 // ----------------------------------------------------------------------
