@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import { Typography, Box, BoxProps } from '@mui/material';
 //
 import Image from './Image';
+import { Icon } from '@iconify/react';
 
 // ----------------------------------------------------------------------
 
@@ -27,13 +28,7 @@ type propTypes = {
 export default function EmptyContent({ title, description, img, ...other }: propTypes) {
   return (
     <RootStyle {...other}>
-      <Image
-        disabledEffect
-        alt="empty content"
-        src={img || 'https://minimal-assets-api.vercel.app/assets/illustrations/illustration_empty_content.svg'}
-        sx={{ height: 240, mb: 3 }}
-      />
-
+      <Icon width={50} icon="fa-solid:book-open" />
       <Typography variant="h5" gutterBottom>
         {title}
       </Typography>

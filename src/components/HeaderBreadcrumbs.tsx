@@ -30,8 +30,8 @@ export default function HeaderBreadcrumbs({ links, action, heading, moreLink = '
       </Box>
 
       <Box sx={{ mt: 2 }}>
-        {isString(moreLink) ? (
-          <Link href={moreLink} target="_blank" variant="body2">
+        {typeof moreLink === 'string' ? (
+          <Link href={moreLink as string} target="_blank" variant="body2">
             {moreLink}
           </Link>
         ) : (

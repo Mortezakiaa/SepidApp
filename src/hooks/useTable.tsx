@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
-export default function useTable(props) {
+export default function useTable(props?) {
   const [dense, setDense] = useState(props?.defaultDense || false);
 
   const [orderBy, setOrderBy] = useState(props?.defaultOrderBy || 'name');

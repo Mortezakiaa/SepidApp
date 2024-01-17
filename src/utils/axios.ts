@@ -11,9 +11,9 @@ class Axios {
     this.axios = axiosInstance;
   }
 
-  async get<T = any>(url: string, headers?: AxiosHeadersType) {
+  async get<T = any>(url: string, params?: QueryParams<T> | object, headers?: AxiosHeadersType) {
     try {
-      const res = await this.axios.get<ResponseModel<T>>(url, { headers: headers });
+      const res = await this.axios.get<ResponseModel<T>>(url, { headers: headers, params });
       return res.data;
     } catch (e) {
       if (e instanceof AxiosError) throw e.response;

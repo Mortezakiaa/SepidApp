@@ -7,14 +7,15 @@ import { Checkbox, FormGroup, FormControlLabel } from '@mui/material';
 
 type RHFCheckboxPropTypes = {
   name: string;
+  label?: string;
 };
 
-export function RHFCheckbox({ name, ...other }: RHFCheckboxPropTypes) {
+export function RHFCheckbox({ name, label, ...other }: RHFCheckboxPropTypes) {
   const { control } = useFormContext();
 
   return (
     <FormControlLabel
-      label={''}
+      label={label}
       control={
         <Controller
           name={name}

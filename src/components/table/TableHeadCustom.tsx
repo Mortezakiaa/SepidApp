@@ -18,44 +18,22 @@ const visuallyHidden = {
 // ----------------------------------------------------------------------
 
 type TableHeadCustomPropTypes = {
-  onSort: () => void;
+  onSort: (id: number) => void;
   orderBy: string;
   headLabel: any[];
   rowCount: number;
-  numSelected: number;
-  onSelectAllRows: () => void;
-  order: ['asc', 'desc'];
+  order: 'asc' | 'desc';
   sx?: SxProps;
 };
-
-export default function TableHeadCustom({
-  order,
-  orderBy,
-  rowCount = 0,
-  headLabel,
-  numSelected = 0,
-  onSort,
-  onSelectAllRows,
-  sx,
-}: TableHeadCustomPropTypes) {
+export default function TableHeadCustom({ order, orderBy, headLabel, onSort, sx }: TableHeadCustomPropTypes) {
   return (
     <TableHead sx={sx}>
       <TableRow>
-        {onSelectAllRows && (
-          <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={rowCount > 0 && numSelected === rowCount}
-              onChange={(event) => onSelectAllRows(event.target.checked)}
-            />
-          </TableCell>
-        )}
-
         {headLabel.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.align || 'left'}
-            sortDirection={orderBy === headCell.id ? order : false}
+            sortDirection={orderBy === headCell.id ? order : 'asc'}
             sx={{ width: headCell.width, minWidth: headCell.minWidth }}
           >
             {onSort ? (

@@ -5,7 +5,7 @@ import Link from './Link';
 // ----------------------------------------------------------------------
 
 type propTypes = {
-  activeLast: boolean;
+  activeLast?: boolean;
   links: any[];
 };
 

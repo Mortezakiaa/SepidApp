@@ -1,14 +1,14 @@
 import { Stack, InputAdornment, TextField, MenuItem } from '@mui/material';
 // components
-import Iconify from '../../../../components/Iconify';
+import Iconify from '@/components/Iconify';
 
 // ----------------------------------------------------------------------
 
 type UserTableToolbarPropTypes = {
   filterName: string;
   filterRole: string;
-  onFilterName: () => void;
-  onFilterRole: () => void;
+  onFilterName: (name: string) => void;
+  onFilterRole: (role: string) => void;
   optionsRole: string[];
 };
 
@@ -26,7 +26,7 @@ export default function UserTableToolbar({
         select
         label="Role"
         value={filterRole}
-        onChange={onFilterRole}
+        onChange={(e) => onFilterRole(e.target.value)}
         SelectProps={{
           MenuProps: {
             sx: { '& .MuiPaper-root': { maxHeight: 260 } },
