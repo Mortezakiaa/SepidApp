@@ -22,8 +22,8 @@ import { DialogAnimate } from '../../components/animate';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // sections
 import { CalendarForm, CalendarStyle, CalendarToolbar } from '../../sections/@dashboard/calendar';
-import useCalendarStates from '@/redux/slices/calendar';
 import { useShallow } from 'zustand/react/shallow';
+import useCalendarStates from '@/redux/slices/calendar.tsx';
 // ----------------------------------------------------------------------
 
 Calendar.getLayout = function getLayout(page: React.ReactNode) {

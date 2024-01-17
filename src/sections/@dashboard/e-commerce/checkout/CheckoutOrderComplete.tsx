@@ -4,9 +4,6 @@ import { useRouter } from 'next/router';
 import { styled } from '@mui/material/styles';
 import { Box, Button, Divider, Typography, Stack } from '@mui/material';
 import Link from '@components/Link';
-// redux
-import { useDispatch } from '../../../../redux/store';
-import { resetCart } from '../../../../redux/slices/product';
 // routes
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
@@ -32,10 +29,7 @@ const DialogStyle = styled(DialogAnimate)(({ theme }) => ({
 export default function CheckoutOrderComplete({ ...other }) {
   const { push } = useRouter();
 
-  const dispatch = useDispatch();
-
   const handleResetStep = () => {
-    dispatch(resetCart());
     push(PATH_DASHBOARD.eCommerce.shop);
   };
 

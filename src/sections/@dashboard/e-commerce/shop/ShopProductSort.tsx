@@ -1,9 +1,6 @@
 import { useState } from 'react';
 // @mui
 import { Button, MenuItem, Typography } from '@mui/material';
-// redux
-import { useDispatch, useSelector } from '../../../../redux/store';
-import { sortByProducts } from '../../../../redux/slices/product';
 // components
 import Iconify from '../../../../components/Iconify';
 import MenuPopover from '../../../../components/MenuPopover';
@@ -33,10 +30,6 @@ function renderLabel(label) {
 // ----------------------------------------------------------------------
 
 export default function ShopProductSort() {
-  const dispatch = useDispatch();
-
-  const { sortBy } = useSelector((state) => state.product);
-
   const [open, setOpen] = useState(null);
 
   const handleOpen = (currentTarget) => {
@@ -49,7 +42,6 @@ export default function ShopProductSort() {
 
   const handleSortBy = (value) => {
     handleClose();
-    dispatch(sortByProducts(value));
   };
 
   return (

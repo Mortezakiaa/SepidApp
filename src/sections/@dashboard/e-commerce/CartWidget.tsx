@@ -5,7 +5,6 @@ import sum from 'lodash/sum';
 import { styled } from '@mui/material/styles';
 import { Badge, Link } from '@mui/material';
 // redux
-import { useSelector } from '../../../redux/store';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
@@ -37,13 +36,10 @@ const RootStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function CartWidget() {
-  const { checkout } = useSelector((state) => state.product);
-  const totalItems = sum(checkout.cart.map((item) => item.quantity));
-
   return (
     <Link href={PATH_DASHBOARD.eCommerce.checkout}>
       <RootStyle>
-        <Badge showZero badgeContent={totalItems} color="error" max={99}>
+        <Badge showZero badgeContent={[]} color="error" max={99}>
           <Iconify icon={'eva:shopping-cart-fill'} width={24} height={24} />
         </Badge>
       </RootStyle>

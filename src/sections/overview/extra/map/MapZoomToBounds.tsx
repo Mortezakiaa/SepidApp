@@ -2,7 +2,7 @@ import bbox from '@turf/bbox';
 import { useState } from 'react';
 import MapGL, { LinearInterpolator, WebMercatorViewport } from 'react-map-gl';
 // _mock_
-import MAP_STYLE from '@_mock/map/map-style-basic-v8.json';
+import MAP_STYLE from '@/_mock/map/map-style-basic-v8.json';
 // components
 import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from '@components/map';
 

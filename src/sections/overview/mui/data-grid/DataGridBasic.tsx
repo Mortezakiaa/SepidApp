@@ -2,7 +2,7 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { IconButton } from '@mui/material';
 // _mock_
-import { _dataGrid } from '@_mock';
+import { _dataGrid } from '@/_mock';
 // components
 import Iconify from '@components/Iconify';
 

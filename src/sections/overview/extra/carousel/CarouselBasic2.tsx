@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { Card, Typography, CardContent } from '@mui/material';
 // _mock_
-import { _carouselsExample } from '@_mock';
+import { _carouselsExample } from '@/_mock';
 // components
 import Image from '../../../../components/Image';
 import { CarouselArrowIndex } from '../../../../components/carousel';

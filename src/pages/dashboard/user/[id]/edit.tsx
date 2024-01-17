@@ -1,5 +1,3 @@
-import { paramCase, capitalCase } from 'change-case';
-// next
 import { useRouter } from 'next/router';
 // @mui
 import { Container, Skeleton } from '@mui/material';

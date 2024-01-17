@@ -1,7 +1,5 @@
 // @mui
 import { Card, Button, Typography, CardHeader, CardContent } from '@mui/material';
-// redux
-import { useSelector } from '../../../../redux/store';
 // components
 import Iconify from '../../../../components/Iconify';
 
@@ -12,9 +10,9 @@ type CheckoutBillingInfoPropTypes = {
 };
 
 export default function CheckoutBillingInfo({ onBackStep }: CheckoutBillingInfoPropTypes) {
-  const { checkout } = useSelector((state) => state.product);
+  // const { checkout } = useSelector((state) => state.product);
 
-  const { billing } = checkout;
+  // const { billing } = checkout;
 
   return (
     <Card sx={{ mb: 3 }}>
@@ -28,17 +26,17 @@ export default function CheckoutBillingInfo({ onBackStep }: CheckoutBillingInfoP
       />
       <CardContent>
         <Typography variant="subtitle2" gutterBottom>
-          {billing?.receiver}&nbsp;
+          {'billing?.receiver'}&nbsp;
           <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
-            ({billing?.addressType})
+            ({'billing?.addressType'})
           </Typography>
         </Typography>
 
         <Typography variant="body2" gutterBottom>
-          {billing?.fullAddress}
+          {'billing?.fullAddress'}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {billing?.phone}
+          {'billing?.phone'}
         </Typography>
       </CardContent>
     </Card>

@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 // @mui
 import { Card, Container } from '@mui/material';
-// redux
-import { getConversations, getContacts } from '@/redux/slices/chat.tsx';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // hooks

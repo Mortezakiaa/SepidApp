@@ -3,15 +3,7 @@ import sum from 'lodash/sum';
 
 // @mui
 import { Grid, Card, Button, CardHeader, Typography, Link } from '@mui/material';
-// redux
-import { useDispatch, useSelector } from '../../../../redux/store';
-import {
-  deleteCart,
-  onNextStep,
-  applyDiscount,
-  increaseQuantity,
-  decreaseQuantity,
-} from '../../../../redux/slices/product';
+
 // routes
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
@@ -25,34 +17,30 @@ import CheckoutProductList from './CheckoutProductList';
 // ----------------------------------------------------------------------
 
 export default function CheckoutCart() {
-  const dispatch = useDispatch();
-
-  const { checkout } = useSelector((state) => state.product);
-
-  const { cart, total, discount, subtotal } = checkout;
+  // const { cart, total, discount, subtotal } = checkout;
 
   const totalItems = sum(cart.map((item) => item.quantity));
 
   const isEmptyCart = cart.length === 0;
 
   const handleDeleteCart = (productId) => {
-    dispatch(deleteCart(productId));
+    // dispatch(deleteCart(productId));
   };
 
   const handleNextStep = () => {
-    dispatch(onNextStep());
+    // dispatch(onNextStep());
   };
 
   const handleIncreaseQuantity = (productId) => {
-    dispatch(increaseQuantity(productId));
+    // dispatch(increaseQuantity(productId));
   };
 
   const handleDecreaseQuantity = (productId) => {
-    dispatch(decreaseQuantity(productId));
+    // dispatch(decreaseQuantity(productId));
   };
 
   const handleApplyDiscount = (value) => {
-    dispatch(applyDiscount(value));
+    // dispatch(applyDiscount(value));
   };
 
   return (
@@ -74,7 +62,7 @@ export default function CheckoutCart() {
           {!isEmptyCart ? (
             <Scrollbar>
               <CheckoutProductList
-                products={cart}
+                products={[]}
                 onDelete={handleDeleteCart}
                 onIncreaseQuantity={handleIncreaseQuantity}
                 onDecreaseQuantity={handleDecreaseQuantity}
@@ -97,21 +85,8 @@ export default function CheckoutCart() {
       </Grid>
 
       <Grid item xs={12} md={4}>
-        <CheckoutSummary
-          enableDiscount
-          total={total}
-          discount={discount}
-          subtotal={subtotal}
-          onApplyDiscount={handleApplyDiscount}
-        />
-        <Button
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          disabled={cart.length === 0}
-          onClick={handleNextStep}
-        >
+        <CheckoutSummary enableDiscount total={0} discount={0} subtotal={0} onApplyDiscount={handleApplyDiscount} />
+        <Button fullWidth size="large" type="submit" variant="contained" disabled={true} onClick={handleNextStep}>
           Check Out
         </Button>
       </Grid>

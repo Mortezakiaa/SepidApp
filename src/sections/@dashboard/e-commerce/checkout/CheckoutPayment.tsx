@@ -5,9 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Grid, Button } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-// redux
-import { useDispatch, useSelector } from '../../../../redux/store';
-import { onGotoStep, onBackStep, onNextStep, applyShipping } from '../../../../redux/slices/product';
 // components
 import Iconify from '../../../../components/Iconify';
 import { FormProvider } from '../../../../components/hook-form';
@@ -63,26 +60,22 @@ const CARDS_OPTIONS = [
 ];
 
 export default function CheckoutPayment() {
-  const dispatch = useDispatch();
-
-  const { checkout } = useSelector((state) => state.product);
-
-  const { total, discount, subtotal, shipping } = checkout;
+  // const { total, discount, subtotal, shipping } = checkout;
 
   const handleNextStep = () => {
-    dispatch(onNextStep());
+    // dispatch(onNextStep());
   };
 
   const handleBackStep = () => {
-    dispatch(onBackStep());
+    // dispatch(onBackStep());
   };
 
   const handleGotoStep = (step) => {
-    dispatch(onGotoStep(step));
+    // dispatch(onGotoStep(step));
   };
 
   const handleApplyShipping = (value) => {
-    dispatch(applyShipping(value));
+    // dispatch(applyShipping(value));
   };
 
   const PaymentSchema = Yup.object().shape({
@@ -90,7 +83,7 @@ export default function CheckoutPayment() {
   });
 
   const defaultValues = {
-    delivery: shipping,
+    // delivery: shipping,
     payment: '',
   };
 
@@ -133,10 +126,10 @@ export default function CheckoutPayment() {
 
           <CheckoutSummary
             enableEdit
-            total={total}
-            subtotal={subtotal}
-            discount={discount}
-            shipping={shipping}
+            total={0}
+            subtotal={0}
+            discount={0}
+            shipping={1}
             onEdit={() => handleGotoStep(0)}
           />
           <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>

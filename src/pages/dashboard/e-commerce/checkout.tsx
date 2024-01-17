@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Grid, Step, Stepper, Container, StepLabel, StepConnector } from '@mui/material';
-// redux
-import { getCart, createBilling } from '@/redux/slices/product.tsx';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // hooks

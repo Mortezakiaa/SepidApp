@@ -55,7 +55,7 @@ const navConfig = [
           // { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'لیست کاربران', path: PATH_DASHBOARD.user.list },
           { title: 'ساخت کاربر', path: PATH_DASHBOARD.user.new },
-          { title: 'ویرایش کاربر', path: PATH_DASHBOARD.user.edit(getTokenInfo()?.id) },
+          { title: 'ویرایش کاربر', path: PATH_DASHBOARD.user.edit(getUserInfo()?.id) },
           // { title: 'حساب کاربری', path: PATH_DASHBOARD.user.account },
         ],
       },
