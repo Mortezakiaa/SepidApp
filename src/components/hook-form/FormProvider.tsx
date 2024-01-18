@@ -7,7 +7,7 @@ import { FormProvider as Form } from 'react-hook-form';
 type FormProviderPropTypes = {
   children: ReactNode;
   methods: any;
-  onSubmit: () => void;
+  onSubmit: (data?: any) => void;
 };
 
 export default function FormProvider({ children, onSubmit, methods }: FormProviderPropTypes) {

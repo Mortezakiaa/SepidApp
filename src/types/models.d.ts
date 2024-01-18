@@ -8,18 +8,6 @@ interface PharmacyInfo {
   address: string;
 }
 
-type PaginationType = {
-  activePage: number;
-  totalPages: number;
-  setPage: (pageNumber: number) => void;
-  setTotal: (total: number) => void;
-  next: () => void;
-  previous: () => void;
-  first: () => void;
-  rowPerPage: number;
-  setRowPerPage: (rowPerPage: number) => void;
-};
-
 interface SoftwareInfo {
   previous_version: string;
   system_count: number;
@@ -129,4 +117,98 @@ interface User {
   permissions: PermissionEnum[];
 
   // pharmacy: Pharmacy;
+}
+enum FactorTypeEnum {
+  BUY = 'BUY',
+  RENEW = 'RENEW',
+  UPGRADE = 'UPGRADE',
+}
+enum FactorStatusEnum {
+  PAID = 'PAID',
+  UNPAID = 'UNPAID',
+  PENDING = 'PENDING',
+}
+
+interface Order extends BaseEntity {
+  factor_id: number;
+
+  pharmacy_id: number;
+
+  product_id: number;
+
+  support_id: number;
+
+  pharmacy: Pharmacy;
+
+  product: Product;
+
+  support: Support;
+}
+
+interface Support extends BaseEntity {
+  title: string;
+
+  duration: number;
+
+  price: number;
+
+  final_price: number;
+
+  offer_price: number;
+
+  orders: Order[];
+
+  uploads: Upload[];
+}
+
+interface Product extends BaseEntity {
+  title: string;
+
+  info: string;
+
+  type: ProductTypeEnum;
+
+  price: number;
+
+  offer_price: number;
+
+  orders: Order[];
+
+  uploads: Upload[];
+}
+
+interface Factor extends BaseEntity {
+  order_id: number;
+
+  price: number;
+
+  final_price: number;
+
+  offer_price: number;
+
+  type: FactorTypeEnum;
+
+  creator_id: number;
+
+  payer_id: number;
+
+  status: FactorStatusEnum;
+
+  order: Order;
+
+  creator: User;
+
+  transactions: Transaction[];
+}
+
+interface Transaction extends BaseEntity {
+  card_no: string;
+
+  factor_id: number;
+
+  hash_id: string;
+
+  price: number;
+
+  factor: Factor;
 }

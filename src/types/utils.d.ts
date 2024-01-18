@@ -109,3 +109,15 @@ interface BulkDataRes<T> {
     take?: number;
   };
 }
+
+type PaginationType = {
+  activePage: number;
+  totalPages: number;
+  setPage: (pageNumber: number) => void;
+  setTotal: (total: number) => void;
+  next: () => void;
+  previous: () => void;
+  first: () => void;
+  rowPerPage: number;
+  setRowPerPage: (rowPerPage: number) => void;
+};

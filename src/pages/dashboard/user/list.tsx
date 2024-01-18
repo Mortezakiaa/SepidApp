@@ -42,6 +42,7 @@ import UserTableRowSkeleton from '@/sections/@dashboard/user/list/UserTableRowSk
 import useUsersTabState from '@/zustand/users/useUserSetTab';
 import { UserStatusEnum } from '@/types/enums/user-status.enum';
 import { Icon } from '@iconify/react';
+import useUsersPagination from '@/zustand/users/useUsersPagination.ts';
 
 // ----------------------------------------------------------------------
 
@@ -71,16 +72,11 @@ UserList.getLayout = function getLayout(page: React.ReactNode) {
 export default function UserList() {
   const {
     dense,
-    page,
     order,
     orderBy,
-    rowsPerPage,
-    setPage,
     //
     onSort,
     onChangeDense,
-    onChangePage,
-    onChangeRowsPerPage,
   } = useTable();
 
   const { themeStretch } = useSettings();
@@ -115,6 +111,16 @@ export default function UserList() {
   const handleEditRow = (id) => {
     push(PATH_DASHBOARD.user.edit(+id));
   };
+
+  const { setRowPerPage, page, setPage, total, rowPerPage } = useUsersPagination(
+    useShallow((state) => ({
+      total: state.totalPages,
+      page: state.activePage,
+      setPage: state.setPage,
+      setRowPerPage: state.setRowPerPage,
+      rowPerPage: state.rowPerPage,
+    }))
+  );
 
   const denseHeight = dense ? 52 : 72;
 
@@ -199,7 +205,7 @@ export default function UserList() {
                       />
                     ))}
 
-                    <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, tableData.length)} />
+                    {/*<TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, tableData.length)} />*/}
 
                     <TableNoData isNotFound={isNotFound} />
                   </TableBody>
@@ -213,11 +219,11 @@ export default function UserList() {
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
               labelRowsPerPage={'تعداد ردیف در هر صفحه : '}
-              count={tableData.length}
-              rowsPerPage={rowsPerPage}
+              count={(users?.pagination?.lastPage || 0) * rowPerPage}
+              rowsPerPage={rowPerPage}
               page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
+              onPageChange={(_, thisPage) => setPage(thisPage)}
+              onRowsPerPageChange={(event) => setRowPerPage(+event.target.value)}
             />
 
             <FormControlLabel

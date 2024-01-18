@@ -91,17 +91,17 @@ const navConfig = [
       // },
 
       // INVOICE
-      // {
-      //   title: 'فاکتور ها',
-      //   path: PATH_DASHBOARD.invoice.root,
-      //   icon: ICONS.invoice,
-      //   children: [
-      //     { title: 'لیست', path: PATH_DASHBOARD.invoice.list },
-      //     { title: 'اطلاعات', path: PATH_DASHBOARD.invoice.demoView },
-      //     { title: 'ساخت', path: PATH_DASHBOARD.invoice.new },
-      //     { title: 'ویرایش', path: PATH_DASHBOARD.invoice.demoEdit },
-      //   ],
-      // },
+      {
+        title: 'فاکتور ها',
+        path: PATH_DASHBOARD.invoice.root,
+        icon: ICONS.invoice,
+        children: [
+          { title: 'لیست', path: PATH_DASHBOARD.invoice.list },
+          { title: 'اطلاعات', path: PATH_DASHBOARD.invoice.demoView },
+          { title: 'ساخت', path: PATH_DASHBOARD.invoice.new },
+          { title: 'ویرایش', path: PATH_DASHBOARD.invoice.demoEdit },
+        ],
+      },
       //
       // // BLOG
       // {

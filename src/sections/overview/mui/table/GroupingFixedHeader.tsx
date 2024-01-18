@@ -30,7 +30,15 @@ const TABLE_DATA = [
   createData('Brazil', 'BR', 210147125, 8515767),
 ];
 
-const COLUMNS = [
+type ColType = {
+  id: string;
+  label: string;
+  minWidth?: number;
+  align?: 'right' | 'left' | 'center' | 'justify' | 'inherit';
+  format?: Function;
+};
+
+const COLUMNS: ColType[] = [
   { id: 'name', label: 'Name', minWidth: 170 },
   { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
   {
