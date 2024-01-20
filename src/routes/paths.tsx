@@ -38,7 +38,7 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/pharmacy'),
     list: path(ROOTS_DASHBOARD, '/pharmacy/list'),
     new: path(ROOTS_DASHBOARD, '/pharmacy/new'),
-    edit: (id) => path(ROOTS_DASHBOARD, `/pharmacy/${id}/edit`),
+    edit: (id) => path(ROOTS_DASHBOARD, `/pharmacy/edit/${id}`),
     demoEdit: path(ROOTS_DASHBOARD, `/pharmacy/1/edit`),
   },
   general: {

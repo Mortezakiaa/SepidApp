@@ -22,6 +22,8 @@ import {
   AccountNotifications,
   AccountChangePassword,
 } from '../../../sections/@dashboard/user/account';
+import useFetchSinglePharmacy from '@/react-query/pharmacy/useFetchSinglePharmacy.ts';
+import { useRouter } from 'next/router';
 
 // ----------------------------------------------------------------------
 
@@ -33,17 +35,22 @@ PharmacyAccount.getLayout = function getLayout(page: React.ReactNode) {
 
 export default function PharmacyAccount() {
   const { themeStretch } = useSettings();
+  const { query } = useRouter();
+  const { id } = query;
+  const { data: pharmacy, isLoading } = useFetchSinglePharmacy(+id);
 
   const { currentTab, onChangeTab } = useTabs('general');
 
   const ACCOUNT_TABS = [
     {
       value: 'general',
+      label: 'کلی',
       icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
       component: <AccountGeneral />,
     },
     {
-      value: 'billing',
+      value: 'users',
+      label: 'کاربران',
       icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
       component: <AccountBilling cards={_userPayment} addressBook={_userAddressBook} invoices={_userInvoices} />,
     },

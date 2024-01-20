@@ -1,22 +1,22 @@
-// i18n
+// // i18n
 import '../locales/i18n';
-
-// highlight
-import '../utils/highlight';
-
+//
+// // highlight
+// import '../utils/highlight';
+//
 import cookie from 'cookie';
-// next
+// // next
 import Head from 'next/head';
 import App, { AppContext } from 'next/app';
-// @mui
-// utils
+// // @mui
+// // utils
 import { getSettings } from '../utils/settings';
-// contexts
+// // contexts
 import { SettingsProvider } from '../contexts/SettingsContext';
 import { CollapseDrawerProvider } from '../contexts/CollapseDrawerContext';
-// theme
+// // theme
 import ThemeProvider from '../theme';
-// components
+// // components
 import Settings from '../components/settings';
 import { ChartStyle } from '../components/chart';
 import RtlLayout from '../components/RtlLayout';
@@ -25,12 +25,12 @@ import ThemeColorPresets from '../components/ThemeColorPresets';
 import NotistackProvider from '../components/NotistackProvider';
 import ThemeLocalization from '../components/ThemeLocalization';
 import MotionLazyContainer from '../components/animate/MotionLazyContainer';
-
-// Check our docs
-// https://docs-minimals.vercel.app/authentication/ts-version
-
+//
+// // Check our docs
+// // https://docs-minimals.vercel.app/authentication/ts-version
+//
 import { AuthProvider } from '../contexts/JWTContext';
-import React from 'react';
+// import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ClientProvider from '@contexts/ClientProvider.tsx';
@@ -39,7 +39,7 @@ import { Toaster } from 'react-hot-toast';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { AdapterDateFnsJalali } from '@mui/x-date-pickers/AdapterDateFnsJalali';
-// ----------------------------------------------------------------------
+// // ----------------------------------------------------------------------
 
 type propsType = {
   Component: any;

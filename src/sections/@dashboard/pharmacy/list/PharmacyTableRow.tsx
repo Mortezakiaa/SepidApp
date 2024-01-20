@@ -1,12 +1,13 @@
 import { useState } from 'react';
 // @mui
-import { TableRow, TableCell, Typography, MenuItem } from '@mui/material';
+import { TableRow, TableCell, Typography, MenuItem, Link } from '@mui/material';
 // components
 import Iconify from '@/components/Iconify';
 import { TableMoreMenu } from '@/components/table';
 import ConfirmModal from '@components/ConfirmModal.tsx';
 import { format } from 'date-fns-jalali';
 import useDeletePharmacy from '@/react-query/pharmacy/useDeletePharmacy.ts';
+import { useRouter } from 'next/router';
 
 // ----------------------------------------------------------------------
 
@@ -17,10 +18,11 @@ type UserTableRowPropTypes = {
 };
 
 export default function PharmacyTableRow({ row, onEditRow, onDeleteRow }: UserTableRowPropTypes) {
-  const { city, name, is_active, end_date } = row;
+  const { city, name, is_active, end_date, id } = row;
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openMenu, setOpenMenuActions] = useState(null);
   const { isPending } = useDeletePharmacy();
+  const { push } = useRouter();
   const handleOpenMenu = (event) => {
     setOpenMenuActions(event.currentTarget);
   };
@@ -31,14 +33,15 @@ export default function PharmacyTableRow({ row, onEditRow, onDeleteRow }: UserTa
 
   return (
     <TableRow hover>
-      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+      <TableCell
+        onClick={() => push({ pathname: '[id]', query: { id } })}
+        sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+      >
         <Typography variant="subtitle2" noWrap>
           {name}
         </Typography>
       </TableCell>
-
       <TableCell align="left">{city?.name || '-'}</TableCell>
-
       <TableCell align="left">
         <Iconify
           icon={is_active ? 'eva:checkmark-circle-fill' : 'eva:clock-outline'}
@@ -51,7 +54,6 @@ export default function PharmacyTableRow({ row, onEditRow, onDeleteRow }: UserTa
         />
       </TableCell>
       <TableCell align="center">{format(new Date(end_date), 'd MMMM yyyy')}</TableCell>
-
       <TableCell align="right">
         <ConfirmModal
           onConfirm={onDeleteRow}

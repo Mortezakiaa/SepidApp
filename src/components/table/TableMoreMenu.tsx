@@ -11,13 +11,18 @@ type TableMoreMenuPropTypes = {
   actions: ReactNode;
   open: any;
   onClose: () => void;
-  onOpen: (value: string) => void;
+  onOpen: (value: any) => void;
 };
 
 export default function TableMoreMenu({ actions, open, onClose, onOpen }: TableMoreMenuPropTypes) {
   return (
-    <>
-      <IconButton onClick={onOpen}>
+    <div>
+      <IconButton
+        onClick={(e) => {
+          e.stopPropagation();
+          onOpen(e);
+        }}
+      >
         <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
       </IconButton>
 
@@ -41,6 +46,6 @@ export default function TableMoreMenu({ actions, open, onClose, onOpen }: TableM
       >
         {actions}
       </MenuPopover>
-    </>
+    </div>
   );
 }
