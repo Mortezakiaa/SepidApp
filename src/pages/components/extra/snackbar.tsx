@@ -1,4 +1,4 @@
-import { useSnackbar } from 'notistack';
+import { SnackbarOrigin, useSnackbar, VariantType } from 'notistack';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Button, Container } from '@mui/material';
@@ -39,7 +39,7 @@ DemoSnackbar.getLayout = function getLayout(page: React.ReactNode) {
 export default function DemoSnackbar() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const onSnackbarAction = (color, anchor) => {
+  const onSnackbarAction = (color?: VariantType, anchor?: SnackbarOrigin) => {
     enqueueSnackbar(`This is an ${color}`, {
       variant: color,
       anchorOrigin: anchor,
@@ -88,22 +88,18 @@ export default function DemoSnackbar() {
               <Button
                 variant="contained"
                 color="inherit"
-                onClick={() => enqueueSnackbar('This is an default', { variant: 'default', action: () => {} })}
+                onClick={() => enqueueSnackbar('This is an default', { variant: 'default' })}
               >
                 Default
               </Button>
               <Button
                 variant="contained"
                 color="info"
-                onClick={() => enqueueSnackbar('This is an info', { variant: 'info', action: () => {} })}
+                onClick={() => enqueueSnackbar('This is an info', { variant: 'info' })}
               >
                 Info
               </Button>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => enqueueSnackbar('This is an success', { action: () => {} })}
-              >
+              <Button variant="contained" color="success" onClick={() => enqueueSnackbar('This is an success')}>
                 Success
               </Button>
               <Button
@@ -112,7 +108,6 @@ export default function DemoSnackbar() {
                 onClick={() =>
                   enqueueSnackbar('This is an warning', {
                     variant: 'warning',
-                    action: () => {},
                   })
                 }
               >
@@ -121,7 +116,7 @@ export default function DemoSnackbar() {
               <Button
                 variant="contained"
                 color="error"
-                onClick={() => enqueueSnackbar('This is an error', { variant: 'error', action: () => {} })}
+                onClick={() => enqueueSnackbar('This is an error', { variant: 'error' })}
               >
                 Error
               </Button>
