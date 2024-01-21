@@ -6,10 +6,10 @@ import { Masonry } from '@mui/lab';
 // routes
 import { PATH_PAGE } from '@routes/paths.tsx';
 // layouts
-import Layout from '../../../layouts';
+import Layout from '@/layouts';
 // components
-import Page from '../../../components/Page';
-import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
+import Page from '@/components/Page';
+import HeaderBreadcrumbs from '@/components/HeaderBreadcrumbs';
 // sections
 import { Block } from '@sections/overview/Block.tsx';
 

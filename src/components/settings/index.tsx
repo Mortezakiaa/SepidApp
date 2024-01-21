@@ -49,7 +49,6 @@ const RootStyle = styled(m.div)(({ theme }) => ({
 export default function Settings() {
   const { themeMode, themeDirection, themeColorPresets, themeStretch, themeLayout, onResetSetting } = useSettings();
   const [open, setOpen] = useState(false);
-
   const notDefault =
     themeMode !== defaultSettings.themeMode ||
     themeDirection !== defaultSettings.themeDirection ||

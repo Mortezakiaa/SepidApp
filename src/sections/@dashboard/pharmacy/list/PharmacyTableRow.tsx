@@ -34,7 +34,7 @@ export default function PharmacyTableRow({ row, onEditRow, onDeleteRow }: UserTa
   return (
     <TableRow hover>
       <TableCell
-        onClick={() => push({ pathname: '[id]', query: { id } })}
+        onClick={() => push({ pathname: 'edit/[id]', query: { id } })}
         sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
       >
         <Typography variant="subtitle2" noWrap>
