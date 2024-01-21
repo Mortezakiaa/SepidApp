@@ -51,7 +51,7 @@ export default function GeneralApp() {
           <Grid item xs={12} md={12}>
             <Box
               sx={{
-                backgroundColor: 'common.white',
+                backgroundColor: theme.palette.background.default,
                 width: '100%',
                 height: 300,
                 borderRadius: 2,

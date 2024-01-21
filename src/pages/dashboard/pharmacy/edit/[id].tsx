@@ -14,13 +14,11 @@ import HeaderBreadcrumbs from '@components/HeaderBreadcrumbs.tsx';
 // sections
 import PharmacyNewEditForm from '@sections/@dashboard/pharmacy/PharmacyNewEditForm.tsx';
 import useFetchSinglePharmacy from '@/react-query/pharmacy/useFetchSinglePharmacy.ts';
-import { capitalCase } from 'change-case';
 import useTabs from '@hooks/useTabs.tsx';
 import Iconify from '@components/Iconify.tsx';
-import { AccountBilling, AccountGeneral } from '@sections/@dashboard/user/account';
-import { _userAddressBook, _userInvoices, _userPayment } from '@/_mock';
 import { useMemo } from 'react';
 import PharmacyEditSkeleton from '@pages/dashboard/pharmacy/edit/pharmacy-edit-skeleton.tsx';
+import PharmacyUserList from '@pages/dashboard/pharmacy/edit/pharmacy-user-list.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -35,19 +33,21 @@ export default function PharmacyEdit() {
   const { query } = useRouter();
   const { id } = query;
   const { data: pharmacy, isLoading } = useFetchSinglePharmacy(+id);
-  const { currentTab, onChangeTab } = useTabs('general');
+  const { currentTab, onChangeTab } = useTabs('users');
 
   const ACCOUNT_TABS = useMemo(
     () => [
       {
+        label: 'اطلاعات داروخانه',
         value: 'general',
         icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
         component: isLoading ? <PharmacyEditSkeleton /> : <PharmacyNewEditForm isEdit currentPharmacy={pharmacy} />,
       },
       {
-        value: 'billing',
+        label: 'کاربران داروخانه',
+        value: 'users',
         icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
-        component: <AccountBilling cards={_userPayment} addressBook={_userAddressBook} invoices={_userInvoices} />,
+        component: <PharmacyUserList />,
       },
     ],
     [pharmacy]
@@ -71,7 +71,7 @@ export default function PharmacyEdit() {
           onChange={onChangeTab}
         >
           {ACCOUNT_TABS.map((tab) => (
-            <Tab disableRipple key={tab.value} label={capitalCase(tab.value)} icon={tab.icon} value={tab.value} />
+            <Tab disableRipple key={tab.value} label={tab.label} icon={tab.icon} value={tab.value} />
           ))}
         </Tabs>
 

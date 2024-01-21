@@ -49,7 +49,7 @@ export const cookiesKey = {
 };
 
 export const defaultSettings = {
-  themeMode: 'light',
+  themeMode: process.env.NEXT_PUBLIC_NODE_ENV === 'DEVELOPMENT' ? 'dark' : 'light',
   themeDirection: 'rtl',
   themeColorPresets: 'cyan',
   themeLayout: 'horizontal',

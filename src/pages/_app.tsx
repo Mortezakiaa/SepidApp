@@ -80,8 +80,8 @@ export default function MyApp(props: propsType) {
                                 position={'bottom-right'}
                                 toastOptions={{ duration: 3000, style: { background: '#090909', color: '#dcdcdc' } }}
                               />
+                              {process.env.NODE_ENV !== 'production' && <Settings />}
                               {process.env.NODE_ENV !== 'production' && <ReactQueryDevtools initialIsOpen={false} />}
-                              {/*<Settings />*/}
                               <ProgressBar />
                               {getLayout(<Component {...pageProps} />)}
                             </RtlLayout>
@@ -106,6 +106,7 @@ MyApp.getInitialProps = async (context: AppContext) => {
   const appProps = await App.getInitialProps(context);
   const cookies = cookie.parse(context.ctx.req ? context.ctx.req.headers.cookie || '' : document.cookie);
   const settings = getSettings(cookies);
+
   return {
     ...appProps,
     settings,
