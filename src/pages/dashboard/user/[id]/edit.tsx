@@ -27,7 +27,6 @@ export default function UserEdit() {
   const { query } = useRouter();
   const { id } = query;
   const { data: user, isLoading } = useFetchSingleUser(+id);
-
   return (
     <Page title="ویرایش کاربر">
       <Container maxWidth={themeStretch ? false : 'lg'}>

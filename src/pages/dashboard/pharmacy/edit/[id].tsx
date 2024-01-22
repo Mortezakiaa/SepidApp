@@ -33,7 +33,7 @@ export default function PharmacyEdit() {
   const { query } = useRouter();
   const { id } = query;
   const { data: pharmacy, isLoading } = useFetchSinglePharmacy(+id);
-  const { currentTab, onChangeTab } = useTabs('users');
+  const { currentTab, onChangeTab } = useTabs('general');
 
   const ACCOUNT_TABS = useMemo(
     () => [

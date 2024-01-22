@@ -44,6 +44,9 @@ import { UserStatusEnum } from '@/types/enums/user-status.enum';
 import { Icon } from '@iconify/react';
 import useUsersPagination from '@/zustand/users/useUsersPagination.ts';
 import useFetchPharmacyUsers from '@/react-query/pharmacy/useFetchPharmacyUsers.ts';
+import NewPharmacyUserModal from '@pages/dashboard/pharmacy/new_pharmacy_user_modal.tsx';
+import useModal from '@hooks/useModal.ts';
+import useModalManager from '@/zustand/utils/useModalManager.ts';
 
 // ----------------------------------------------------------------------
 
@@ -98,6 +101,8 @@ export default function PharmacyUserList() {
       fullName: state.fullName,
     }))
   );
+  const openModal = useModalManager((state) => state.openModal);
+  // const closeModal = useModalManager((state) => state.closeModal);
   const { mutate: deleteUser, isPending } = useDeleteUser();
 
   const handleFilterName = (filterName) => {
@@ -110,7 +115,7 @@ export default function PharmacyUserList() {
   };
 
   const handleEditRow = (id) => {
-    push(PATH_DASHBOARD.user.edit(+id));
+    openModal({ name: 'PharmacyUser', data: id });
   };
 
   const { setRowPerPage, page, setPage, total, rowPerPage } = useUsersPagination(
@@ -127,14 +132,17 @@ export default function PharmacyUserList() {
 
   return (
     <Container sx={{ padding: '0px !important' }} maxWidth={themeStretch ? false : 'lg'}>
+      <NewPharmacyUserModal />
       <Box width={'100%'} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Link href={PATH_DASHBOARD.user.new}>
-          <Button sx={{ height: '100%' }} variant="contained" startIcon={<Iconify icon={'eva:plus-fill'} />}>
-            کاربر جدید
-          </Button>
-        </Link>
+        <Button
+          sx={{ height: '100%' }}
+          onClick={() => openModal({ name: 'PharmacyUser' })}
+          variant="contained"
+          startIcon={<Iconify icon={'eva:plus-fill'} />}
+        >
+          کاربر جدید
+        </Button>
       </Box>
-
       <Card>
         <Tabs
           allowScrollButtonsMobile

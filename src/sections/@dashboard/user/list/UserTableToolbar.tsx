@@ -1,6 +1,7 @@
 import { Stack, InputAdornment, TextField, MenuItem } from '@mui/material';
 // components
 import Iconify from '@/components/Iconify';
+import { translateRole } from '@utils/translateRole.ts';
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +50,7 @@ export default function UserTableToolbar({
               textTransform: 'capitalize',
             }}
           >
-            {option}
+            {translateRole[option]}
           </MenuItem>
         ))}
       </TextField>

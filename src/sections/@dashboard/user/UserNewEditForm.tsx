@@ -18,15 +18,18 @@ import toast from 'react-hot-toast';
 import { RoleEnum } from '@/enums/role.enum.ts';
 import useUpdateUser from '@/react-query/user/useUpdateUser';
 import { UserStatusEnum } from '@/types/enums/user-status.enum';
+import { roleTranslate, userStatusTranslate } from '@locales/enumTranslate.ts';
+import useModalManager from '@/zustand/utils/useModalManager.ts';
 
 // ----------------------------------------------------------------------
 
 type UserNewEditFormPropTypes = {
   isEdit?: boolean;
   currentUser?: User;
+  pharmacyId?: number;
 };
 
-export default function UserNewEditForm({ isEdit = false, currentUser }: UserNewEditFormPropTypes) {
+export default function UserNewEditForm({ isEdit = false, currentUser, pharmacyId }: UserNewEditFormPropTypes) {
   const { push } = useRouter();
 
   const { data: pharmacies } = useFetchPharmacies();
@@ -40,7 +43,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
   const defaultValues = useMemo(
     () => ({
       full_name: currentUser?.full_name || '',
-      pharmacy_id: currentUser?.pharmacy_id || null,
+      pharmacy_id: currentUser?.pharmacy_id || pharmacyId || null,
       phone_number: currentUser?.phone_number || '',
       status: currentUser?.status || UserStatusEnum.ACTIVE,
     }),
@@ -56,10 +59,11 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
     reset,
     handleSubmit,
     setError,
-
     formState: { isSubmitting, errors },
   } = methods;
   console.log(errors);
+
+  const closeModal = useModalManager((state) => state.closeModal);
 
   const { mutateAsync: createUser } = useCreateUser();
   const { mutateAsync: updateUser } = useUpdateUser();
@@ -79,7 +83,10 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
       }
       reset();
       toast.success(!isEdit ? 'کاربر با موفقیت ساخته شد!' : 'اطلاعات کاربر با موفقیت تغییر کرد!');
-      push(PATH_DASHBOARD.user.list);
+      if (!pharmacyId) {
+        push(PATH_DASHBOARD.user.list);
+      }
+      closeModal('PharmacyUser');
     } catch (e) {
       console.error(e);
       if (typeof e.errorData === 'string') toast.error(e.errorData);
@@ -198,7 +205,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
         {/*  </Card>*/}
         {/*</Grid>*/}
 
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={12}>
           <Card sx={{ p: 3 }}>
             <Box
               sx={{
@@ -228,7 +235,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
               {/*</RHFSelect>*/}
 
               <RHFSelect
-                disabled={!pharmacies?.result?.length}
+                disabled={!pharmacies?.result?.length || !!pharmacyId}
                 name="pharmacy_id"
                 label="داروخانه"
                 placeholder="یک داروخانه انتخاب کنید"
@@ -242,25 +249,21 @@ export default function UserNewEditForm({ isEdit = false, currentUser }: UserNew
               </RHFSelect>
 
               <RHFSelect name="role" label="نقش" placeholder="یک نقش انتخاب کنید">
-                {Object.values(RoleEnum)?.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
+                {(pharmacyId ? [RoleEnum.USER, RoleEnum.SUPPORT] : [RoleEnum.ADMIN, RoleEnum.SUPPORT])?.map(
+                  (option) => (
+                    <option key={option} value={option}>
+                      {roleTranslate[option]}
+                    </option>
+                  )
+                )}
               </RHFSelect>
               <RHFSelect name="status" label="وضعیت" placeholder="یک وضعیت انتخاب کنید">
                 {Object.values(UserStatusEnum)?.map((option) => (
                   <option key={option} value={option}>
-                    {option}
+                    {userStatusTranslate[option]}
                   </option>
                 ))}
               </RHFSelect>
-              {/*<RHFTextField name="state" label="State/Region" />*/}
-              {/*<RHFTextField name="city" label="City" />*/}
-              {/*<RHFTextField name="address" label="Address" />*/}
-              {/*<RHFTextField name="zipCode" label="Zip/Code" />*/}
-              {/*<RHFTextField name="company" label="Company" />*/}
-              {/*<RHFTextField name="role" label="Role" />*/}
             </Box>
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>

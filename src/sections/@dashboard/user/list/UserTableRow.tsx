@@ -7,6 +7,7 @@ import Iconify from '@/components/Iconify';
 import { TableMoreMenu } from '@/components/table';
 import ConfirmModal from '@components/ConfirmModal.tsx';
 import useDeleteUser from '@/react-query/user/useDeleteUser.ts';
+import { translateRole } from '@utils/translateRole.ts';
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +39,7 @@ export default function UserTableRow({ row, onEditRow, onDeleteRow }: UserTableR
         </Typography>
       </TableCell>
 
-      <TableCell align="left">{role}</TableCell>
+      <TableCell align="left">{translateRole[role]}</TableCell>
 
       <TableCell align="left">
         <Iconify
