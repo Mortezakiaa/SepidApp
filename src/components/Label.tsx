@@ -73,7 +73,7 @@ const RootStyle = styled(Box)<RootStylePropsType>(({ theme, ownerState }) => {
 
 type propTypes = {
   children: ReactNode;
-  color?: 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
+  color?: 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error' | string;
   variant?: 'filled' | 'outlined' | 'ghost';
 } & BoxProps;
 

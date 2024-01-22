@@ -108,7 +108,7 @@ export default function InvoiceTableRow({
                 sx={{ color: 'error.main' }}
               >
                 <Iconify icon={'eva:trash-2-outline'} />
-                Delete
+                حذف
               </MenuItem>
 
               <MenuItem
@@ -118,7 +118,7 @@ export default function InvoiceTableRow({
                 }}
               >
                 <Iconify icon={'eva:eye-fill'} />
-                View
+                نمایش
               </MenuItem>
 
               <MenuItem
@@ -128,7 +128,7 @@ export default function InvoiceTableRow({
                 }}
               >
                 <Iconify icon={'eva:edit-fill'} />
-                Edit
+                ویرایش
               </MenuItem>
             </>
           }

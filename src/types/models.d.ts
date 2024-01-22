@@ -130,19 +130,13 @@ enum FactorStatusEnum {
 }
 
 interface Order extends BaseEntity {
-  factor_id: number;
-
   pharmacy_id: number;
 
-  product_id: number;
+  factors: Factor[];
 
-  support_id: number;
+  status: FactorStatusEnum;
 
   pharmacy: Pharmacy;
-
-  product: Product;
-
-  support: Support;
 }
 
 interface Support extends BaseEntity {
@@ -179,26 +173,20 @@ interface Product extends BaseEntity {
 
 interface Factor extends BaseEntity {
   order_id: number;
-
   price: number;
-
   final_price: number;
-
   offer_price: number;
-
   type: FactorTypeEnum;
-
   creator_id: number;
-
-  payer_id: number;
-
+  payer_id?: number;
+  product_id?: number;
+  support_id?: number;
   status: FactorStatusEnum;
-
-  order: Order;
-
+  orders: Order;
   creator: User;
-
   transactions: Transaction[];
+  product: Product;
+  support: Support;
 }
 
 interface Transaction extends BaseEntity {
