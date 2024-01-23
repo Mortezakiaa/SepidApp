@@ -6,9 +6,9 @@ import { Radio, RadioGroup, FormHelperText, FormControlLabel } from '@mui/materi
 // ----------------------------------------------------------------------
 
 type RHFRadioGroupPropTypes = {
-  name: string;
-  options: string[];
-  getOptionLabel: string[];
+  name?: string;
+  options?: string[];
+  getOptionLabel?: string[];
 };
 
 export default function RHFRadioGroup({ name, options, getOptionLabel, ...other }: RHFRadioGroupPropTypes) {

@@ -3,10 +3,10 @@ import merge from 'lodash/merge';
 import { styled, useTheme } from '@mui/material/styles';
 import { Card, Typography, Stack } from '@mui/material';
 // utils
-import { fCurrency, fPercent } from '../../../../utils/formatNumber';
+import { fCurrency, fPercent } from '@utils/formatNumber.tsx';
 // components
-import Iconify from '../../../../components/Iconify';
-import ReactApexChart, { BaseOptionChart } from '../../../../components/chart';
+import Iconify from '@components/Iconify';
+import ReactApexChart, { BaseOptionChart } from '@components/chart';
 
 // ----------------------------------------------------------------------
 
@@ -31,12 +31,12 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type BankingWidgetSummaryPropTypes = {
-  chartData: any[];
-  color: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
-  icon: string;
-  percent: number;
-  title: string;
-  total: number;
+  chartData?: any[];
+  color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
+  icon?: string;
+  percent?: number;
+  title?: string;
+  total?: number;
 };
 
 export default function BankingWidgetSummary({
@@ -73,12 +73,12 @@ export default function BankingWidgetSummary({
     <RootStyle
       sx={{
         color: (theme) => theme.palette[color]['darker'],
-        bgcolor: (theme) => theme.palette[color].lighter,
+        bgcolor: (theme) => theme.palette[color]['lighter'],
       }}
     >
       <IconWrapperStyle
         sx={{
-          color: (theme) => theme.palette[color].lighter,
+          color: (theme) => theme.palette[color]['lighter'],
           bgcolor: (theme) => theme.palette[color].dark,
         }}
       >

@@ -1,11 +1,15 @@
 // ----------------------------------------------------------------------
 
-function path(root, sublink) {
+function path(root: string, sublink: string) {
   return `${root}${sublink}`;
 }
 
 const ROOTS_AUTH = '/auth';
 const ROOTS_DASHBOARD = '/dashboard';
+
+function dashboardPath(link: string) {
+  return `${ROOTS_DASHBOARD}${link}`;
+}
 
 // ----------------------------------------------------------------------
 
@@ -35,66 +39,71 @@ export const PATH_PAGE = {
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   pharmacy: {
-    root: path(ROOTS_DASHBOARD, '/pharmacy'),
-    list: path(ROOTS_DASHBOARD, '/pharmacy/list'),
-    new: path(ROOTS_DASHBOARD, '/pharmacy/new'),
-    edit: (id) => path(ROOTS_DASHBOARD, `/pharmacy/edit/${id}`),
-    demoEdit: path(ROOTS_DASHBOARD, `/pharmacy/1/edit`),
+    root: dashboardPath('/pharmacy'),
+    list: dashboardPath('/pharmacy/list'),
+    new: dashboardPath('/pharmacy/new'),
+    edit: (id) => dashboardPath(`/pharmacy/edit/${id}`),
+  },
+  product: {
+    root: dashboardPath('/product'),
+    list: dashboardPath('/product/list'),
+    new: dashboardPath('/product/new'),
+    edit: (id) => dashboardPath(`/product/edit/${id}`),
   },
   general: {
-    app: path(ROOTS_DASHBOARD, '/app'),
-    ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
-    analytics: path(ROOTS_DASHBOARD, '/analytics'),
-    banking: path(ROOTS_DASHBOARD, '/banking'),
-    booking: path(ROOTS_DASHBOARD, '/booking'),
+    app: dashboardPath('/app'),
+    ecommerce: dashboardPath('/ecommerce'),
+    analytics: dashboardPath('/analytics'),
+    banking: dashboardPath('/banking'),
+    booking: dashboardPath('/booking'),
   },
   mail: {
-    root: path(ROOTS_DASHBOARD, '/mail'),
-    all: path(ROOTS_DASHBOARD, '/mail/all'),
+    root: dashboardPath('/mail'),
+    all: dashboardPath('/mail/all'),
   },
   chat: {
-    root: path(ROOTS_DASHBOARD, '/chat'),
-    new: path(ROOTS_DASHBOARD, '/chat/new'),
-    view: (name) => path(ROOTS_DASHBOARD, `/chat/${name}`),
+    root: dashboardPath('/chat'),
+    new: dashboardPath('/chat/new'),
+    view: (name) => dashboardPath(`/chat/${name}`),
   },
-  calendar: path(ROOTS_DASHBOARD, '/calendar'),
-  kanban: path(ROOTS_DASHBOARD, '/kanban'),
+  calendar: dashboardPath('/calendar'),
+  kanban: dashboardPath('/kanban'),
   user: {
-    root: path(ROOTS_DASHBOARD, '/user'),
-    new: path(ROOTS_DASHBOARD, '/user/new'),
-    list: path(ROOTS_DASHBOARD, '/user/list'),
-    cards: path(ROOTS_DASHBOARD, '/user/cards'),
-    profile: path(ROOTS_DASHBOARD, '/user/profile'),
-    account: path(ROOTS_DASHBOARD, '/user/account'),
-    edit: (id) => path(ROOTS_DASHBOARD, `/user/${id}/edit`),
-    demoEdit: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
+    root: dashboardPath('/user'),
+    new: dashboardPath('/user/new'),
+    list: dashboardPath('/user/list'),
+    cards: dashboardPath('/user/cards'),
+    profile: dashboardPath('/user/profile'),
+    account: dashboardPath('/user/account'),
+    edit: (id) => dashboardPath(`/user/${id}/edit`),
+    demoEdit: dashboardPath(`/user/reece-chung/edit`),
   },
   eCommerce: {
-    root: path(ROOTS_DASHBOARD, '/e-commerce'),
-    shop: path(ROOTS_DASHBOARD, '/e-commerce/shop'),
-    list: path(ROOTS_DASHBOARD, '/e-commerce/list'),
-    checkout: path(ROOTS_DASHBOARD, '/e-commerce/checkout'),
-    new: path(ROOTS_DASHBOARD, '/e-commerce/product/new'),
-    view: (name) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}`),
-    edit: (name) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}/edit`),
-    demoEdit: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-blazer-low-77-vintage/edit'),
-    demoView: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-air-force-1-ndestrukt'),
+    root: dashboardPath('/e-commerce'),
+    shop: dashboardPath('/e-commerce/shop'),
+    list: dashboardPath('/e-commerce/list'),
+    checkout: dashboardPath('/e-commerce/checkout'),
+    new: dashboardPath('/e-commerce/product/new'),
+    view: (name) => dashboardPath(`/e-commerce/product/${name}`),
+    edit: (name) => dashboardPath(`/e-commerce/product/${name}/edit`),
+    demoEdit: dashboardPath('/e-commerce/product/nike-blazer-low-77-vintage/edit'),
+    demoView: dashboardPath('/e-commerce/product/nike-air-force-1-ndestrukt'),
   },
   invoice: {
-    root: path(ROOTS_DASHBOARD, '/invoice'),
-    list: path(ROOTS_DASHBOARD, '/invoice/list'),
-    new: path(ROOTS_DASHBOARD, '/invoice/new'),
-    view: (id) => path(ROOTS_DASHBOARD, `/invoice/${id}`),
-    edit: (id) => path(ROOTS_DASHBOARD, `/invoice/${id}/edit`),
-    demoEdit: path(ROOTS_DASHBOARD, '/invoice/e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1/edit'),
-    demoView: path(ROOTS_DASHBOARD, '/invoice/e99f09a7-dd88-49d5-b1c8-1daf80c2d7b5'),
+    root: dashboardPath('/invoice'),
+    list: dashboardPath('/invoice/list'),
+    new: dashboardPath('/invoice/new'),
+    view: (id) => dashboardPath(`/invoice/${id}`),
+    edit: (id) => dashboardPath(`/invoice/${id}/edit`),
+    demoEdit: dashboardPath('/invoice/e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1/edit'),
+    demoView: dashboardPath('/invoice/e99f09a7-dd88-49d5-b1c8-1daf80c2d7b5'),
   },
   blog: {
-    root: path(ROOTS_DASHBOARD, '/blog'),
-    posts: path(ROOTS_DASHBOARD, '/blog/posts'),
-    new: path(ROOTS_DASHBOARD, '/blog/new'),
-    view: (title) => path(ROOTS_DASHBOARD, `/blog/post/${title}`),
-    demoView: path(ROOTS_DASHBOARD, '/blog/post/apply-these-7-secret-techniques-to-improve-event'),
+    root: dashboardPath('/blog'),
+    posts: dashboardPath('/blog/posts'),
+    new: dashboardPath('/blog/new'),
+    view: (title) => dashboardPath(`/blog/post/${title}`),
+    demoView: dashboardPath('/blog/post/apply-these-7-secret-techniques-to-improve-event'),
   },
 };
 

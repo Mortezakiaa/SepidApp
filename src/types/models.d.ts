@@ -160,8 +160,6 @@ interface Product extends BaseEntity {
 
   info: string;
 
-  type: ProductTypeEnum;
-
   price: number;
 
   offer_price: number;

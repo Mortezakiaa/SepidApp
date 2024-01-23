@@ -31,14 +31,13 @@ import MotionLazyContainer from '../components/animate/MotionLazyContainer';
 //
 import { AuthProvider } from '../contexts/JWTContext';
 // import React from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import ClientProvider from '@contexts/ClientProvider.tsx';
+import ClientProvider from '@contexts/providers/ClientProvider.tsx';
 import '@/theme/index.css';
-import { Toaster } from 'react-hot-toast';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { AdapterDateFnsJalali } from '@mui/x-date-pickers/AdapterDateFnsJalali';
+import ToastProvider from '@contexts/providers/ToastProvider.tsx';
+import ReactQueryProvider from '@contexts/providers/ReactQueryProvider.tsx';
 // // ----------------------------------------------------------------------
 
 type propsType = {
@@ -46,12 +45,6 @@ type propsType = {
   pageProps: object;
   settings: object;
 };
-const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } } });
-declare module '@tanstack/react-query' {
-  interface Register {
-    defaultError: ResponseModel<any>;
-  }
-}
 
 export default function MyApp(props: propsType) {
   const { Component, pageProps, settings } = props;
@@ -64,7 +57,7 @@ export default function MyApp(props: propsType) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ClientProvider>
-        <QueryClientProvider client={queryClient}>
+        <ReactQueryProvider>
           <AuthProvider>
             <LocalizationProvider dateAdapter={AdapterDateFnsJalali}>
               <CollapseDrawerProvider>
@@ -76,10 +69,7 @@ export default function MyApp(props: propsType) {
                           <ThemeLocalization>
                             <RtlLayout>
                               <ChartStyle />
-                              <Toaster
-                                position={'bottom-right'}
-                                toastOptions={{ duration: 3000, style: { background: '#090909', color: '#dcdcdc' } }}
-                              />
+                              <ToastProvider />
                               {process.env.NODE_ENV !== 'production' && <Settings />}
                               {process.env.NODE_ENV !== 'production' && <ReactQueryDevtools initialIsOpen={false} />}
                               <ProgressBar />
@@ -94,7 +84,7 @@ export default function MyApp(props: propsType) {
               </CollapseDrawerProvider>
             </LocalizationProvider>
           </AuthProvider>
-        </QueryClientProvider>
+        </ReactQueryProvider>
       </ClientProvider>
     </>
   );

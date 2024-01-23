@@ -30,6 +30,8 @@ export default function InvoiceEdit() {
 
   const { id } = query;
 
+  // const factor = useFetchSingleFactor(id);
+
   return (
     <Page title="ویرایش فاکتورها">
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -42,7 +44,7 @@ export default function InvoiceEdit() {
           ]}
         />
 
-        <InvoiceNewEditForm isEdit currentInvoice={{}} />
+        <InvoiceNewEditForm isEdit />
       </Container>
     </Page>
   );

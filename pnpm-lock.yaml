@@ -83,9 +83,6 @@ dependencies:
   '@turf/bbox':
     specifier: ^6.5.0
     version: 6.5.0
-  '@types/autosuggest-highlight':
-    specifier: ^3.2.3
-    version: 3.2.3
   amazon-cognito-identity-js:
     specifier: ^5.2.8
     version: 5.2.14
@@ -131,9 +128,6 @@ dependencies:
   geojson:
     specifier: ^0.5.0
     version: 0.5.0
-  highlight.js:
-    specifier: ^11.9.0
-    version: 11.9.0
   i18next:
     specifier: ^21.6.14
     version: 21.10.0
@@ -233,9 +227,6 @@ dependencies:
   simplebar-react:
     specifier: ^2.3.6
     version: 2.4.3(react-dom@18.2.0)(react@18.2.0)
-  slick-carousel:
-    specifier: ^1.8.1
-    version: 1.8.1(jquery@3.7.1)
   stylis:
     specifier: ^4.3.0
     version: 4.3.1
@@ -2534,10 +2525,6 @@ packages:
       '@turf/meta': 5.2.0
     dev: false
 
-  /@types/autosuggest-highlight@3.2.3:
-    resolution: {integrity: sha512-8Mb21KWtpn6PvRQXjsKhrXIcxbSloGqNH50RntwGeJsGPW4xvNhfml+3kKulaKpO/7pgZfOmzsJz7VbepArlGQ==}
-    dev: false
-
   /@types/cookie@0.6.0:
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
     dev: true
@@ -3313,7 +3300,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001578
+      caniuse-lite: 1.0.30001579
       electron-to-chromium: 1.4.634
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.22.2)
@@ -3367,10 +3354,6 @@ packages:
 
   /can-use-dom@0.1.0:
     resolution: {integrity: sha512-ceOhN1DL7Y4O6M0j9ICgmTYziV89WMd96SvSl0REd8PMgrY0B/WBOPoed5S1KUmJqXgUXh8gzSe6E3ae27upsQ==}
-    dev: false
-
-  /caniuse-lite@1.0.30001578:
-    resolution: {integrity: sha512-J/jkFgsQ3NEl4w2lCoM9ZPxrD+FoBNJ7uJUpGVjIg/j0OwJosWM36EPDv+Yyi0V4twBk9pPmlFS+PLykgEvUmg==}
     dev: false
 
   /caniuse-lite@1.0.30001579:
@@ -4875,11 +4858,6 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /highlight.js@11.9.0:
-    resolution: {integrity: sha512-fJ7cW7fQGCYAkgv4CPfwFHrfd/cLS4Hau96JuJ+ZTOWhjnhoeN1ub1tFmALm/+lW5z4WCAuAV9bm05AP0mS6Gw==}
-    engines: {node: '>=12.0.0'}
-    dev: false
-
   /hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
     dependencies:
@@ -5260,10 +5238,6 @@ packages:
       '@types/node': 20.11.5
       merge-stream: 2.0.0
       supports-color: 8.1.1
-    dev: false
-
-  /jquery@3.7.1:
-    resolution: {integrity: sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==}
     dev: false
 
   /js-cookie@2.2.1:
@@ -7035,14 +7009,6 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
     dev: true
-
-  /slick-carousel@1.8.1(jquery@3.7.1):
-    resolution: {integrity: sha512-XB9Ftrf2EEKfzoQXt3Nitrt/IPbT+f1fgqBdoxO3W/+JYvtEOW6EgxnWfr9GH6nmULv7Y2tPmEX3koxThVmebA==}
-    peerDependencies:
-      jquery: '>=1.8.0'
-    dependencies:
-      jquery: 3.7.1
-    dev: false
 
   /snake-case@3.0.4:
     resolution: {integrity: sha512-LAOh4z89bGQvl9pFfNF8V146i7o7/CqFPbqzYgP+yYzDIDeS9HaNFtXABamRW+AQzEVODcvE79ljJ+8a9YSdMg==}

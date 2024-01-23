@@ -96,31 +96,31 @@ export default function ShopFilterSidebar({ isOpen, onResetAll, onOpen, onClose 
 
         <Scrollbar>
           <Stack spacing={3} sx={{ p: 3 }}>
-            <Stack spacing={1}>
-              <Typography variant="subtitle1">Gender</Typography>
-              <RHFMultiCheckbox name="gender" options={FILTER_GENDER_OPTIONS} sx={{ width: 1 }} />
-            </Stack>
+            {/*<Stack spacing={1}>*/}
+            {/*  <Typography variant="subtitle1">Gender</Typography>*/}
+            {/*  <RHFMultiCheckbox name="gender" options={FILTER_GENDER_OPTIONS} sx={{ width: 1 }} />*/}
+            {/*</Stack>*/}
 
-            <Stack spacing={1}>
-              <Typography variant="subtitle1">Category</Typography>
-              <RHFRadioGroup name="category" options={FILTER_CATEGORY_OPTIONS} row={false} />
-            </Stack>
+            {/*<Stack spacing={1}>*/}
+            {/*  <Typography variant="subtitle1">Category</Typography>*/}
+            {/*  <RHFRadioGroup name="category" options={FILTER_CATEGORY_OPTIONS} row={false} />*/}
+            {/*</Stack>*/}
 
-            <Stack spacing={1}>
-              <Typography variant="subtitle1">Colour</Typography>
+            {/*<Stack spacing={1}>*/}
+            {/*  <Typography variant="subtitle1">Colour</Typography>*/}
 
-              <Controller
-                name="colors"
-                control={control}
-                render={({ field }) => (
-                  <ColorManyPicker
-                    colors={FILTER_COLOR_OPTIONS}
-                    onChangeColor={(color) => field.onChange(onSelected(field.value, color))}
-                    sx={{ maxWidth: 36 * 4 }}
-                  />
-                )}
-              />
-            </Stack>
+            {/*  <Controller*/}
+            {/*    name="colors"*/}
+            {/*    control={control}*/}
+            {/*    render={({ field }) => (*/}
+            {/*      <ColorManyPicker*/}
+            {/*        colors={FILTER_COLOR_OPTIONS}*/}
+            {/*        onChangeColor={(color) => field.onChange(onSelected(field.value, color))}*/}
+            {/*        sx={{ maxWidth: 36 * 4 }}*/}
+            {/*      />*/}
+            {/*    )}*/}
+            {/*  />*/}
+            {/*</Stack>*/}
 
             <Stack spacing={1}>
               <Typography variant="subtitle1">Price</Typography>

@@ -53,9 +53,9 @@ const RootStyle = styled(Box)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type propsType = {
-  id: string;
-  value: string;
+export type EditorPropsType = {
+  id?: string;
+  value?: string;
   onChange?: (value?: string) => void;
   error?: boolean;
   helperText?: React.ReactNode;
@@ -72,7 +72,7 @@ export default function Editor({
   helperText,
   sx,
   ...other
-}: propsType) {
+}: EditorPropsType) {
   const modules = {
     toolbar: {
       container: `#${id}`,
@@ -82,7 +82,6 @@ export default function Editor({
       maxStack: 100,
       userOnly: true,
     },
-    syntax: true,
     clipboard: {
       matchVisual: false,
     },

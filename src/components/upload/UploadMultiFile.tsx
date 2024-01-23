@@ -21,11 +21,11 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type UploadMultiFilePropTypes = {
+export type UploadMultiFilePropTypes = {
   error?: boolean;
   showPreview?: boolean;
   files?: any[];
-  onRemove?: () => void;
+  onRemove?: (value: any) => void;
   onRemoveAll?: () => void;
   helperText?: ReactNode;
   sx?: SxProps;

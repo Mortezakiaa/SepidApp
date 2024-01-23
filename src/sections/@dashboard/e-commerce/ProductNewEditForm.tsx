@@ -58,8 +58,8 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type ProductNewEditFormPropTypes = {
-  isEdit: boolean;
-  currentProduct: any;
+  isEdit?: boolean;
+  currentProduct?: any;
 };
 
 export default function ProductNewEditForm({ isEdit, currentProduct }: ProductNewEditFormPropTypes) {
@@ -194,13 +194,7 @@ export default function ProductNewEditForm({ isEdit, currentProduct }: ProductNe
 
                 <div>
                   <LabelStyle>Gender</LabelStyle>
-                  <RHFRadioGroup
-                    name="gender"
-                    options={GENDER_OPTION}
-                    sx={{
-                      '& .MuiFormControlLabel-root': { mr: 4 },
-                    }}
-                  />
+                  <RHFRadioGroup name="gender" options={GENDER_OPTION} />
                 </div>
 
                 <RHFSelect name="category" label="Category">
