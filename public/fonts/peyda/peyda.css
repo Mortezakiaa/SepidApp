@@ -1,5 +1,7 @@
+
 @font-face {
-    font-family: 'peyda-thin';
+    font-family: 'peyda';
+    font-weight: 1 300;
     src: url('Peyda-Thin.eot');
     src: url('Peyda-Thin.eot') format('embedded-opentype'),
     url('Peyda-Thin.woff2') format('woff2'),
@@ -8,8 +10,8 @@
 }
 
 @font-face {
-    font-family: 'peyda-medium';
-    src: url('Peyda-Medium.eot');
+    font-family: 'peyda';
+    font-weight: 301 500;
     src: url('Peyda-Medium.eot') format('embedded-opentype'),
     url('Peyda-Medium.woff2') format('woff2'),
     url('Peyda-Medium.woff') format('woff'),
@@ -17,8 +19,8 @@
 }
 
 @font-face {
-    font-family: 'peyda-bold';
-    src: url('Peyda-Bold.eot');
+    font-family: 'peyda';
+    font-weight: 501 700;
     src: url('Peyda-Bold.eot') format('embedded-opentype'),
     url('Peyda-Bold.woff2') format('woff2'),
     url('Peyda-Bold.woff') format('woff'),
@@ -26,10 +28,48 @@
 }
 
 @font-face {
-    font-family: 'peyda-black';
+    font-family: 'peyda';
+    font-weight: 701 999;
     src: url('Peyda-Black.eot');
     src: url('Peyda-Black.eot') format('embedded-opentype'),
     url('Peyda-Black.woff2') format('woff2'),
     url('Peyda-Black.woff') format('woff'),
     url('Peyda-Black.ttf') format('truetype');
 }
+
+
+/*@font-face {*/
+/*    font-family: 'peyda-thin';*/
+/*    src: url('Peyda-Thin.eot');*/
+/*    src: url('Peyda-Thin.eot') format('embedded-opentype'),*/
+/*    url('Peyda-Thin.woff2') format('woff2'),*/
+/*    url('Peyda-Thin.woff') format('woff'),*/
+/*    url('Peyda-Thin.ttf') format('truetype');*/
+/*}*/
+
+/*@font-face {*/
+/*    font-family: 'peyda-medium';*/
+/*    src: url('Peyda-Medium.eot');*/
+/*    src: url('Peyda-Medium.eot') format('embedded-opentype'),*/
+/*    url('Peyda-Medium.woff2') format('woff2'),*/
+/*    url('Peyda-Medium.woff') format('woff'),*/
+/*    url('Peyda-Medium.ttf') format('truetype');*/
+/*}*/
+
+/*@font-face {*/
+/*    font-family: 'peyda-bold';*/
+/*    src: url('Peyda-Bold.eot');*/
+/*    src: url('Peyda-Bold.eot') format('embedded-opentype'),*/
+/*    url('Peyda-Bold.woff2') format('woff2'),*/
+/*    url('Peyda-Bold.woff') format('woff'),*/
+/*    url('Peyda-Bold.ttf') format('truetype');*/
+/*}*/
+
+/*@font-face {*/
+/*    font-family: 'peyda-black';*/
+/*    src: url('Peyda-Black.eot');*/
+/*    src: url('Peyda-Black.eot') format('embedded-opentype'),*/
+/*    url('Peyda-Black.woff2') format('woff2'),*/
+/*    url('Peyda-Black.woff') format('woff'),*/
+/*    url('Peyda-Black.ttf') format('truetype');*/
+/*}*/

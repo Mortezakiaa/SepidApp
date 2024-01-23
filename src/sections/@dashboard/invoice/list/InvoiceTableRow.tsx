@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Checkbox, TableRow, TableCell, Typography, Stack, MenuItem } from '@mui/material';
 import Link from '@components/Link';
 // utils
-import { fDate } from '../../../../utils/formatTime';
-import createAvatar from '../../../../utils/createAvatar';
-import { fCurrency } from '../../../../utils/formatNumber';
+import { fDate } from '@utils/formatTime.tsx';
+import createAvatar from '@utils/createAvatar';
+import { fCurrency } from '@utils/formatNumber.tsx';
 // components
-import Label from '../../../../components/Label';
-import Avatar from '../../../../components/Avatar';
-import Iconify from '../../../../components/Iconify';
-import { TableMoreMenu } from '../../../../components/table';
+import Label from '@components/Label';
+import Avatar from '@components/Avatar';
+import Iconify from '@components/Iconify';
+import { TableMoreMenu } from '@components/table';
 
 // ----------------------------------------------------------------------
 
@@ -31,21 +31,26 @@ export default function InvoiceTableRow({
   onViewRow,
   onEditRow,
   onDeleteRow,
-}: InvoiceTableRowPropTypes) {
+}: InvoiceTableRowPropTypes): ReactElement {
+  // Use the theme from Material UI
   const theme = useTheme();
 
+  // Destructure the row data
   const { sent, invoiceNumber, createDate, dueDate, status, invoiceTo, totalPrice } = row;
 
+  // State for the open menu
   const [openMenu, setOpenMenuActions] = useState(null);
 
   const handleOpenMenu = (event) => {
     setOpenMenuActions(event.currentTarget);
   };
 
+  // Handle closing the menu
   const handleCloseMenu = () => {
     setOpenMenuActions(null);
   };
 
+  // Render the row
   return (
     <TableRow hover selected={selected}>
       <TableCell padding="checkbox">
@@ -62,7 +67,13 @@ export default function InvoiceTableRow({
             {invoiceTo.name}
           </Typography>
 
-          <Link noWrap variant="body2" onClick={onViewRow} sx={{ color: 'text.disabled', cursor: 'pointer' }}>
+          <Link
+            href={'/dashboard/invoice/' + invoiceNumber}
+            noWrap
+            variant="body2"
+            onClick={onViewRow}
+            sx={{ color: 'text.disabled', cursor: 'pointer' }}
+          >
             {invoiceNumber}
           </Link>
         </Stack>

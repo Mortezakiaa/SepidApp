@@ -1,11 +1,11 @@
 // @mui
 import { Grid, Container, Typography } from '@mui/material';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from '@hooks/useSettings';
 // layouts
-import Layout from '../../layouts';
+import Layout from '@/layouts';
 // components
-import Page from '../../components/Page';
+import Page from '@components/Page';
 // sections
 import {
   AnalyticsTasks,

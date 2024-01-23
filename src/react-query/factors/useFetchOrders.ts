@@ -6,5 +6,5 @@ export default function useFetchOrders() {
     const res = await Axios.get<Order[]>('/order');
     return res.data;
   }
-  return useQuery({ queryKey: ['order', fetchOrders] });
+  return useQuery({ queryKey: ['order'], queryFn: fetchOrders });
 }

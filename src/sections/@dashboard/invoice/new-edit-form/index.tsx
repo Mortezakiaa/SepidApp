@@ -15,6 +15,7 @@ import InvoiceNewEditDetails from './InvoiceNewEditDetails';
 import InvoiceNewEditStatusDate from './InvoiceNewEditStatusDate';
 import { FactorStatusEnum } from '@/types/enums/factor-status.enum.ts';
 import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
+import useFetchSupports from '@/react-query/factors/useFetchSupports.ts';
 
 // ----------------------------------------------------------------------
 
@@ -67,7 +68,8 @@ export default function InvoiceNewEditForm({ isEdit, currentFactor }: InvoiceNew
   }, [isEdit, currentFactor]);
 
   const onSubmit = (data) => {};
-
+  const { data: supportData, isLoading } = useFetchSupports();
+  console.log(supportData);
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Card>

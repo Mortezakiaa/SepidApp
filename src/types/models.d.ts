@@ -182,7 +182,7 @@ interface Factor extends BaseEntity {
   product_id?: number;
   support_id?: number;
   status: FactorStatusEnum;
-  orders: Order;
+  order: Order;
   creator: User;
   transactions: Transaction[];
   product: Product;

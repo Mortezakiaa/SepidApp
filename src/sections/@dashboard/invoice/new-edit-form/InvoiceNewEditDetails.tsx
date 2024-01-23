@@ -7,20 +7,19 @@ import { fNumber } from '@utils/formatNumber.tsx';
 // components
 import Iconify from '../../../../components/Iconify';
 import { RHFSelect, RHFTextField } from '../../../../components/hook-form';
+import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
+import useFetchSupports from '@/react-query/factors/useFetchSupports.ts';
 
 // ----------------------------------------------------------------------
-
-const SERVICE_OPTIONS = [
-  'full stack development',
-  'backend development',
-  'ui design',
-  'ui/ux design',
-  'front end development',
+const TYPE_OPTIONS = [
+  { label: 'خرید', value: FactorTypeEnum.BUY },
+  { label: 'تمدید', value: FactorTypeEnum.RENEW },
+  { label: 'ارتقا', value: FactorTypeEnum.UPGRADE },
 ];
 
 export default function InvoiceNewEditDetails() {
   const { control, setValue, watch } = useFormContext();
-
+  const { data: supportData, isLoading } = useFetchSupports();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'items',
@@ -46,52 +45,25 @@ export default function InvoiceNewEditDetails() {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h6" sx={{ color: 'text.disabled', mb: 3 }}>
-        Details:
+        موردها:
       </Typography>
 
       <Stack divider={<Divider flexItem sx={{ borderStyle: 'dashed' }} />} spacing={3}>
         {fields.map((item, index) => (
           <Stack key={item.id} alignItems="flex-end" spacing={1.5}>
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: 1 }}>
-              <RHFTextField
-                size="small"
-                name={`items[${index}].title`}
-                label="Title"
-                InputLabelProps={{ shrink: true }}
-              />
-
-              <RHFTextField
-                size="small"
-                name={`items[${index}].description`}
-                label="Description"
-                InputLabelProps={{ shrink: true }}
-              />
-
               <RHFSelect
-                name={`items[${index}].service`}
-                label="Service type"
-                size="small"
+                fullWidth
+                name="support"
+                label="پشتیبانی"
+                disabled={isLoading}
                 InputLabelProps={{ shrink: true }}
                 SelectProps={{ native: false, sx: { textTransform: 'capitalize' } }}
-                sx={{ maxWidth: { md: 160 } }}
               >
-                <MenuItem
-                  value=""
-                  sx={{
-                    mx: 1,
-                    borderRadius: 0.75,
-                    typography: 'body2',
-                    fontStyle: 'italic',
-                    color: 'text.secondary',
-                  }}
-                >
-                  None
-                </MenuItem>
-                <Divider />
-                {SERVICE_OPTIONS.map((option) => (
+                {TYPE_OPTIONS.map((option) => (
                   <MenuItem
-                    key={option}
-                    value={option}
+                    key={option.value}
+                    value={option.value}
                     sx={{
                       mx: 1,
                       my: 0.5,
@@ -100,7 +72,31 @@ export default function InvoiceNewEditDetails() {
                       textTransform: 'capitalize',
                     }}
                   >
-                    {option}
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </RHFSelect>
+
+              <RHFSelect
+                fullWidth
+                name="type"
+                label="نوع فاکتور"
+                InputLabelProps={{ shrink: true }}
+                SelectProps={{ native: false, sx: { textTransform: 'capitalize' } }}
+              >
+                {TYPE_OPTIONS.map((option) => (
+                  <MenuItem
+                    key={option.value}
+                    value={option.value}
+                    sx={{
+                      mx: 1,
+                      my: 0.5,
+                      borderRadius: 0.75,
+                      typography: 'body2',
+                      textTransform: 'capitalize',
+                    }}
+                  >
+                    {option.label}
                   </MenuItem>
                 ))}
               </RHFSelect>
@@ -108,17 +104,8 @@ export default function InvoiceNewEditDetails() {
               <RHFTextField
                 size="small"
                 type="number"
-                name={`items[${index}].quantity`}
-                label="Quantity"
-                onChange={(event) => setValue(`items[${index}].quantity`, Number(event.target.value))}
-                sx={{ maxWidth: { md: 96 } }}
-              />
-
-              <RHFTextField
-                size="small"
-                type="number"
                 name={`items[${index}].price`}
-                label="Price"
+                label="قیمت"
                 onChange={(event) => setValue(`items[${index}].price`, Number(event.target.value))}
                 InputProps={{
                   startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -145,7 +132,7 @@ export default function InvoiceNewEditDetails() {
               startIcon={<Iconify icon="eva:trash-2-outline" />}
               onClick={() => handleRemove(index)}
             >
-              Remove
+              حذف مورد
             </Button>
           </Stack>
         ))}
@@ -159,23 +146,15 @@ export default function InvoiceNewEditDetails() {
         alignItems={{ xs: 'flex-start', md: 'center' }}
       >
         <Button size="small" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleAdd} sx={{ flexShrink: 0 }}>
-          Add new detail
+          اضافه کردن مورد جدید
         </Button>
 
         <Stack spacing={2} justifyContent="flex-end" direction={{ xs: 'column', md: 'row' }} sx={{ width: 1 }}>
           <RHFTextField
             size="small"
-            label="Discount"
+            label="تخفیف"
             name="discount"
             onChange={(event) => setValue('discount', Number(event.target.value))}
-            sx={{ maxWidth: { md: 200 } }}
-          />
-
-          <RHFTextField
-            size="small"
-            label="Taxes"
-            name="taxes"
-            onChange={(event) => setValue('taxes', Number(event.target.value))}
             sx={{ maxWidth: { md: 200 } }}
           />
         </Stack>

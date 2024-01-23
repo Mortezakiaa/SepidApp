@@ -1,5 +1,7 @@
 // ----------------------------------------------------------------------
 
+import { FONT_PRIMARY } from '@theme/typography.tsx';
+
 export default function Input(theme) {
   return {
     MuiInputBase: {
