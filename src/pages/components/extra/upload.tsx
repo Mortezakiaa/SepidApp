@@ -13,11 +13,11 @@ import {
   FormControlLabel,
 } from '@mui/material';
 // routes
-import { PATH_PAGE } from '../../../routes/paths';
+import { PATH_PAGE } from '@routes/paths.tsx';
 // utils
-import { fData } from '../../../utils/formatNumber';
+import { fData } from '@utils/formatNumber.tsx';
 // layouts
-import Layout from '../../../layouts';
+import Layout from '@/layouts';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';

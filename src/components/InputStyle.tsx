@@ -6,7 +6,7 @@ import { TextField } from '@mui/material';
 
 const InputStyle = styled(TextField, {
   shouldForwardProp: (prop) => prop !== 'stretchStart',
-})(({ stretchStart, theme }) => ({
+})<{ stretchStart: number }>(({ stretchStart, theme }) => ({
   '& .MuiOutlinedInput-root': {
     transition: theme.transitions.create(['box-shadow', 'width'], {
       easing: theme.transitions.easing.easeInOut,

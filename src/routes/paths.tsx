@@ -50,6 +50,12 @@ export const PATH_DASHBOARD = {
     new: dashboardPath('/product/new'),
     edit: (id) => dashboardPath(`/product/edit/${id}`),
   },
+  support: {
+    root: dashboardPath('/support'),
+    list: dashboardPath('/support/list'),
+    new: dashboardPath('/support/new'),
+    edit: (id) => dashboardPath(`/support/edit/${id}`),
+  },
   general: {
     app: dashboardPath('/app'),
     ecommerce: dashboardPath('/ecommerce'),

@@ -6,5 +6,5 @@ export default function useFetchSupports() {
     const res = await Axios.get<Support[]>('/support');
     return res.data;
   }
-  return useQuery({ queryKey: ['support'], queryFn: fetchSupports });
+  return useQuery({ queryKey: ['supports'], queryFn: fetchSupports });
 }

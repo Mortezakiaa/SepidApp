@@ -34,19 +34,19 @@ import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } fr
 // sections
 import { useShallow } from 'zustand/react/shallow';
 import { Icon } from '@iconify/react';
-import ProductTableToolbar from '@sections/@dashboard/product/list/ProductTableToolbar.tsx';
-import ProductTableRow from '@sections/@dashboard/product/list/ProductTableRow.tsx';
-import ProductTableRowSkeleton from '@sections/@dashboard/product/list/ProductTableRowSkeleton.tsx';
-import useDeleteProduct from '@/react-query/product/useDeleteProduct.ts';
-import useFilterProduct from '@/zustand/products/useFilterProduct.ts';
-import useProductPagination from '@/zustand/products/useProductPagination.ts';
-import useFetchProducts from '@/react-query/product/useFetchProducts.ts';
-import toast from 'react-hot-toast';
+import SupportTableToolbar from '@sections/@dashboard/support/list/SupportTableToolbar.tsx';
+import SupportTableRow from '@sections/@dashboard/support/list/SupportTableRow.tsx';
+import SupportTableRowSkeleton from '@sections/@dashboard/support/list/SupportTableRowSkeleton.tsx';
+import useDeleteSupport from '@/react-query/support/useDeleteSupport.ts';
+import useFilterSupport from '@/zustand/support/useFilterSupport.ts';
+import useSupportPagination from '@/zustand/support/useSupportPagination.ts';
+import useFetchSupports from '@/react-query/support/useFetchSupports.ts';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'title', label: 'نام', align: 'left' },
+  { id: 'duration', label: 'زمان سرویس', align: 'left' },
   { id: 'price', label: 'قیمت', align: 'left' },
   { id: 'offer_price', label: 'قیمت با تخفیف', align: 'left' },
   { id: 'final_price', label: 'مقدار تخفیف', align: 'left' },
@@ -55,12 +55,12 @@ const TABLE_HEAD = [
 
 // ----------------------------------------------------------------------
 
-ProductList.getLayout = function getLayout(page: React.ReactNode) {
+SupportList.getLayout = function getLayout(page: React.ReactNode) {
   return <Layout>{page}</Layout>;
 };
 // ----------------------------------------------------------------------
 
-export default function ProductList() {
+export default function SupportList() {
   const {
     dense,
     order,
@@ -74,9 +74,9 @@ export default function ProductList() {
 
   const { push } = useRouter();
 
-  const { data: products, isLoading, error } = useFetchProducts();
-  const tableData = products?.result || [];
-  const { rowPerPage, page, setPage, changeRowPerPage } = useProductPagination(
+  const { data: supports, isLoading, error } = useFetchSupports();
+  const tableData = supports?.result || [];
+  const { rowPerPage, page, setPage, changeRowPerPage } = useSupportPagination(
     useShallow((state) => ({
       page: state.activePage,
       rowPerPage: state.rowPerPage,
@@ -85,13 +85,13 @@ export default function ProductList() {
     }))
   );
 
-  const { setName, name } = useFilterProduct(
+  const { setName, name } = useFilterSupport(
     useShallow((state) => ({
       setName: state.setTitle,
       name: state.title,
     }))
   );
-  const { mutate: deleteProduct } = useDeleteProduct();
+  const { mutate: deleteSupport } = useDeleteSupport();
 
   const handleFilterName = (filterName) => {
     setName(filterName);
@@ -99,7 +99,7 @@ export default function ProductList() {
   };
 
   const handleEditRow = (id) => {
-    push(PATH_DASHBOARD.product.edit(+id));
+    push(PATH_DASHBOARD.support.edit(+id));
   };
 
   const denseHeight = dense ? 52 : 72;
@@ -107,19 +107,19 @@ export default function ProductList() {
   const isNotFound = !tableData.length;
 
   return (
-    <Page title="محصولات ">
+    <Page title="سرویس ها ">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="لیست محصولات"
+          heading="لیست سرویس ها"
           links={[
             { name: 'داشبورد', href: PATH_DASHBOARD.root },
-            { name: 'محصولات', href: PATH_DASHBOARD.product.root },
+            { name: 'سرویس ها', href: PATH_DASHBOARD.support.root },
             { name: 'لیست' },
           ]}
           action={
-            <Link href={PATH_DASHBOARD.product.new}>
+            <Link href={PATH_DASHBOARD.support.new}>
               <Button variant="contained" startIcon={<Iconify icon={'eva:plus-fill'} />}>
-                محصول جدید
+                سرویس جدید
               </Button>
             </Link>
           }
@@ -128,7 +128,7 @@ export default function ProductList() {
         <Card>
           <Divider />
 
-          <ProductTableToolbar filterName={name} onFilterName={handleFilterName} />
+          <SupportTableToolbar filterName={name} onFilterName={handleFilterName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
@@ -144,7 +144,7 @@ export default function ProductList() {
                 {isLoading ? (
                   <TableBody>
                     {Array.from(Array(5)).map((_, index) => (
-                      <ProductTableRowSkeleton key={index} />
+                      <SupportTableRowSkeleton key={index} />
                     ))}
                   </TableBody>
                 ) : error ? (
@@ -158,10 +158,10 @@ export default function ProductList() {
                 ) : (
                   <TableBody>
                     {tableData.map((row) => (
-                      <ProductTableRow
+                      <SupportTableRow
                         key={row.id}
                         row={row}
-                        onDeleteRow={() => deleteProduct(row.id)}
+                        onDeleteRow={() => deleteSupport(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
                       />
                     ))}
@@ -180,13 +180,12 @@ export default function ProductList() {
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
               labelRowsPerPage={'تعداد ردیف در هر صفحه : '}
-              count={(products?.pagination?.lastPage || 0) * rowPerPage}
+              count={(supports?.pagination?.lastPage || 0) * rowPerPage}
               rowsPerPage={rowPerPage}
               page={page}
               onPageChange={(_, thisPage) => setPage(thisPage)}
               onRowsPerPageChange={(event) => changeRowPerPage(+event.target.value)}
             />
-
             <FormControlLabel
               control={<Switch checked={dense} onChange={onChangeDense} />}
               label="فشرده"

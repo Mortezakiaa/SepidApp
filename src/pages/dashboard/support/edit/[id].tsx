@@ -12,39 +12,39 @@ import Layout from '@/layouts';
 import Page from '@components/Page.tsx';
 import HeaderBreadcrumbs from '@components/HeaderBreadcrumbs.tsx';
 // sections
-import ProductEditSkeleton from '@pages/dashboard/product/edit/product-edit-skeleton.tsx';
-import useFetchSingleProduct from '@/react-query/product/useFetchSingleProduct.ts';
-import ProductNewEdit from '@sections/@dashboard/product/ProductNewEdit.tsx';
+import ProductEditSkeleton from '@pages/dashboard/support/edit/support-edit-skeleton.tsx';
+import useFetchSingleSupport from '@/react-query/support/useFetchSingleSupport.ts';
+import SupportNewEdit from '@sections/@dashboard/support/SupportNewEdit.tsx';
 
 // ----------------------------------------------------------------------
 
-ProductEdit.getLayout = function getLayout(page: React.ReactNode) {
+SupportEdit.getLayout = function getLayout(page: React.ReactNode) {
   return <Layout>{page}</Layout>;
 };
 
 // ----------------------------------------------------------------------
 
-export default function ProductEdit() {
+export default function SupportEdit() {
   const { themeStretch } = useSettings();
   const { query } = useRouter();
   const { id } = query;
-  const { data: product, isLoading } = useFetchSingleProduct(+id);
+  const { data: support, isLoading } = useFetchSingleSupport(+id);
 
   return (
-    <Page title="ویرایش محصول">
+    <Page title="ویرایش سرویس">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="ویرایش محصول"
+          heading="ویرایش سرویس"
           links={[
             { name: 'داشبورد', href: PATH_DASHBOARD.root },
-            { name: 'محصولات', href: PATH_DASHBOARD.product.list },
+            { name: 'سرویس', href: PATH_DASHBOARD.support.list },
             { name: id.toString() },
           ]}
         />
 
         <Box sx={{ mb: 5 }} />
 
-        {isLoading ? <ProductEditSkeleton /> : <ProductNewEdit isEdit currentProduct={product} />}
+        {isLoading ? <ProductEditSkeleton /> : <SupportNewEdit isEdit currentSupport={support} />}
       </Container>
     </Page>
   );

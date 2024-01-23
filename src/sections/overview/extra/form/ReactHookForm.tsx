@@ -176,7 +176,7 @@ export default function ReactHookForm() {
 
               {errors.photo && (
                 <FormHelperText sx={{ px: 2, display: 'block' }} error>
-                  {errors.photo.message}
+                  {errors?.photo?.message.toString()}
                 </FormHelperText>
               )}
             </div>

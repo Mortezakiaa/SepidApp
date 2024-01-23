@@ -111,6 +111,15 @@ const navConfig = [
           { title: 'ساخت', path: PATH_DASHBOARD.product.new },
         ],
       },
+      {
+        title: 'سرویس پشتیبانی',
+        path: PATH_DASHBOARD.support.root,
+        icon: ICONS.booking,
+        children: [
+          { title: 'لیست', path: PATH_DASHBOARD.support.list },
+          { title: 'ساخت', path: PATH_DASHBOARD.support.new },
+        ],
+      },
       //
       // // BLOG
       // {
