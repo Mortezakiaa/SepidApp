@@ -30,3 +30,20 @@ export default function useFetchPharmacies() {
     retry: 2,
   });
 }
+
+export function useFetchAllPharmacies() {
+  return useQuery({
+    queryKey: ['pharmacies'],
+    queryFn: async () => {
+      const res = await ApiService.get<Pharmacy[]>('/pharmacy', {
+        take: 1000,
+        select: {
+          id: true,
+          name: true,
+        },
+      });
+      return res.data;
+    },
+    retry: 2,
+  });
+}

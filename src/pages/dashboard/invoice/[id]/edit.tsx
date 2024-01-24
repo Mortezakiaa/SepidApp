@@ -1,7 +1,7 @@
 // next
 import { useRouter } from 'next/router';
 // @mui
-import { Container } from '@mui/material';
+import { CircularProgress, Container } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths';
 // hooks
@@ -14,6 +14,7 @@ import Page from '@components/Page';
 import HeaderBreadcrumbs from '@components/HeaderBreadcrumbs';
 // sections
 import InvoiceNewEditForm from '@sections/@dashboard/invoice/new-edit-form';
+import useFetchSingleOrder from '@/react-query/factors/useFetchSingleOrder.ts';
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +31,7 @@ export default function InvoiceEdit() {
 
   const { id } = query;
 
-  // const factor = useFetchSingleFactor(id);
+  const { data: order, isLoading } = useFetchSingleOrder(+id);
 
   return (
     <Page title="ویرایش فاکتورها">
@@ -40,11 +41,10 @@ export default function InvoiceEdit() {
           links={[
             { name: 'داشبورد', href: PATH_DASHBOARD.root },
             { name: 'فاکتورها', href: PATH_DASHBOARD.invoice.list },
-            { name: 'Factor_id' || '' },
+            { name: order?.id || '' },
           ]}
         />
-
-        <InvoiceNewEditForm isEdit />
+        {isLoading ? <CircularProgress /> : <InvoiceNewEditForm isEdit currentOrder={order} />}
       </Container>
     </Page>
   );

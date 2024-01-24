@@ -46,6 +46,7 @@ import InvoiceAnalytic from '../../../sections/@dashboard/invoice/InvoiceAnalyti
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../../sections/@dashboard/invoice/list';
 import { FactorStatusEnum } from '@/types/enums/factor-status.enum.ts';
 import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
+import useFetchOrders from '@/react-query/factors/useFetchOrders.ts';
 
 // ----------------------------------------------------------------------
 
@@ -137,26 +138,18 @@ export default function InvoiceList() {
     push(PATH_DASHBOARD.invoice.view(id));
   };
 
-  const dataFiltered = applySortFilter({
-    tableData,
-    comparator: getComparator(order, orderBy),
-    filterName,
-    filterService,
-    filterStatus,
-    filterStartDate,
-    filterEndDate,
-  });
+  const { data: dataFiltered } = useFetchOrders();
 
   const denseHeight = dense ? 56 : 76;
 
   const isNotFound =
-    (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterStatus) ||
-    (!dataFiltered.length && !!filterService) ||
-    (!dataFiltered.length && !!filterEndDate) ||
-    (!dataFiltered.length && !!filterStartDate);
+    (!dataFiltered?.length && !!filterName) ||
+    (!dataFiltered?.length && !!filterStatus) ||
+    (!dataFiltered?.length && !!filterService) ||
+    (!dataFiltered?.length && !!filterEndDate) ||
+    (!dataFiltered?.length && !!filterStartDate);
 
-  const getLengthByStatus = (status) => tableData.filter((item) => item.status === status).length;
+  const getLengthByStatus = (status) => tableData?.filter((item) => item?.status === status)?.length;
 
   const getTotalPriceByStatus = (status) =>
     sumBy(
@@ -326,7 +319,7 @@ export default function InvoiceList() {
                 />
 
                 <TableBody>
-                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  {dataFiltered?.map((row) => (
                     <InvoiceTableRow
                       key={row.id}
                       row={row}
@@ -350,7 +343,7 @@ export default function InvoiceList() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={dataFiltered.length}
+              count={dataFiltered?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={onChangePage}
@@ -370,48 +363,3 @@ export default function InvoiceList() {
 }
 
 // ----------------------------------------------------------------------
-
-function applySortFilter({
-  tableData,
-  comparator,
-  filterName,
-  filterStatus,
-  filterService,
-  filterStartDate,
-  filterEndDate,
-}) {
-  const stabilizedThis = tableData.map((el, index) => [el, index]);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  tableData = stabilizedThis.map((el) => el[0]);
-
-  if (filterName) {
-    tableData = tableData.filter(
-      (item) =>
-        item.invoiceNumber.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.invoiceTo.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-    );
-  }
-
-  if (filterStatus !== 'all') {
-    tableData = tableData.filter((item) => item.status === filterStatus);
-  }
-
-  if (filterService !== 'all') {
-    tableData = tableData.filter((item) => item.items.some((c) => c.service === filterService));
-  }
-
-  if (filterStartDate && filterEndDate) {
-    tableData = tableData.filter(
-      (item) =>
-        item.createDate.getTime() >= filterStartDate.getTime() && item.createDate.getTime() <= filterEndDate.getTime()
-    );
-  }
-
-  return tableData;
-}

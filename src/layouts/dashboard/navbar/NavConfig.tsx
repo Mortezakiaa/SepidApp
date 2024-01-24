@@ -97,9 +97,9 @@ const navConfig = [
         icon: ICONS.invoice,
         children: [
           { title: 'لیست', path: PATH_DASHBOARD.invoice.list },
-          { title: 'اطلاعات', path: PATH_DASHBOARD.invoice.demoView },
+          // { title: 'اطلاعات', path: PATH_DASHBOARD.invoice.demoView },
           { title: 'ساخت', path: PATH_DASHBOARD.invoice.new },
-          { title: 'ویرایش', path: PATH_DASHBOARD.invoice.demoEdit },
+          // { title: 'ویرایش', path: PATH_DASHBOARD.invoice.demoEdit },
         ],
       },
       {

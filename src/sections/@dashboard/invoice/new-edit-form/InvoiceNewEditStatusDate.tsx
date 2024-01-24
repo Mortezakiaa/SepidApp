@@ -7,6 +7,7 @@ import { Stack, TextField, MenuItem } from '@mui/material';
 import { RHFSelect } from '@/components/hook-form';
 import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
 import { FactorStatusEnum } from '@/types/enums/factor-status.enum.ts';
+import useFetchPharmacies, { useFetchAllPharmacies } from '@/react-query/pharmacy/useFetchPharmacies.ts';
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +20,8 @@ const STATUS_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function InvoiceNewEditStatusDate() {
+  const { data: pharmacies, isLoading } = useFetchAllPharmacies();
+
   return (
     <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ p: 3, bgcolor: 'background.default' }}>
       <RHFSelect
@@ -41,6 +44,42 @@ export default function InvoiceNewEditStatusDate() {
             }}
           >
             {option.label}
+          </MenuItem>
+        ))}
+      </RHFSelect>
+      <RHFSelect
+        fullWidth
+        name="pharmacy_id"
+        label="داروخانه"
+        disabled={isLoading}
+        InputLabelProps={{ shrink: true }}
+        SelectProps={{ native: false, sx: { textTransform: 'capitalize' } }}
+      >
+        <MenuItem
+          value={' '}
+          sx={{
+            mx: 1,
+            my: 0.5,
+            borderRadius: 0.75,
+            typography: 'body2',
+            textTransform: 'capitalize',
+          }}
+        >
+          {'انتخاب کنید'}
+        </MenuItem>
+        {pharmacies?.result?.map((option) => (
+          <MenuItem
+            key={option.id}
+            value={option.id}
+            sx={{
+              mx: 1,
+              my: 0.5,
+              borderRadius: 0.75,
+              typography: 'body2',
+              textTransform: 'capitalize',
+            }}
+          >
+            {option.name}
           </MenuItem>
         ))}
       </RHFSelect>

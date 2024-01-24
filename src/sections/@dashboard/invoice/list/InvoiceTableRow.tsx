@@ -16,7 +16,7 @@ import { TableMoreMenu } from '@components/table';
 // ----------------------------------------------------------------------
 
 type InvoiceTableRowPropTypes = {
-  row: any;
+  row: Order;
   selected: boolean;
   onSelectRow: () => void;
   onViewRow: () => void;
@@ -27,7 +27,6 @@ type InvoiceTableRowPropTypes = {
 export default function InvoiceTableRow({
   row,
   selected,
-  onSelectRow,
   onViewRow,
   onEditRow,
   onDeleteRow,
@@ -36,7 +35,7 @@ export default function InvoiceTableRow({
   const theme = useTheme();
 
   // Destructure the row data
-  const { sent, invoiceNumber, createDate, dueDate, status, invoiceTo, totalPrice } = row;
+  const { status, pharmacy, factors, id, createdAt, creator } = row;
 
   // State for the open menu
   const [openMenu, setOpenMenuActions] = useState(null);
@@ -53,49 +52,36 @@ export default function InvoiceTableRow({
   // Render the row
   return (
     <TableRow hover selected={selected}>
-      <TableCell padding="checkbox">
-        <Checkbox checked={selected} onClick={onSelectRow} />
-      </TableCell>
-
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar alt={invoiceTo.name} color={createAvatar(invoiceTo.name).color} sx={{ mr: 2 }}>
-          {createAvatar(invoiceTo.name).name}
-        </Avatar>
-
         <Stack>
           <Typography variant="subtitle2" noWrap>
-            {invoiceTo.name}
+            {pharmacy?.name}
           </Typography>
 
           <Link
-            href={'/dashboard/invoice/' + invoiceNumber}
+            href={'/dashboard/invoice/' + id}
             noWrap
             variant="body2"
             onClick={onViewRow}
             sx={{ color: 'text.disabled', cursor: 'pointer' }}
           >
-            {invoiceNumber}
+            {id}
           </Link>
         </Stack>
       </TableCell>
+      <TableCell align="left">{creator?.full_name || creator?.phone_number}</TableCell>
 
-      <TableCell align="left">{fDate(createDate)}</TableCell>
+      <TableCell align="left">{fDate(createdAt)}</TableCell>
 
-      <TableCell align="left">{fDate(dueDate)}</TableCell>
-
-      <TableCell align="center">{fCurrency(totalPrice)}</TableCell>
-
-      <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
-        {sent}
-      </TableCell>
+      <TableCell align="center">{fCurrency(factors.reduce((acc, factor) => acc + factor.final_price, 0))}</TableCell>
 
       <TableCell align="left">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
           color={
-            (status === 'paid' && 'success') ||
-            (status === 'unpaid' && 'warning') ||
-            (status === 'overdue' && 'error') ||
+            (status === 'PAID' && 'success') ||
+            (status === 'PENDING' && 'warning') ||
+            (status === 'UNPAID' && 'error') ||
             'default'
           }
           sx={{ textTransform: 'capitalize' }}

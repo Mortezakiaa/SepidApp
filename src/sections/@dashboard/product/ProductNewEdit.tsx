@@ -56,6 +56,14 @@ export default function ProductNewEdit({ isEdit = false, currentProduct }: Pharm
       if (typeof e.errorData === 'string') toast.error(e.errorData);
       if (typeof e.errorData === 'object') {
         for (let key in e.errorData) {
+          console.log('KEY<<<<<<<<', key);
+          if (Array.isArray(key)) {
+            for (let i = 0; i < e.errorData[key].length; i++) {
+              console.log(`${key}[${i}].${key[i]}`);
+              setError(`${key}[${i}].${key[i]}` as keyof Product, { message: e.errorData[key][0] });
+            }
+            continue;
+          }
           setError(key as keyof Product, { message: e.errorData[key] });
         }
       }
