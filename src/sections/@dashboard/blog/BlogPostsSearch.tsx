@@ -6,14 +6,14 @@ import match from 'autosuggest-highlight/match';
 import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Typography, Autocomplete, InputAdornment, Popper } from '@mui/material';
+import { Typography, Autocomplete, InputAdornment, Popper, PopperProps } from '@mui/material';
 import Link from '@components/Link';
 // hooks
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import useIsMountedRef from '@hooks/useIsMountedRef';
 // utils
 import axios from '@utils/axios.ts';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // components
 import Image from '../../../components/Image';
 import Iconify from '../../../components/Iconify';
@@ -22,7 +22,7 @@ import SearchNotFound from '../../../components/SearchNotFound';
 
 // ----------------------------------------------------------------------
 
-const PopperStyle = styled((props) => <Popper placement="bottom-start" {...props} />)({
+const PopperStyle = styled((props: PopperProps) => <Popper placement="bottom-start" {...props} />)({
   width: '280px !important',
 });
 
@@ -54,16 +54,6 @@ export default function BlogPostsSearch() {
     }
   };
 
-  const handleClick = (title) => {
-    push(PATH_DASHBOARD.blog.view(paramCase(title)));
-  };
-
-  const handleKeyUp = (event) => {
-    if (event.key === 'Enter') {
-      handleClick(searchQuery);
-    }
-  };
-
   return (
     <Autocomplete
       size="small"
@@ -80,7 +70,6 @@ export default function BlogPostsSearch() {
           {...params}
           stretchStart={200}
           placeholder="Search post..."
-          onKeyUp={handleKeyUp}
           InputProps={{
             ...params.InputProps,
             startAdornment: (
@@ -99,7 +88,7 @@ export default function BlogPostsSearch() {
         return (
           <li {...props}>
             <Image alt={cover} src={cover} sx={{ width: 48, height: 48, borderRadius: 1, flexShrink: 0, mr: 1.5 }} />
-            <Link underline="none" onClick={() => handleClick(title)}>
+            <Link href={PATH_DASHBOARD.blog.view(paramCase(title))} underline="none">
               {parts.map((part, index) => (
                 <Typography
                   key={index}

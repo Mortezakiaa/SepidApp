@@ -1,7 +1,7 @@
 // @mui
 import { Stack, Typography, Box, CircularProgress } from '@mui/material';
 // utils
-import { fShortenNumber, fCurrency } from '../../../utils/formatNumber';
+import { fShortenNumber, fCurrency } from '@utils/formatNumber.tsx';
 // components
 import Iconify from '../../../components/Iconify';
 
@@ -39,12 +39,12 @@ export default function InvoiceAnalytic({ title, total, icon, color, percent, pr
         <Typography variant="subtitle2">
           {fShortenNumber(total)}{' '}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-            invoice
+            فاکتور
           </Box>
         </Typography>
 
         <Typography variant="subtitle2" sx={{ color }}>
-          {fCurrency(price)}
+          {fCurrency(price) + '  تومان'}
         </Typography>
       </Stack>
     </Stack>

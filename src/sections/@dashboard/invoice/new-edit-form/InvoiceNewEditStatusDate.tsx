@@ -7,6 +7,7 @@ import { Stack, TextField, MenuItem } from '@mui/material';
 import { RHFSelect } from '@/components/hook-form';
 import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
 import { FactorStatusEnum } from '@/types/enums/factor-status.enum.ts';
+import useFetchPharmacies, { useFetchAllPharmacies } from '@/react-query/pharmacy/useFetchPharmacies.ts';
 
 // ----------------------------------------------------------------------
 
@@ -15,15 +16,12 @@ const STATUS_OPTIONS = [
   { label: 'پرداخت شده', value: FactorStatusEnum.PAID },
   { label: 'پرداخت نشده', value: FactorStatusEnum.UNPAID },
 ];
-const TYPE_OPTIONS = [
-  { label: 'خرید', value: FactorTypeEnum.BUY },
-  { label: 'تمدید', value: FactorTypeEnum.RENEW },
-  { label: 'ارتقا', value: FactorTypeEnum.UPGRADE },
-];
 
 // ----------------------------------------------------------------------
 
 export default function InvoiceNewEditStatusDate() {
+  const { data: pharmacies, isLoading } = useFetchAllPharmacies();
+
   return (
     <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ p: 3, bgcolor: 'background.default' }}>
       <RHFSelect
@@ -51,15 +49,28 @@ export default function InvoiceNewEditStatusDate() {
       </RHFSelect>
       <RHFSelect
         fullWidth
-        name="type"
-        label="نوع فاکتور"
+        name="pharmacy_id"
+        label="داروخانه"
+        disabled={isLoading}
         InputLabelProps={{ shrink: true }}
         SelectProps={{ native: false, sx: { textTransform: 'capitalize' } }}
       >
-        {TYPE_OPTIONS.map((option) => (
+        <MenuItem
+          value={' '}
+          sx={{
+            mx: 1,
+            my: 0.5,
+            borderRadius: 0.75,
+            typography: 'body2',
+            textTransform: 'capitalize',
+          }}
+        >
+          {'انتخاب کنید'}
+        </MenuItem>
+        {pharmacies?.result?.map((option) => (
           <MenuItem
-            key={option.value}
-            value={option.value}
+            key={option.id}
+            value={option.id}
             sx={{
               mx: 1,
               my: 0.5,
@@ -68,7 +79,7 @@ export default function InvoiceNewEditStatusDate() {
               textTransform: 'capitalize',
             }}
           >
-            {option.label}
+            {option.name}
           </MenuItem>
         ))}
       </RHFSelect>

@@ -1,7 +1,8 @@
 import { Stack, InputAdornment, TextField, MenuItem } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 // components
-import Iconify from '../../../../components/Iconify';
+import Iconify from '@components/Iconify';
+import { factorTypeTranslate } from '@locales/enumTranslate.ts';
 
 // ----------------------------------------------------------------------
 
@@ -10,32 +11,24 @@ const INPUT_WIDTH = 160;
 type InvoiceTableToolbarPropTypes = {
   filterName: string;
   filterService: string;
-  filterEndDate: Date;
-  filterStartDate: Date;
-  onFilterName: () => void;
-  onFilterEndDate: () => void;
-  onFilterService: () => void;
-  onFilterStartDate: () => void;
+  onFilterName: (name: string) => void;
+  onFilterService: (event: object) => void;
   optionsService: string[];
 };
 
 export default function InvoiceTableToolbar({
   optionsService,
-  filterStartDate,
-  filterEndDate,
   filterName,
   filterService,
   onFilterName,
   onFilterService,
-  onFilterStartDate,
-  onFilterEndDate,
-}) {
+}: InvoiceTableToolbarPropTypes) {
   return (
     <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ py: 2.5, px: 3 }}>
       <TextField
         fullWidth
         select
-        label="Service type"
+        label="نوع سرویس"
         value={filterService}
         onChange={onFilterService}
         SelectProps={{
@@ -60,46 +53,16 @@ export default function InvoiceTableToolbar({
               textTransform: 'capitalize',
             }}
           >
-            {option}
+            {factorTypeTranslate[option]}
           </MenuItem>
         ))}
       </TextField>
-
-      <DatePicker
-        label="Start date"
-        value={filterStartDate}
-        onChange={onFilterStartDate}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            fullWidth
-            sx={{
-              maxWidth: { md: INPUT_WIDTH },
-            }}
-          />
-        )}
-      />
-
-      <DatePicker
-        label="End date"
-        value={filterEndDate}
-        onChange={onFilterEndDate}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            fullWidth
-            sx={{
-              maxWidth: { md: INPUT_WIDTH },
-            }}
-          />
-        )}
-      />
 
       <TextField
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search client or invoice number..."
+        placeholder="جست و جوی فاکتور"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

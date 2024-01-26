@@ -75,7 +75,7 @@ const navConfig = [
         ],
       },
 
-      // E-COMMERCE
+      // // E-COMMERCE
       // {
       //   title: 'e-commerce',
       //   path: PATH_DASHBOARD.eCommerce.root,
@@ -97,9 +97,27 @@ const navConfig = [
         icon: ICONS.invoice,
         children: [
           { title: 'لیست', path: PATH_DASHBOARD.invoice.list },
-          { title: 'اطلاعات', path: PATH_DASHBOARD.invoice.demoView },
+          // { title: 'اطلاعات', path: PATH_DASHBOARD.invoice.demoView },
           { title: 'ساخت', path: PATH_DASHBOARD.invoice.new },
-          { title: 'ویرایش', path: PATH_DASHBOARD.invoice.demoEdit },
+          // { title: 'ویرایش', path: PATH_DASHBOARD.invoice.demoEdit },
+        ],
+      },
+      {
+        title: 'محصولات',
+        path: PATH_DASHBOARD.product.root,
+        icon: ICONS.ecommerce,
+        children: [
+          { title: 'لیست', path: PATH_DASHBOARD.product.list },
+          { title: 'ساخت', path: PATH_DASHBOARD.product.new },
+        ],
+      },
+      {
+        title: 'سرویس پشتیبانی',
+        path: PATH_DASHBOARD.support.root,
+        icon: ICONS.booking,
+        children: [
+          { title: 'لیست', path: PATH_DASHBOARD.support.list },
+          { title: 'ساخت', path: PATH_DASHBOARD.support.new },
         ],
       },
       //

@@ -1,22 +1,22 @@
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Checkbox, TableRow, TableCell, Typography, Stack, MenuItem } from '@mui/material';
 import Link from '@components/Link';
 // utils
-import { fDate } from '../../../../utils/formatTime';
-import createAvatar from '../../../../utils/createAvatar';
-import { fCurrency } from '../../../../utils/formatNumber';
+import { fDate } from '@utils/formatTime.tsx';
+import createAvatar from '@utils/createAvatar';
+import { fCurrency } from '@utils/formatNumber.tsx';
 // components
-import Label from '../../../../components/Label';
-import Avatar from '../../../../components/Avatar';
-import Iconify from '../../../../components/Iconify';
-import { TableMoreMenu } from '../../../../components/table';
+import Label from '@components/Label';
+import Avatar from '@components/Avatar';
+import Iconify from '@components/Iconify';
+import { TableMoreMenu } from '@components/table';
 
 // ----------------------------------------------------------------------
 
 type InvoiceTableRowPropTypes = {
-  row: any;
+  row: Order;
   selected: boolean;
   onSelectRow: () => void;
   onViewRow: () => void;
@@ -27,64 +27,61 @@ type InvoiceTableRowPropTypes = {
 export default function InvoiceTableRow({
   row,
   selected,
-  onSelectRow,
   onViewRow,
   onEditRow,
   onDeleteRow,
-}: InvoiceTableRowPropTypes) {
+}: InvoiceTableRowPropTypes): ReactElement {
+  // Use the theme from Material UI
   const theme = useTheme();
 
-  const { sent, invoiceNumber, createDate, dueDate, status, invoiceTo, totalPrice } = row;
+  // Destructure the row data
+  const { status, pharmacy, factors, id, createdAt, creator } = row;
 
+  // State for the open menu
   const [openMenu, setOpenMenuActions] = useState(null);
 
   const handleOpenMenu = (event) => {
     setOpenMenuActions(event.currentTarget);
   };
 
+  // Handle closing the menu
   const handleCloseMenu = () => {
     setOpenMenuActions(null);
   };
 
+  // Render the row
   return (
     <TableRow hover selected={selected}>
-      <TableCell padding="checkbox">
-        <Checkbox checked={selected} onClick={onSelectRow} />
-      </TableCell>
-
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar alt={invoiceTo.name} color={createAvatar(invoiceTo.name).color} sx={{ mr: 2 }}>
-          {createAvatar(invoiceTo.name).name}
-        </Avatar>
-
         <Stack>
           <Typography variant="subtitle2" noWrap>
-            {invoiceTo.name}
+            {pharmacy?.name}
           </Typography>
 
-          <Link noWrap variant="body2" onClick={onViewRow} sx={{ color: 'text.disabled', cursor: 'pointer' }}>
-            {invoiceNumber}
+          <Link
+            href={'/dashboard/invoice/' + id}
+            noWrap
+            variant="body2"
+            onClick={onViewRow}
+            sx={{ color: 'text.disabled', cursor: 'pointer' }}
+          >
+            {id}
           </Link>
         </Stack>
       </TableCell>
+      <TableCell align="left">{creator?.full_name || creator?.phone_number}</TableCell>
 
-      <TableCell align="left">{fDate(createDate)}</TableCell>
+      <TableCell align="left">{fDate(createdAt)}</TableCell>
 
-      <TableCell align="left">{fDate(dueDate)}</TableCell>
-
-      <TableCell align="center">{fCurrency(totalPrice)}</TableCell>
-
-      <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
-        {sent}
-      </TableCell>
+      <TableCell align="center">{fCurrency(factors.reduce((acc, factor) => acc + factor.final_price, 0))}</TableCell>
 
       <TableCell align="left">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
           color={
-            (status === 'paid' && 'success') ||
-            (status === 'unpaid' && 'warning') ||
-            (status === 'overdue' && 'error') ||
+            (status === 'PAID' && 'success') ||
+            (status === 'PENDING' && 'warning') ||
+            (status === 'UNPAID' && 'error') ||
             'default'
           }
           sx={{ textTransform: 'capitalize' }}
@@ -108,7 +105,7 @@ export default function InvoiceTableRow({
                 sx={{ color: 'error.main' }}
               >
                 <Iconify icon={'eva:trash-2-outline'} />
-                Delete
+                حذف
               </MenuItem>
 
               <MenuItem
@@ -118,7 +115,7 @@ export default function InvoiceTableRow({
                 }}
               >
                 <Iconify icon={'eva:eye-fill'} />
-                View
+                نمایش
               </MenuItem>
 
               <MenuItem
@@ -128,7 +125,7 @@ export default function InvoiceTableRow({
                 }}
               >
                 <Iconify icon={'eva:edit-fill'} />
-                Edit
+                ویرایش
               </MenuItem>
             </>
           }

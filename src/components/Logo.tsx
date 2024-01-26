@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { Box, SxProps } from '@mui/material';
 import Link from '@components/Link';
 // ----------------------------------------------------------------------
-import logoImg from '/public/logo/brand.svg';
+import logoImg from 'public/logo/brand.svg';
 import Image from '@components/Image.tsx';
 const Logo = forwardRef(({ disabledLink = false, sx }: propTypes, ref) => {
   const theme = useTheme();

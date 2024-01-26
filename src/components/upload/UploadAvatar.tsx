@@ -1,5 +1,5 @@
 import isString from 'lodash/isString';
-import { useDropzone } from 'react-dropzone';
+import { DropzoneProps, useDropzone } from 'react-dropzone';
 // @mui
 import { Typography } from '@mui/material';
 import { SxProps, styled } from '@mui/material/styles';
@@ -62,7 +62,7 @@ type UploadAvatarPropTypes = {
   file?: string | any;
   helperText?: ReactNode;
   sx?: SxProps;
-};
+} & Partial<DropzoneProps>;
 
 export default function UploadAvatar({ error, file, helperText, sx, ...other }: UploadAvatarPropTypes) {
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({

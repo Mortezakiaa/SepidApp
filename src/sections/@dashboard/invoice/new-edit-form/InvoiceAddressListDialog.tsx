@@ -9,9 +9,9 @@ import Scrollbar from '../../../../components/Scrollbar';
 type InvoiceAddressListDialogPropTypes = {
   addressOptions: any[];
   onClose: () => void;
-  onSelect: () => void;
+  onSelect: (value: any) => void;
   open: boolean;
-  selected: () => void;
+  selected: (item: number) => boolean;
 };
 
 export default function InvoiceAddressListDialog({

@@ -25,7 +25,6 @@ export const getSettings = (cookies: object) => {
 // ----------------------------------------------------------------------
 
 const getData = (value: string) => {
-  console.log(value);
   if (value === 'true' || value === 'false') {
     return JSON.parse(value);
   }

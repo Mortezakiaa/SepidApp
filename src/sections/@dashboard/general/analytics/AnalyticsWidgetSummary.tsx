@@ -28,10 +28,10 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type AnalyticsWidgetSummaryPropTypes = {
-  color: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
-  icon: string;
-  title: string;
-  total: number;
+  color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
+  icon?: string;
+  title?: string;
+  total?: number;
 };
 
 export default function AnalyticsWidgetSummary({
@@ -44,7 +44,7 @@ export default function AnalyticsWidgetSummary({
     <RootStyle
       sx={{
         color: (theme) => theme.palette[color]['darker'],
-        bgcolor: (theme) => theme.palette[color].lighter,
+        bgcolor: (theme) => theme.palette[color]['lighter'],
       }}
     >
       <IconWrapperStyle

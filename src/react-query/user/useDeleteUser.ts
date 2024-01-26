@@ -12,6 +12,7 @@ export default function useDeleteUser() {
     mutationFn: (id: number) => deleteUser(id),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['users'] });
+      await queryClient.invalidateQueries({ queryKey: ['pharmacyUsers'] });
     },
     onError: (error) => {
       toast.error(error?.errorData || 'خطا');

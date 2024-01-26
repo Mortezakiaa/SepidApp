@@ -45,7 +45,7 @@ export default function MapGeojson({ ...other }) {
 
   const [hoverInfo, setHoverInfo] = useState(null);
 
-  const dataLayer = {
+  const dataLayer: any = {
     id: 'data',
     type: 'fill',
     paint: {
@@ -88,7 +88,10 @@ export default function MapGeojson({ ...other }) {
     );
   }, []);
 
-  const data = useMemo(() => allData && updatePercentiles(allData, (f) => f.properties.income[year]), [allData, year]);
+  const data: any = useMemo(
+    () => allData && updatePercentiles(allData, (f) => f.properties.income[year]),
+    [allData, year]
+  );
 
   return (
     <>

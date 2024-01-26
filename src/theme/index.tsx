@@ -13,7 +13,7 @@ import typography from './typography';
 import breakpoints from './breakpoints';
 import componentsOverride from './overrides';
 import shadows, { customShadows } from './shadows';
-import { Direction } from '@mui/system/createTheme/createTheme';
+import { Direction } from '@mui/material';
 import { TypographyOptions } from '@mui/material/styles/createTypography';
 import { PaletteColor } from '@mui/material/styles/createPalette';
 

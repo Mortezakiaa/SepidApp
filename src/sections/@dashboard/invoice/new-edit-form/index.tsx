@@ -1,3 +1,4 @@
+'use client';
 import * as Yup from 'yup';
 import { useMemo, useState, useEffect } from 'react';
 // next
@@ -15,33 +16,43 @@ import InvoiceNewEditDetails from './InvoiceNewEditDetails';
 import InvoiceNewEditStatusDate from './InvoiceNewEditStatusDate';
 import { FactorStatusEnum } from '@/types/enums/factor-status.enum.ts';
 import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
+import useFetchSupports from '@/react-query/support/useFetchSupports.ts';
+import useCreateOrder from '@/react-query/factors/useCreateOrder.ts';
+import useUpdateOrder from '@/react-query/factors/useUpdateOrder.ts';
+import toast from 'react-hot-toast';
 
 // ----------------------------------------------------------------------
 
 type InvoiceNewEditFormPropTypes = {
   isEdit?: boolean;
-  currentFactor?: Factor;
+  currentOrder?: Order;
 };
 
-export default function InvoiceNewEditForm({ isEdit, currentFactor }: InvoiceNewEditFormPropTypes) {
+export default function InvoiceNewEditForm({ isEdit, currentOrder }: InvoiceNewEditFormPropTypes) {
   const { push } = useRouter();
   const [loadingSend, setLoadingSend] = useState(false);
-  const FactorSchema = Yup.object().shape({
-    price: Yup.string().required('قیمت اجباری است'),
-    type: Yup.string().required('نوع فاکتور اجباری است'),
-    order_id: Yup.number().required('سفارش مربوطه اجباری است'),
-  });
+  const FactorSchema = Yup.object().shape({});
 
-  const defaultValues = useMemo<Partial<Factor>>(
+  const { mutate: createOrder, isPending: isCreatePending, error: errorCreate } = useCreateOrder();
+  const { mutate: updateOrder, isPending: isUpdatePending, error: errorUpdate } = useUpdateOrder();
+
+  const defaultValues = useMemo<Partial<Order>>(
     () => ({
-      price: currentFactor?.price || 0,
-      type: currentFactor?.type || FactorTypeEnum.BUY,
-      status: currentFactor?.status || FactorStatusEnum.UNPAID,
-      offer_price: currentFactor?.offer_price || 0,
-      final_price: currentFactor?.final_price || 0,
-      order: currentFactor?.order || null,
+      all_price: 0,
+      pharmacy_id: currentOrder?.pharmacy_id || ' ',
+      status: currentOrder?.status || FactorStatusEnum.UNPAID,
+      factors: currentOrder?.factors || [
+        {
+          product_id: 'All',
+          support_id: 'All',
+          price: 0,
+          type: FactorTypeEnum.BUY,
+          final_price: 0,
+          discount: 0,
+        },
+      ],
     }),
-    [currentFactor]
+    [currentOrder]
   );
 
   const methods = useForm({
@@ -51,25 +62,58 @@ export default function InvoiceNewEditForm({ isEdit, currentFactor }: InvoiceNew
 
   const {
     reset,
-    watch,
     handleSubmit,
-    formState: { isSubmitting },
+    setError,
+    formState: { isSubmitting, errors },
   } = methods;
 
   useEffect(() => {
-    if (isEdit && currentFactor) {
+    if (isEdit && currentOrder) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEdit, currentFactor]);
+  }, [isEdit, currentOrder]);
 
-  const onSubmit = (data) => {};
+  useEffect(() => {
+    const e = errorCreate || errorUpdate;
+    if (e) {
+      if (typeof e.errorData === 'string') toast.error(e.errorData);
+      if (typeof e.errorData === 'object') {
+        // Iterate over the keys in the errorData object
+        for (let parentKey in e.errorData) {
+          // If the value of the current key is an array
+          if (Array.isArray(e.errorData[parentKey])) {
+            // Iterate over the elements in the array
+            for (let i = 0; i < e.errorData[parentKey].length; i++) {
+              // Iterate over the values in the current array element
+              for (const value of e.errorData[parentKey][i]) {
+                // Iterate over the keys in the current value
+                for (const key in value) {
+                  // Set an error in the form with the key as the field name and the value as the error message
+                  setError(`${parentKey}[${i}].${key}` as keyof Order, { message: value[key] });
+                }
+              }
+            }
+            // Skip to the next iteration of the parent loop
+            continue;
+          }
+          // If the value of the current key is not an array, set an error in the form with the key as the field name and the value as the error message
+          setError(parentKey as keyof Order, { message: e.errorData[parentKey] });
+        }
+      }
+    }
+  }, [errorCreate, errorUpdate]);
 
+  console.log(errors);
+  const onSubmit = (data: Partial<Order>) => {
+    if (isEdit) {
+      updateOrder({ id: currentOrder.id, body: data });
+    } else createOrder(data);
+  };
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Card>
         <InvoiceNewEditStatusDate />
         <InvoiceNewEditDetails />

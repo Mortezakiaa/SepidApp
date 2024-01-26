@@ -1,22 +1,22 @@
-// i18n
+// // i18n
 import '../locales/i18n';
-
-// highlight
-import '../utils/highlight';
-
+//
+// // highlight
+// import '../utils/highlight';
+//
 import cookie from 'cookie';
-// next
+// // next
 import Head from 'next/head';
 import App, { AppContext } from 'next/app';
-// @mui
-// utils
+// // @mui
+// // utils
 import { getSettings } from '../utils/settings';
-// contexts
+// // contexts
 import { SettingsProvider } from '../contexts/SettingsContext';
 import { CollapseDrawerProvider } from '../contexts/CollapseDrawerContext';
-// theme
+// // theme
 import ThemeProvider from '../theme';
-// components
+// // components
 import Settings from '../components/settings';
 import { ChartStyle } from '../components/chart';
 import RtlLayout from '../components/RtlLayout';
@@ -25,33 +25,26 @@ import ThemeColorPresets from '../components/ThemeColorPresets';
 import NotistackProvider from '../components/NotistackProvider';
 import ThemeLocalization from '../components/ThemeLocalization';
 import MotionLazyContainer from '../components/animate/MotionLazyContainer';
-
-// Check our docs
-// https://docs-minimals.vercel.app/authentication/ts-version
-
+//
+// // Check our docs
+// // https://docs-minimals.vercel.app/authentication/ts-version
+//
 import { AuthProvider } from '../contexts/JWTContext';
-import React from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// import React from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import ClientProvider from '@contexts/ClientProvider.tsx';
+import ClientProvider from '@contexts/providers/ClientProvider.tsx';
 import '@/theme/index.css';
-import { Toaster } from 'react-hot-toast';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { AdapterDateFnsJalali } from '@mui/x-date-pickers/AdapterDateFnsJalali';
-// ----------------------------------------------------------------------
+import ToastProvider from '@contexts/providers/ToastProvider.tsx';
+import ReactQueryProvider from '@contexts/providers/ReactQueryProvider.tsx';
+// // ----------------------------------------------------------------------
 
 type propsType = {
   Component: any;
   pageProps: object;
   settings: object;
 };
-const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } } });
-declare module '@tanstack/react-query' {
-  interface Register {
-    defaultError: ResponseModel<any>;
-  }
-}
 
 export default function MyApp(props: propsType) {
   const { Component, pageProps, settings } = props;
@@ -64,7 +57,7 @@ export default function MyApp(props: propsType) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ClientProvider>
-        <QueryClientProvider client={queryClient}>
+        <ReactQueryProvider>
           <AuthProvider>
             <LocalizationProvider dateAdapter={AdapterDateFnsJalali}>
               <CollapseDrawerProvider>
@@ -76,12 +69,9 @@ export default function MyApp(props: propsType) {
                           <ThemeLocalization>
                             <RtlLayout>
                               <ChartStyle />
-                              <Toaster
-                                position={'bottom-right'}
-                                toastOptions={{ duration: 3000, style: { background: '#090909', color: '#dcdcdc' } }}
-                              />
+                              <ToastProvider />
+                              {process.env.NODE_ENV !== 'production' && <Settings />}
                               {process.env.NODE_ENV !== 'production' && <ReactQueryDevtools initialIsOpen={false} />}
-                              {/*<Settings />*/}
                               <ProgressBar />
                               {getLayout(<Component {...pageProps} />)}
                             </RtlLayout>
@@ -94,7 +84,7 @@ export default function MyApp(props: propsType) {
               </CollapseDrawerProvider>
             </LocalizationProvider>
           </AuthProvider>
-        </QueryClientProvider>
+        </ReactQueryProvider>
       </ClientProvider>
     </>
   );
@@ -106,6 +96,7 @@ MyApp.getInitialProps = async (context: AppContext) => {
   const appProps = await App.getInitialProps(context);
   const cookies = cookie.parse(context.ctx.req ? context.ctx.req.headers.cookie || '' : document.cookie);
   const settings = getSettings(cookies);
+
   return {
     ...appProps,
     settings,

@@ -5,6 +5,7 @@ import { FormHelperText } from '@mui/material';
 //
 import { UploadAvatar, UploadSingleFile, UploadMultiFile } from '../upload';
 import { DropzoneProps } from 'react-dropzone';
+import { UploadMultiFilePropTypes } from '@components/upload/UploadMultiFile.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -77,7 +78,7 @@ export function RHFUploadSingleFile({ name, ...other }: RHFUploadSingleFilePropT
 
 type RHFUploadMultiFilePropTypes = {
   name?: string;
-} & DropzoneProps;
+} & UploadMultiFilePropTypes;
 
 export function RHFUploadMultiFile({ name, ...other }: RHFUploadMultiFilePropTypes) {
   const { control } = useFormContext();

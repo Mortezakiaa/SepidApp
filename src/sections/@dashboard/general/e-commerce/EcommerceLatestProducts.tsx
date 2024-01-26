@@ -2,9 +2,9 @@
 import { Box, Card, CardHeader, Typography, Stack } from '@mui/material';
 import Link from '@components/Link';
 // utils
-import { fCurrency } from '../../../../utils/formatNumber';
+import { fCurrency } from '@utils/formatNumber.tsx';
 // _mock_
-import { _ecommerceLatestProducts } from '../../../../_mock';
+import { _ecommerceLatestProducts } from '@/_mock';
 //
 import Image from '../../../../components/Image';
 import Scrollbar from '../../../../components/Scrollbar';
@@ -48,7 +48,9 @@ function ProductItem({ product }: ProductItemPropTypes) {
       <Image alt={name} src={image} sx={{ width: 48, height: 48, borderRadius: 1.5, flexShrink: 0 }} />
 
       <Box sx={{ flexGrow: 1, minWidth: 200 }}>
-        <Link sx={{ color: 'text.primary', typography: 'subtitle2' }}>{name}</Link>
+        <Link href={'/product/' + name} sx={{ color: 'text.primary', typography: 'subtitle2' }}>
+          {name}
+        </Link>
 
         <Stack direction="row">
           {hasSale && (

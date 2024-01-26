@@ -25,44 +25,41 @@ import {
   FormControlLabel,
 } from '@mui/material';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // hooks
 import useTabs from '../../../hooks/useTabs';
 import useSettings from '../../../hooks/useSettings';
 import useTable, { getComparator, emptyRows } from '../../../hooks/useTable';
 // _mock_
-import { _invoices } from '../../../_mock';
+import { _invoices } from '@/_mock';
 // layouts
-import Layout from '../../../layouts';
+import Layout from '@/layouts';
 // components
-import Page from '../../../components/Page';
-import Label from '../../../components/Label';
-import Iconify from '../../../components/Iconify';
-import Scrollbar from '../../../components/Scrollbar';
-import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../components/table';
+import Page from '@components/Page';
+import Label from '@components/Label';
+import Iconify from '@components/Iconify';
+import Scrollbar from '@components/Scrollbar';
+import HeaderBreadcrumbs from '@components/HeaderBreadcrumbs';
+import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '@components/table';
 // sections
 import InvoiceAnalytic from '../../../sections/@dashboard/invoice/InvoiceAnalytic';
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../../sections/@dashboard/invoice/list';
+import { FactorStatusEnum } from '@/types/enums/factor-status.enum.ts';
+import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
+import useFetchOrders from '@/react-query/factors/useFetchOrders.ts';
 
 // ----------------------------------------------------------------------
 
-const SERVICE_OPTIONS = [
-  'all',
-  'full stack development',
-  'backend development',
-  'ui design',
-  'ui/ux design',
-  'front end development',
-];
+const SERVICE_OPTIONS = ['all', ...Object.values(FactorTypeEnum)];
 
 const TABLE_HEAD = [
-  { id: 'invoiceNumber', label: 'Client', align: 'left' },
-  { id: 'createDate', label: 'Create', align: 'left' },
-  { id: 'dueDate', label: 'Due', align: 'left' },
-  { id: 'price', label: 'Amount', align: 'center', width: 140 },
-  { id: 'sent', label: 'Sent', align: 'center', width: 140 },
-  { id: 'status', label: 'Status', align: 'left' },
+  { id: 'invoiceNumber', label: 'مشتری', align: 'left' },
+  { id: 'createDate', label: 'سازنده', align: 'left' },
+  { id: 'dueDate', label: 'تاریخ ساخت', align: 'left' },
+  { id: 'sent', label: 'مقدار تخفیف', align: 'center', width: 140 },
+  { id: 'price', label: 'مبلغ کل', align: 'center', width: 140 },
+  { id: 'status', label: 'تعداد ایتم', align: 'left' },
+  { id: 'status', label: 'وضعیت', align: 'left' },
   { id: '' },
 ];
 
@@ -141,26 +138,18 @@ export default function InvoiceList() {
     push(PATH_DASHBOARD.invoice.view(id));
   };
 
-  const dataFiltered = applySortFilter({
-    tableData,
-    comparator: getComparator(order, orderBy),
-    filterName,
-    filterService,
-    filterStatus,
-    filterStartDate,
-    filterEndDate,
-  });
+  const { data: dataFiltered } = useFetchOrders();
 
   const denseHeight = dense ? 56 : 76;
 
   const isNotFound =
-    (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterStatus) ||
-    (!dataFiltered.length && !!filterService) ||
-    (!dataFiltered.length && !!filterEndDate) ||
-    (!dataFiltered.length && !!filterStartDate);
+    (!dataFiltered?.length && !!filterName) ||
+    (!dataFiltered?.length && !!filterStatus) ||
+    (!dataFiltered?.length && !!filterService) ||
+    (!dataFiltered?.length && !!filterEndDate) ||
+    (!dataFiltered?.length && !!filterStartDate);
 
-  const getLengthByStatus = (status) => tableData.filter((item) => item.status === status).length;
+  const getLengthByStatus = (status) => tableData?.filter((item) => item?.status === status)?.length;
 
   const getTotalPriceByStatus = (status) =>
     sumBy(
@@ -171,27 +160,31 @@ export default function InvoiceList() {
   const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
 
   const TABS = [
-    { value: 'all', label: 'All', color: 'info', count: tableData.length },
-    { value: 'paid', label: 'Paid', color: 'success', count: getLengthByStatus('paid') },
-    { value: 'unpaid', label: 'Unpaid', color: 'warning', count: getLengthByStatus('unpaid') },
-    { value: 'overdue', label: 'Overdue', color: 'error', count: getLengthByStatus('overdue') },
-    { value: 'draft', label: 'Draft', color: 'default', count: getLengthByStatus('draft') },
+    { value: 'all', label: 'همه', color: 'info', count: tableData.length },
+    { value: FactorStatusEnum.PAID, label: 'پرداخت شده', color: 'success', count: getLengthByStatus('paid') },
+    {
+      value: FactorStatusEnum.PENDING,
+      label: 'در انتظار پرداخت',
+      color: 'warning',
+      count: getLengthByStatus('unpaid'),
+    },
+    { value: FactorStatusEnum.UNPAID, label: 'پرداخت نشده', color: 'error', count: getLengthByStatus('overdue') },
   ];
 
   return (
-    <Page title="Invoice: List">
+    <Page title="لیست فاکتور ها">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Invoice List"
+          heading="لیست فاکتور ها"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Invoices', href: PATH_DASHBOARD.invoice.root },
-            { name: 'List' },
+            { name: 'داشبورد', href: PATH_DASHBOARD.root },
+            { name: 'فاکتور', href: PATH_DASHBOARD.invoice.root },
+            { name: 'لیست' },
           ]}
           action={
             <Link href={PATH_DASHBOARD.invoice.new}>
               <Button variant="contained" startIcon={<Iconify icon={'eva:plus-fill'} />}>
-                New Invoice
+                فاکتور جدید
               </Button>
             </Link>
           }
@@ -205,7 +198,7 @@ export default function InvoiceList() {
               sx={{ py: 2 }}
             >
               <InvoiceAnalytic
-                title="Total"
+                title="همه"
                 total={tableData.length}
                 percent={100}
                 price={sumBy(tableData, 'totalPrice')}
@@ -213,7 +206,7 @@ export default function InvoiceList() {
                 color={theme.palette.info.main}
               />
               <InvoiceAnalytic
-                title="Paid"
+                title="پرداخت شده"
                 total={getLengthByStatus('paid')}
                 percent={getPercentByStatus('paid')}
                 price={getTotalPriceByStatus('paid')}
@@ -221,7 +214,7 @@ export default function InvoiceList() {
                 color={theme.palette.success.main}
               />
               <InvoiceAnalytic
-                title="Unpaid"
+                title="در انتظار پرداحت"
                 total={getLengthByStatus('unpaid')}
                 percent={getPercentByStatus('unpaid')}
                 price={getTotalPriceByStatus('unpaid')}
@@ -229,20 +222,12 @@ export default function InvoiceList() {
                 color={theme.palette.warning.main}
               />
               <InvoiceAnalytic
-                title="Overdue"
+                title="پرداخت نشده"
                 total={getLengthByStatus('overdue')}
                 percent={getPercentByStatus('overdue')}
                 price={getTotalPriceByStatus('overdue')}
                 icon="eva:bell-fill"
                 color={theme.palette.error.main}
-              />
-              <InvoiceAnalytic
-                title="Draft"
-                total={getLengthByStatus('draft')}
-                percent={getPercentByStatus('draft')}
-                price={getTotalPriceByStatus('draft')}
-                icon="eva:file-fill"
-                color={theme.palette.text.secondary}
               />
             </Stack>
           </Scrollbar>
@@ -276,16 +261,8 @@ export default function InvoiceList() {
           <InvoiceTableToolbar
             filterName={filterName}
             filterService={filterService}
-            filterStartDate={filterStartDate}
-            filterEndDate={filterEndDate}
             onFilterName={handleFilterName}
             onFilterService={handleFilterService}
-            onFilterStartDate={(newValue) => {
-              setFilterStartDate(newValue);
-            }}
-            onFilterEndDate={(newValue) => {
-              setFilterEndDate(newValue);
-            }}
             optionsService={SERVICE_OPTIONS}
           />
 
@@ -338,18 +315,11 @@ export default function InvoiceList() {
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
                   rowCount={tableData.length}
-                  numSelected={selected.length}
                   onSort={onSort}
-                  onSelectAllRows={(checked) =>
-                    onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
                 />
 
                 <TableBody>
-                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  {dataFiltered?.map((row) => (
                     <InvoiceTableRow
                       key={row.id}
                       row={row}
@@ -373,7 +343,7 @@ export default function InvoiceList() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={dataFiltered.length}
+              count={dataFiltered?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={onChangePage}
@@ -393,48 +363,3 @@ export default function InvoiceList() {
 }
 
 // ----------------------------------------------------------------------
-
-function applySortFilter({
-  tableData,
-  comparator,
-  filterName,
-  filterStatus,
-  filterService,
-  filterStartDate,
-  filterEndDate,
-}) {
-  const stabilizedThis = tableData.map((el, index) => [el, index]);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-
-  tableData = stabilizedThis.map((el) => el[0]);
-
-  if (filterName) {
-    tableData = tableData.filter(
-      (item) =>
-        item.invoiceNumber.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.invoiceTo.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-    );
-  }
-
-  if (filterStatus !== 'all') {
-    tableData = tableData.filter((item) => item.status === filterStatus);
-  }
-
-  if (filterService !== 'all') {
-    tableData = tableData.filter((item) => item.items.some((c) => c.service === filterService));
-  }
-
-  if (filterStartDate && filterEndDate) {
-    tableData = tableData.filter(
-      (item) =>
-        item.createDate.getTime() >= filterStartDate.getTime() && item.createDate.getTime() <= filterEndDate.getTime()
-    );
-  }
-
-  return tableData;
-}

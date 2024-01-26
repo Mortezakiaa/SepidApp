@@ -14,13 +14,13 @@ interface SoftwareInfo {
   printer_count: number;
 }
 interface BaseEntity {
-  id: number;
+  id?: number;
 
-  createdAt: Date;
+  createdAt?: Date;
 
-  updatedAt: Date;
+  updatedAt?: Date;
 
-  deletedAt: Date;
+  deletedAt?: Date;
 }
 
 interface Pharmacy extends BaseEntity {
@@ -130,19 +130,17 @@ enum FactorStatusEnum {
 }
 
 interface Order extends BaseEntity {
-  factor_id: number;
+  pharmacy_id: number | any;
 
-  pharmacy_id: number;
+  factors?: Factor[];
 
-  product_id: number;
+  creator_id?: number;
 
-  support_id: number;
+  creator?: User;
+
+  status: FactorStatusEnum;
 
   pharmacy: Pharmacy;
-
-  product: Product;
-
-  support: Support;
 }
 
 interface Support extends BaseEntity {
@@ -166,8 +164,6 @@ interface Product extends BaseEntity {
 
   info: string;
 
-  type: ProductTypeEnum;
-
   price: number;
 
   offer_price: number;
@@ -178,27 +174,21 @@ interface Product extends BaseEntity {
 }
 
 interface Factor extends BaseEntity {
-  order_id: number;
-
-  price: number;
-
-  final_price: number;
-
-  offer_price: number;
-
-  type: FactorTypeEnum;
-
-  creator_id: number;
-
-  payer_id: number;
-
-  status: FactorStatusEnum;
-
-  order: Order;
-
-  creator: User;
-
-  transactions: Transaction[];
+  order_id?: number;
+  price?: number;
+  final_price?: number;
+  discount?: number;
+  type?: FactorTypeEnum;
+  creator_id?: number;
+  payer_id?: number;
+  product_id?: number | 'All';
+  support_id?: number | 'All';
+  status?: FactorStatusEnum;
+  order?: Order;
+  creator?: User;
+  transactions?: Transaction[];
+  product?: Product;
+  support?: Support;
 }
 
 interface Transaction extends BaseEntity {
