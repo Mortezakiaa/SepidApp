@@ -14,7 +14,7 @@ import Page from '@components/Page';
 import HeaderBreadcrumbs from '@components/HeaderBreadcrumbs';
 // sections
 import InvoiceNewEditForm from '@sections/@dashboard/invoice/new-edit-form';
-import useFetchSingleOrder from '@/react-query/factors/useFetchSingleOrder.ts';
+import useFetchSingleOrder from '@/react-query/orders/useFetchSingleOrder.ts';
 
 // ----------------------------------------------------------------------
 

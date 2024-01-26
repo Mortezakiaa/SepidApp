@@ -15,23 +15,21 @@ import {
   Stack,
   Switch,
   Button,
-  Tooltip,
   Divider,
   TableBody,
   Container,
-  IconButton,
   TableContainer,
   TablePagination,
   FormControlLabel,
+  Backdrop,
+  Typography,
 } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // hooks
-import useTabs from '../../../hooks/useTabs';
-import useSettings from '../../../hooks/useSettings';
-import useTable, { getComparator, emptyRows } from '../../../hooks/useTable';
-// _mock_
-import { _invoices } from '@/_mock';
+import useTabs from '@hooks/useTabs';
+import useSettings from '@hooks/useSettings';
+import useTable from '@hooks/useTable';
 // layouts
 import Layout from '@/layouts';
 // components
@@ -40,17 +38,25 @@ import Label from '@components/Label';
 import Iconify from '@components/Iconify';
 import Scrollbar from '@components/Scrollbar';
 import HeaderBreadcrumbs from '@components/HeaderBreadcrumbs';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '@components/table';
+import { TableHeadCustom, TableNoData } from '@components/table';
 // sections
 import InvoiceAnalytic from '../../../sections/@dashboard/invoice/InvoiceAnalytic';
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../../sections/@dashboard/invoice/list';
 import { FactorStatusEnum } from '@/types/enums/factor-status.enum.ts';
 import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
-import useFetchOrders from '@/react-query/factors/useFetchOrders.ts';
+import useFetchOrders from '@/react-query/orders/useFetchOrders.ts';
+import PharmacyTableRowSkeleton from '@sections/@dashboard/pharmacy/list/PharmacyTableRowSkeleton.tsx';
+import { Icon } from '@iconify/react';
+import useOrderPagination from '@/zustand/orders/useOrderPagination.ts';
+import { useShallow } from 'zustand/react/shallow';
+import useOrderStatistics from '@/react-query/orders/useOrderStatistics.ts';
+import useOrderSetTab from '@/zustand/orders/useOrderSetTab.ts';
+import InvoiceTableRowSkeleton from '@sections/@dashboard/invoice/list/InvoiceTableRowSkeleton.tsx';
+import useFilterOrder from '@/zustand/orders/useFilterOrder.ts';
 
 // ----------------------------------------------------------------------
 
-const SERVICE_OPTIONS = ['all', ...Object.values(FactorTypeEnum)];
+const SERVICE_OPTIONS = ['All', ...Object.values(FactorTypeEnum)];
 
 const TABLE_HEAD = [
   { id: 'invoiceNumber', label: 'مشتری', align: 'left' },
@@ -83,92 +89,59 @@ export default function InvoiceList() {
     page,
     order,
     orderBy,
-    rowsPerPage,
     setPage,
     //
-    selected,
     setSelected,
-    onSelectRow,
-    onSelectAllRows,
     //
     onSort,
     onChangeDense,
-    onChangePage,
-    onChangeRowsPerPage,
   } = useTable({ defaultOrderBy: 'createDate' });
 
-  const [tableData, setTableData] = useState(_invoices);
+  const { rowPerPage, changeRowPerPage } = useOrderPagination(
+    useShallow((state) => ({ rowPerPage: state.rowPerPage, changeRowPerPage: state.setRowPerPage }))
+  );
 
-  const [filterName, setFilterName] = useState('');
+  const { filterStatus, onFilterStatus } = useOrderSetTab(
+    useShallow((state) => ({
+      filterStatus: state.activeTab,
+      onFilterStatus: state.setActiveTab,
+    }))
+  );
 
-  const [filterService, setFilterService] = useState('all');
+  const { data: tableData, error, isLoading } = useFetchOrders();
 
-  const [filterStartDate, setFilterStartDate] = useState(null);
-
-  const [filterEndDate, setFilterEndDate] = useState(null);
-
-  const { currentTab: filterStatus, onChangeTab: onFilterStatus } = useTabs('all');
-
-  const handleFilterName = (filterName) => {
-    setFilterName(filterName);
-    setPage(0);
-  };
+  const { name, setName, setService, service } = useFilterOrder(
+    useShallow((state) => ({
+      name: state.name,
+      setName: state.setName,
+      service: state.service,
+      setService: state.setService,
+    }))
+  );
 
   const handleFilterService = (event) => {
-    setFilterService(event.target.value);
+    setService(event.target.value);
   };
 
-  const handleDeleteRow = (id) => {
-    const deleteRow = tableData.filter((row) => row.id !== id);
-    setSelected([]);
-    setTableData(deleteRow);
-  };
-
-  const handleDeleteRows = (selected) => {
-    const deleteRows = tableData.filter((row) => !selected.includes(row.id));
-    setSelected([]);
-    setTableData(deleteRows);
-  };
+  const handleDeleteRow = (id) => {};
 
   const handleEditRow = (id) => {
     push(PATH_DASHBOARD.invoice.edit(id));
   };
 
-  const handleViewRow = (id) => {
-    push(PATH_DASHBOARD.invoice.view(id));
-  };
+  const isNotFound = !tableData?.result?.length || (!tableData?.result?.length && !!filterStatus);
 
-  const { data: dataFiltered } = useFetchOrders();
-
-  const denseHeight = dense ? 56 : 76;
-
-  const isNotFound =
-    (!dataFiltered?.length && !!filterName) ||
-    (!dataFiltered?.length && !!filterStatus) ||
-    (!dataFiltered?.length && !!filterService) ||
-    (!dataFiltered?.length && !!filterEndDate) ||
-    (!dataFiltered?.length && !!filterStartDate);
-
-  const getLengthByStatus = (status) => tableData?.filter((item) => item?.status === status)?.length;
-
-  const getTotalPriceByStatus = (status) =>
-    sumBy(
-      tableData.filter((item) => item.status === status),
-      'totalPrice'
-    );
-
-  const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
-
+  const { data: statistics } = useOrderStatistics();
   const TABS = [
-    { value: 'all', label: 'همه', color: 'info', count: tableData.length },
-    { value: FactorStatusEnum.PAID, label: 'پرداخت شده', color: 'success', count: getLengthByStatus('paid') },
+    { value: 'All', label: 'همه', color: 'info', count: statistics?.total_orders },
+    { value: FactorStatusEnum.PAID, label: 'پرداخت شده', color: 'success', count: statistics?.paid?.count },
     {
       value: FactorStatusEnum.PENDING,
       label: 'در انتظار پرداخت',
       color: 'warning',
-      count: getLengthByStatus('unpaid'),
+      count: statistics?.pending?.count,
     },
-    { value: FactorStatusEnum.UNPAID, label: 'پرداخت نشده', color: 'error', count: getLengthByStatus('overdue') },
+    { value: FactorStatusEnum.UNPAID, label: 'پرداخت نشده', color: 'error', count: statistics?.unpaid?.count },
   ];
 
   return (
@@ -199,33 +172,33 @@ export default function InvoiceList() {
             >
               <InvoiceAnalytic
                 title="همه"
-                total={tableData.length}
+                total={statistics?.total_orders}
                 percent={100}
-                price={sumBy(tableData, 'totalPrice')}
+                price={statistics?.total_price}
                 icon="ic:round-receipt"
                 color={theme.palette.info.main}
               />
               <InvoiceAnalytic
                 title="پرداخت شده"
-                total={getLengthByStatus('paid')}
-                percent={getPercentByStatus('paid')}
-                price={getTotalPriceByStatus('paid')}
+                total={statistics?.paid?.count}
+                percent={(statistics?.paid?.count / statistics?.total_orders) * 100}
+                price={statistics?.paid?.price}
                 icon="eva:checkmark-circle-2-fill"
                 color={theme.palette.success.main}
               />
               <InvoiceAnalytic
                 title="در انتظار پرداحت"
-                total={getLengthByStatus('unpaid')}
-                percent={getPercentByStatus('unpaid')}
-                price={getTotalPriceByStatus('unpaid')}
+                total={statistics?.pending?.count}
+                percent={(statistics?.pending?.count / statistics?.total_orders) * 100}
+                price={statistics?.pending?.price}
                 icon="eva:clock-fill"
                 color={theme.palette.warning.main}
               />
               <InvoiceAnalytic
                 title="پرداخت نشده"
-                total={getLengthByStatus('overdue')}
-                percent={getPercentByStatus('overdue')}
-                price={getTotalPriceByStatus('overdue')}
+                total={statistics?.unpaid?.count}
+                percent={(statistics?.unpaid?.count / statistics?.total_orders) * 100}
+                price={statistics?.unpaid?.price}
                 icon="eva:bell-fill"
                 color={theme.palette.error.main}
               />
@@ -259,100 +232,73 @@ export default function InvoiceList() {
           <Divider />
 
           <InvoiceTableToolbar
-            filterName={filterName}
-            filterService={filterService}
-            onFilterName={handleFilterName}
+            filterName={name}
+            filterService={service}
+            onFilterName={setName}
             onFilterService={handleFilterService}
             optionsService={SERVICE_OPTIONS}
           />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
-              {selected.length > 0 && (
-                <TableSelectedActions
-                  dense={dense}
-                  numSelected={selected.length}
-                  rowCount={tableData.length}
-                  onSelectAllRows={(checked) =>
-                    onSelectAllRows(
-                      checked,
-                      tableData.map((row) => row.id)
-                    )
-                  }
-                  actions={
-                    <Stack spacing={1} direction="row">
-                      <Tooltip title="Sent">
-                        <IconButton color="primary">
-                          <Iconify icon={'ic:round-send'} />
-                        </IconButton>
-                      </Tooltip>
-
-                      <Tooltip title="Download">
-                        <IconButton color="primary">
-                          <Iconify icon={'eva:download-outline'} />
-                        </IconButton>
-                      </Tooltip>
-
-                      <Tooltip title="Print">
-                        <IconButton color="primary">
-                          <Iconify icon={'eva:printer-fill'} />
-                        </IconButton>
-                      </Tooltip>
-
-                      <Tooltip title="Delete">
-                        <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
-                          <Iconify icon={'eva:trash-2-outline'} />
-                        </IconButton>
-                      </Tooltip>
-                    </Stack>
-                  }
-                />
-              )}
-
               <Table size={dense ? 'small' : 'medium'}>
                 <TableHeadCustom
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={tableData.length}
+                  rowCount={tableData?.result?.length}
                   onSort={onSort}
                 />
 
-                <TableBody>
-                  {dataFiltered?.map((row) => (
-                    <InvoiceTableRow
-                      key={row.id}
-                      row={row}
-                      selected={selected.includes(row.id)}
-                      onSelectRow={() => onSelectRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
-                      onEditRow={() => handleEditRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                    />
-                  ))}
+                {isLoading ? (
+                  <TableBody>
+                    {Array.from(Array(5)).map((_, index) => (
+                      <InvoiceTableRowSkeleton key={index} />
+                    ))}
+                  </TableBody>
+                ) : error ? (
+                  <Backdrop open={true}>
+                    <Box sx={{ border: '1px solid red', padding: 5, borderRadius: 5 }}>
+                      <Icon color="red" width={100} icon={'material-symbols:error-outline'} />
 
-                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, tableData.length)} />
+                      <Typography>{error?.errorData || 'خطایی رخ داده است'}</Typography>
+                    </Box>
+                  </Backdrop>
+                ) : (
+                  <TableBody>
+                    {tableData?.result?.map((row) => (
+                      <InvoiceTableRow
+                        key={row.id}
+                        row={row}
+                        onDeleteRow={() => console.log('delete')}
+                        onEditRow={() => handleEditRow(row.id)}
+                      />
+                    ))}
 
-                  <TableNoData isNotFound={isNotFound} />
-                </TableBody>
+                    {/*<TableEmptyRows height={denseHeight} emptyRows={rowPerPage} />*/}
+
+                    <TableNoData isNotFound={isNotFound} />
+                  </TableBody>
+                )}
               </Table>
             </TableContainer>
           </Scrollbar>
 
-          <Box sx={{ position: 'relative' }}>
+          <Box sx={{ position: 'relative', zIndex: -1 }}>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={dataFiltered?.length}
-              rowsPerPage={rowsPerPage}
+              labelRowsPerPage={'تعداد ردیف در هر صفحه : '}
+              count={(tableData?.pagination?.lastPage || 0) * rowPerPage}
+              rowsPerPage={rowPerPage}
               page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
+              onPageChange={(_, thisPage) => setPage(thisPage)}
+              onRowsPerPageChange={(event) => changeRowPerPage(+event.target.value)}
             />
 
             <FormControlLabel
               control={<Switch checked={dense} onChange={onChangeDense} />}
-              label="Dense"
+              label="فشرده"
               sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
             />
           </Box>

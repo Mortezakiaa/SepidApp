@@ -17,8 +17,8 @@ import InvoiceNewEditStatusDate from './InvoiceNewEditStatusDate';
 import { FactorStatusEnum } from '@/types/enums/factor-status.enum.ts';
 import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
 import useFetchSupports from '@/react-query/support/useFetchSupports.ts';
-import useCreateOrder from '@/react-query/factors/useCreateOrder.ts';
-import useUpdateOrder from '@/react-query/factors/useUpdateOrder.ts';
+import useCreateOrder from '@/react-query/orders/useCreateOrder.ts';
+import useUpdateOrder from '@/react-query/orders/useUpdateOrder.ts';
 import toast from 'react-hot-toast';
 
 // ----------------------------------------------------------------------

@@ -17,20 +17,11 @@ import { TableMoreMenu } from '@components/table';
 
 type InvoiceTableRowPropTypes = {
   row: Order;
-  selected: boolean;
-  onSelectRow: () => void;
-  onViewRow: () => void;
   onEditRow: () => void;
   onDeleteRow: () => void;
 };
 
-export default function InvoiceTableRow({
-  row,
-  selected,
-  onViewRow,
-  onEditRow,
-  onDeleteRow,
-}: InvoiceTableRowPropTypes): ReactElement {
+export default function InvoiceTableRow({ row, onEditRow, onDeleteRow }: InvoiceTableRowPropTypes): ReactElement {
   // Use the theme from Material UI
   const theme = useTheme();
 
@@ -51,7 +42,7 @@ export default function InvoiceTableRow({
 
   // Render the row
   return (
-    <TableRow hover selected={selected}>
+    <TableRow hover>
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
         <Stack>
           <Typography variant="subtitle2" noWrap>
@@ -62,7 +53,6 @@ export default function InvoiceTableRow({
             href={'/dashboard/invoice/' + id}
             noWrap
             variant="body2"
-            onClick={onViewRow}
             sx={{ color: 'text.disabled', cursor: 'pointer' }}
           >
             {id}
@@ -74,6 +64,8 @@ export default function InvoiceTableRow({
       <TableCell align="left">{fDate(createdAt)}</TableCell>
 
       <TableCell align="center">{fCurrency(factors.reduce((acc, factor) => acc + factor.final_price, 0))}</TableCell>
+      <TableCell align="center">{fCurrency(factors.reduce((acc, factor) => acc + factor.price, 0))}</TableCell>
+      <TableCell align="center">{factors.length}</TableCell>
 
       <TableCell align="left">
         <Label
@@ -108,15 +100,15 @@ export default function InvoiceTableRow({
                 حذف
               </MenuItem>
 
-              <MenuItem
-                onClick={() => {
-                  onViewRow();
-                  handleCloseMenu();
-                }}
-              >
-                <Iconify icon={'eva:eye-fill'} />
-                نمایش
-              </MenuItem>
+              {/*<MenuItem*/}
+              {/*  onClick={() => {*/}
+              {/*    onViewRow();*/}
+              {/*    handleCloseMenu();*/}
+              {/*  }}*/}
+              {/*>*/}
+              {/*  <Iconify icon={'eva:eye-fill'} />*/}
+              {/*  نمایش*/}
+              {/*</MenuItem>*/}
 
               <MenuItem
                 onClick={() => {

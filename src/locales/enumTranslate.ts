@@ -15,7 +15,7 @@ export const userStatusTranslate = {
 };
 
 export const factorTypeTranslate = {
-  all: 'همه',
+  All: 'همه',
   [FactorTypeEnum.BUY]: 'خرید',
   [FactorTypeEnum.RENEW]: 'تمدید',
   [FactorTypeEnum.UPGRADE]: 'ارتقا',

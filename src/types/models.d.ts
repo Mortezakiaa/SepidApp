@@ -97,6 +97,14 @@ enum PermissionEnum {
   EditPost = 'edit_post',
 }
 
+interface OrderStatistics {
+  total_orders: number;
+  total_price: number;
+  paid: { price: number; count: number };
+  unpaid: { price: number; count: number };
+  pending: { price: number; count: number };
+}
+
 interface User {
   id: number;
 
