@@ -23,29 +23,29 @@ const TYPE_OPTIONS = [
 export default function InvoiceField({ item, index, fields, handleRemove }: propsType) {
   const { setValue, watch } = useFormContext();
   const values = watch();
-
+  console.log(values);
   const { data: supportData, isLoading } = useFetchSupports();
 
   const { data: productData, isLoading: isProductsLoading } = useFetchProducts();
   useEffect(() => {
     setValue(
-      `factors[${index}].price`,
-      values?.factors?.[index]?.product_id !== 'All'
-        ? productData?.result?.find((s) => s.id === values.factors[index].product_id)?.offer_price
-        : values?.factors[index]?.support_id !== 'All'
-        ? supportData?.result?.find((s) => s.id === values.factors[index].support_id)?.offer_price
+      `factor_items[${index}].price`,
+      values?.factor_items?.[index]?.product_id !== 'All'
+        ? productData?.result?.find((s) => s.id === values.factor_items[index].product_id)?.offer_price
+        : values?.factor_items[index]?.support_id !== 'All'
+        ? supportData?.result?.find((s) => s.id === values.factor_items[index].support_id)?.offer_price
         : 0
     );
-  }, [values.factors[index].support_id, values.factors[index].product_id]);
+  }, [values.factor_items[index].support_id, values.factor_items[index].product_id]);
 
   return (
     <Stack key={item.id} alignItems="flex-end" spacing={1.5}>
       <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: 1 }}>
         <RHFSelect
           fullWidth
-          name={`factors[${index}].support_id`}
+          name={`factor_items[${index}].support_id`}
           label="پشتیبانی"
-          disabled={isLoading || !supportData?.result?.length || values.factors[index].product_id !== 'All'}
+          disabled={isLoading || !supportData?.result?.length || values.factor_items[index].product_id !== 'All'}
           InputLabelProps={{ shrink: true }}
           defaultValue={'All'}
           SelectProps={{ native: false, sx: { textTransform: 'capitalize' } }}
@@ -80,10 +80,12 @@ export default function InvoiceField({ item, index, fields, handleRemove }: prop
         </RHFSelect>
         <RHFSelect
           fullWidth
-          name={`factors[${index}].product_id`}
+          name={`factor_items[${index}].product_id`}
           label="محصول"
           defaultValue={'All'}
-          disabled={isProductsLoading || !productData?.result?.length || values.factors[index].support_id !== 'All'}
+          disabled={
+            isProductsLoading || !productData?.result?.length || values.factor_items[index].support_id !== 'All'
+          }
           InputLabelProps={{ shrink: true }}
           SelectProps={{ native: false, sx: { textTransform: 'capitalize' } }}
         >
@@ -118,7 +120,7 @@ export default function InvoiceField({ item, index, fields, handleRemove }: prop
 
         <RHFSelect
           fullWidth
-          name={`factors[${index}].type`}
+          name={`factor_items[${index}].type`}
           label="نوع فاکتور"
           InputLabelProps={{ shrink: true }}
           defaultValue={TYPE_OPTIONS[0].value}
@@ -144,11 +146,11 @@ export default function InvoiceField({ item, index, fields, handleRemove }: prop
         <RHFTextField
           size="small"
           type="number"
-          name={`factors[${index}].price`}
+          name={`factor_items[${index}].price`}
           label="قیمت"
           disabled={true}
           sx={{ height: '55px', maxHeight: '100%' }}
-          onChange={(event) => setValue(`factors[${index}].price`, Number(event.target.value))}
+          onChange={(event) => setValue(`factor_items[${index}].price`, Number(event.target.value))}
           InputProps={{
             sx: (theme) => ({
               '& input': {
@@ -162,10 +164,10 @@ export default function InvoiceField({ item, index, fields, handleRemove }: prop
         <RHFTextField
           size="small"
           type="number"
-          name={`factors[${index}].discount`}
+          name={`factor_items[${index}].discount`}
           label="تخفیف"
           sx={{ height: '55px', maxHeight: '100%' }}
-          onChange={(event) => setValue(`factors[${index}].discount`, Number(event.target.value))}
+          onChange={(event) => setValue(`factor_items[${index}].discount`, Number(event.target.value))}
           InputProps={{
             sx: (theme) => ({
               '& input': {
@@ -178,13 +180,13 @@ export default function InvoiceField({ item, index, fields, handleRemove }: prop
         />
         <RHFTextField
           size="small"
-          name={`factors[${index}].final_price`}
+          name={`factor_items[${index}].final_price`}
           label="قیمت نهایی"
           disabled
           value={fNumber(
-            values.factors[index].discount
-              ? values.factors[index].price - values.factors[index].discount
-              : values.factors[index].price
+            values.factor_items[index].discount
+              ? values.factor_items[index].price - values.factor_items[index].discount
+              : values.factor_items[index].price
           )}
           InputProps={{
             sx: (theme) => ({

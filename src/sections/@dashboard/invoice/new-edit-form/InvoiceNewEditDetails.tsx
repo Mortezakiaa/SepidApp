@@ -18,10 +18,9 @@ import InvoiceField from '@sections/@dashboard/invoice/new-edit-form/InvoiceFiel
 export default function InvoiceNewEditDetails() {
   const { control, setValue, watch } = useFormContext();
   const { data: supportData, isLoading } = useFetchSupports();
-  const { data: productData, isLoading: isProductsLoading } = useFetchProducts();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'factors',
+    name: 'factor_items',
   });
 
   useEffect(() => {
@@ -85,7 +84,7 @@ export default function InvoiceNewEditDetails() {
             label="مبلغ کل"
             name="all_price"
             disabled
-            value={fNumber(values?.factors?.reduce((acc, item) => acc + (item.price - item.discount), 0))}
+            value={fNumber(values?.factor_items?.reduce((acc, item) => acc + (item.price - item.discount), 0))}
             sx={{ maxWidth: { md: 200 } }}
           />
         </Stack>

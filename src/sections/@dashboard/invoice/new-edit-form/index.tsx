@@ -16,32 +16,29 @@ import InvoiceNewEditDetails from './InvoiceNewEditDetails';
 import InvoiceNewEditStatusDate from './InvoiceNewEditStatusDate';
 import { FactorStatusEnum } from '@/types/enums/factor-status.enum.ts';
 import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
-import useFetchSupports from '@/react-query/support/useFetchSupports.ts';
-import useCreateOrder from '@/react-query/orders/useCreateOrder.ts';
-import useUpdateOrder from '@/react-query/orders/useUpdateOrder.ts';
+import useCreateFactor from '@/react-query/factors/useCreateFactor.ts';
+import useUpdateFactor from '@/react-query/factors/useUpdateFactor.ts';
 import toast from 'react-hot-toast';
 
 // ----------------------------------------------------------------------
 
 type InvoiceNewEditFormPropTypes = {
   isEdit?: boolean;
-  currentOrder?: Order;
+  currentFactor?: Factor;
 };
 
-export default function InvoiceNewEditForm({ isEdit, currentOrder }: InvoiceNewEditFormPropTypes) {
-  const { push } = useRouter();
+export default function InvoiceNewEditForm({ isEdit, currentFactor }: InvoiceNewEditFormPropTypes) {
   const [loadingSend, setLoadingSend] = useState(false);
   const FactorSchema = Yup.object().shape({});
 
-  const { mutate: createOrder, isPending: isCreatePending, error: errorCreate } = useCreateOrder();
-  const { mutate: updateOrder, isPending: isUpdatePending, error: errorUpdate } = useUpdateOrder();
-
-  const defaultValues = useMemo<Partial<Order>>(
+  const { mutate: createFactor, isPending: isCreatePending, error: errorCreate } = useCreateFactor();
+  const { mutate: updateFactor, isPending: isUpdatePending, error: errorUpdate } = useUpdateFactor();
+  const defaultValues = useMemo<Partial<Factor>>(
     () => ({
       all_price: 0,
-      pharmacy_id: currentOrder?.pharmacy_id || ' ',
-      status: currentOrder?.status || FactorStatusEnum.UNPAID,
-      factors: currentOrder?.factors || [
+      pharmacy_id: currentFactor?.pharmacy_id || ' ',
+      status: currentFactor?.status || FactorStatusEnum.UNPAID,
+      factor_items: currentFactor?.factor_items || [
         {
           product_id: 'All',
           support_id: 'All',
@@ -52,7 +49,7 @@ export default function InvoiceNewEditForm({ isEdit, currentOrder }: InvoiceNewE
         },
       ],
     }),
-    [currentOrder]
+    [currentFactor]
   );
 
   const methods = useForm({
@@ -68,13 +65,13 @@ export default function InvoiceNewEditForm({ isEdit, currentOrder }: InvoiceNewE
   } = methods;
 
   useEffect(() => {
-    if (isEdit && currentOrder) {
+    if (isEdit && currentFactor) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
-  }, [isEdit, currentOrder]);
+  }, [isEdit, currentFactor]);
 
   useEffect(() => {
     const e = errorCreate || errorUpdate;
@@ -92,7 +89,7 @@ export default function InvoiceNewEditForm({ isEdit, currentOrder }: InvoiceNewE
                 // Iterate over the keys in the current value
                 for (const key in value) {
                   // Set an error in the form with the key as the field name and the value as the error message
-                  setError(`${parentKey}[${i}].${key}` as keyof Order, { message: value[key] });
+                  setError(`${parentKey}[${i}].${key}` as keyof Factor, { message: value[key] });
                 }
               }
             }
@@ -100,17 +97,16 @@ export default function InvoiceNewEditForm({ isEdit, currentOrder }: InvoiceNewE
             continue;
           }
           // If the value of the current key is not an array, set an error in the form with the key as the field name and the value as the error message
-          setError(parentKey as keyof Order, { message: e.errorData[parentKey] });
+          setError(parentKey as keyof Factor, { message: e.errorData[parentKey] });
         }
       }
     }
   }, [errorCreate, errorUpdate]);
 
-  console.log(errors);
-  const onSubmit = (data: Partial<Order>) => {
+  const onSubmit = (data: Partial<Factor>) => {
     if (isEdit) {
-      updateOrder({ id: currentOrder.id, body: data });
-    } else createOrder(data);
+      updateFactor({ id: currentFactor.id, body: data });
+    } else createFactor(data);
   };
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>

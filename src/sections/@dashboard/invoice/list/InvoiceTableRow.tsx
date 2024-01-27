@@ -9,14 +9,16 @@ import createAvatar from '@utils/createAvatar';
 import { fCurrency } from '@utils/formatNumber.tsx';
 // components
 import Label from '@components/Label';
-import Avatar from '@components/Avatar';
 import Iconify from '@components/Iconify';
 import { TableMoreMenu } from '@components/table';
+import ConfirmModal from '@components/ConfirmModal.tsx';
+import useDeleteFactor from '@/react-query/factors/useDeleteFactor.ts';
+import { FACTOR_STATUS_TRANSLATE } from '@locales/enumTranslate.ts';
 
 // ----------------------------------------------------------------------
 
 type InvoiceTableRowPropTypes = {
-  row: Order;
+  row: Factor;
   onEditRow: () => void;
   onDeleteRow: () => void;
 };
@@ -26,11 +28,11 @@ export default function InvoiceTableRow({ row, onEditRow, onDeleteRow }: Invoice
   const theme = useTheme();
 
   // Destructure the row data
-  const { status, pharmacy, factors, id, createdAt, creator } = row;
-
+  const { status, pharmacy, factor_items, id, createdAt, creator } = row;
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   // State for the open menu
   const [openMenu, setOpenMenuActions] = useState(null);
-
+  const { isPending } = useDeleteFactor();
   const handleOpenMenu = (event) => {
     setOpenMenuActions(event.currentTarget);
   };
@@ -63,9 +65,11 @@ export default function InvoiceTableRow({ row, onEditRow, onDeleteRow }: Invoice
 
       <TableCell align="left">{fDate(createdAt)}</TableCell>
 
-      <TableCell align="center">{fCurrency(factors.reduce((acc, factor) => acc + factor.final_price, 0))}</TableCell>
-      <TableCell align="center">{fCurrency(factors.reduce((acc, factor) => acc + factor.price, 0))}</TableCell>
-      <TableCell align="center">{factors.length}</TableCell>
+      <TableCell align="center">
+        {fCurrency(factor_items.reduce((acc, factor) => acc + factor.final_price, 0))}
+      </TableCell>
+      <TableCell align="center">{fCurrency(factor_items.reduce((acc, factor) => acc + factor.price, 0))}</TableCell>
+      <TableCell align="center">{factor_items.length}</TableCell>
 
       <TableCell align="left">
         <Label
@@ -78,11 +82,18 @@ export default function InvoiceTableRow({ row, onEditRow, onDeleteRow }: Invoice
           }
           sx={{ textTransform: 'capitalize' }}
         >
-          {status}
+          {FACTOR_STATUS_TRANSLATE[status]}
         </Label>
       </TableCell>
 
       <TableCell align="right">
+        <ConfirmModal
+          onConfirm={onDeleteRow}
+          open={openDeleteModal}
+          isLoading={isPending}
+          handleClose={() => setOpenDeleteModal(false)}
+          text={'ایا مطمئن هستید میخواهید این فاکتور را پاک کنید؟'}
+        />
         <TableMoreMenu
           open={openMenu}
           onOpen={handleOpenMenu}
@@ -91,7 +102,7 @@ export default function InvoiceTableRow({ row, onEditRow, onDeleteRow }: Invoice
             <>
               <MenuItem
                 onClick={() => {
-                  onDeleteRow();
+                  setOpenDeleteModal(true);
                   handleCloseMenu();
                 }}
                 sx={{ color: 'error.main' }}

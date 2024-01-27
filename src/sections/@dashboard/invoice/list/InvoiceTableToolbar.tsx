@@ -2,7 +2,7 @@ import { Stack, InputAdornment, TextField, MenuItem } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 // components
 import Iconify from '@components/Iconify';
-import { factorTypeTranslate } from '@locales/enumTranslate.ts';
+import { FACTOR_TYPE_TRANSLATE } from '@locales/enumTranslate.ts';
 
 // ----------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ export default function InvoiceTableToolbar({
               textTransform: 'capitalize',
             }}
           >
-            {factorTypeTranslate[option]}
+            {FACTOR_TYPE_TRANSLATE[option]}
           </MenuItem>
         ))}
       </TextField>
@@ -62,7 +62,7 @@ export default function InvoiceTableToolbar({
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="جست و جوی فاکتور"
+        placeholder="جست و جوی فاکتور بر اساس نام مشتری"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

@@ -27,7 +27,6 @@ import {
 // routes
 import { PATH_DASHBOARD } from '@routes/paths.tsx';
 // hooks
-import useTabs from '@hooks/useTabs';
 import useSettings from '@hooks/useSettings';
 import useTable from '@hooks/useTable';
 // layouts
@@ -44,15 +43,15 @@ import InvoiceAnalytic from '../../../sections/@dashboard/invoice/InvoiceAnalyti
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../../sections/@dashboard/invoice/list';
 import { FactorStatusEnum } from '@/types/enums/factor-status.enum.ts';
 import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
-import useFetchOrders from '@/react-query/orders/useFetchOrders.ts';
-import PharmacyTableRowSkeleton from '@sections/@dashboard/pharmacy/list/PharmacyTableRowSkeleton.tsx';
+import useFetchFactors from '@/react-query/factors/useFetchFactors.ts';
 import { Icon } from '@iconify/react';
-import useOrderPagination from '@/zustand/orders/useOrderPagination.ts';
+import useFactorPagination from '@/zustand/factors/useFactorPagination.ts';
 import { useShallow } from 'zustand/react/shallow';
-import useOrderStatistics from '@/react-query/orders/useOrderStatistics.ts';
-import useOrderSetTab from '@/zustand/orders/useOrderSetTab.ts';
+import useOrderStatistics from '@/react-query/factors/useFactorStatistics.ts';
+import useFactorSetTab from '@/zustand/factors/useFactorSetTab.ts';
 import InvoiceTableRowSkeleton from '@sections/@dashboard/invoice/list/InvoiceTableRowSkeleton.tsx';
-import useFilterOrder from '@/zustand/orders/useFilterOrder.ts';
+import useFilterFactor from '@/zustand/factors/useFilterFactor.ts';
+import useDeleteFactor from '@/react-query/factors/useDeleteFactor.ts';
 
 // ----------------------------------------------------------------------
 
@@ -84,33 +83,22 @@ export default function InvoiceList() {
 
   const { push } = useRouter();
 
-  const {
-    dense,
-    page,
-    order,
-    orderBy,
-    setPage,
-    //
-    setSelected,
-    //
-    onSort,
-    onChangeDense,
-  } = useTable({ defaultOrderBy: 'createDate' });
+  const { dense, page, order, orderBy, setPage, onSort, onChangeDense } = useTable({ defaultOrderBy: 'createDate' });
 
-  const { rowPerPage, changeRowPerPage } = useOrderPagination(
+  const { rowPerPage, changeRowPerPage } = useFactorPagination(
     useShallow((state) => ({ rowPerPage: state.rowPerPage, changeRowPerPage: state.setRowPerPage }))
   );
 
-  const { filterStatus, onFilterStatus } = useOrderSetTab(
+  const { filterStatus, onFilterStatus } = useFactorSetTab(
     useShallow((state) => ({
       filterStatus: state.activeTab,
       onFilterStatus: state.setActiveTab,
     }))
   );
+  const { mutate: deleteRow } = useDeleteFactor();
+  const { data: tableData, error, isLoading } = useFetchFactors();
 
-  const { data: tableData, error, isLoading } = useFetchOrders();
-
-  const { name, setName, setService, service } = useFilterOrder(
+  const { name, setName, setService, service } = useFilterFactor(
     useShallow((state) => ({
       name: state.name,
       setName: state.setName,
@@ -123,7 +111,9 @@ export default function InvoiceList() {
     setService(event.target.value);
   };
 
-  const handleDeleteRow = (id) => {};
+  const handleDeleteRow = (id) => {
+    deleteRow(id);
+  };
 
   const handleEditRow = (id) => {
     push(PATH_DASHBOARD.invoice.edit(id));
@@ -270,7 +260,7 @@ export default function InvoiceList() {
                       <InvoiceTableRow
                         key={row.id}
                         row={row}
-                        onDeleteRow={() => console.log('delete')}
+                        onDeleteRow={() => handleDeleteRow(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
                       />
                     ))}

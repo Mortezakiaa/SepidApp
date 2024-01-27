@@ -18,7 +18,7 @@ import toast from 'react-hot-toast';
 import { RoleEnum } from '@/enums/role.enum.ts';
 import useUpdateUser from '@/react-query/user/useUpdateUser';
 import { UserStatusEnum } from '@/types/enums/user-status.enum';
-import { roleTranslate, userStatusTranslate } from '@locales/enumTranslate.ts';
+import { ROLE_TRANSLATE, USER_STATUS_TRANSLATE } from '@locales/enumTranslate.ts';
 import useModalManager from '@/zustand/utils/useModalManager.ts';
 
 // ----------------------------------------------------------------------
@@ -252,7 +252,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser, pharmacyI
                 {(pharmacyId ? [RoleEnum.USER, RoleEnum.SUPPORT] : [RoleEnum.ADMIN, RoleEnum.SUPPORT])?.map(
                   (option) => (
                     <option key={option} value={option}>
-                      {roleTranslate[option]}
+                      {ROLE_TRANSLATE[option]}
                     </option>
                   )
                 )}
@@ -260,7 +260,7 @@ export default function UserNewEditForm({ isEdit = false, currentUser, pharmacyI
               <RHFSelect name="status" label="وضعیت" placeholder="یک وضعیت انتخاب کنید">
                 {Object.values(UserStatusEnum)?.map((option) => (
                   <option key={option} value={option}>
-                    {userStatusTranslate[option]}
+                    {USER_STATUS_TRANSLATE[option]}
                   </option>
                 ))}
               </RHFSelect>

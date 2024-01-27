@@ -38,7 +38,7 @@ interface Pharmacy extends BaseEntity {
 
   members: User[];
 
-  orders: Order[];
+  orders: Factor[];
 
   city: City;
 }
@@ -137,12 +137,14 @@ enum FactorStatusEnum {
   PENDING = 'PENDING',
 }
 
-interface Order extends BaseEntity {
+interface Factor extends BaseEntity {
   pharmacy_id: number | any;
 
-  factors?: Factor[];
+  factor_items?: FactorItem[];
 
   creator_id?: number;
+
+  transactions?: Transaction[];
 
   creator?: User;
 
@@ -162,7 +164,7 @@ interface Support extends BaseEntity {
 
   offer_price: number;
 
-  orders: Order[];
+  orders: Factor[];
 
   uploads: Upload[];
 }
@@ -176,13 +178,13 @@ interface Product extends BaseEntity {
 
   offer_price: number;
 
-  orders: Order[];
+  orders: Factor[];
 
   uploads: Upload[];
 }
 
-interface Factor extends BaseEntity {
-  order_id?: number;
+interface FactorItem extends BaseEntity {
+  factor_id?: number;
   price?: number;
   final_price?: number;
   discount?: number;
@@ -191,10 +193,8 @@ interface Factor extends BaseEntity {
   payer_id?: number;
   product_id?: number | 'All';
   support_id?: number | 'All';
-  status?: FactorStatusEnum;
-  order?: Order;
+  factor?: Factor;
   creator?: User;
-  transactions?: Transaction[];
   product?: Product;
   support?: Support;
 }
@@ -208,5 +208,5 @@ interface Transaction extends BaseEntity {
 
   price: number;
 
-  factor: Factor;
+  factor: FactorItem;
 }

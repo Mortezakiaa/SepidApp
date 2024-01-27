@@ -14,7 +14,7 @@ import Page from '@components/Page';
 import HeaderBreadcrumbs from '@components/HeaderBreadcrumbs';
 // sections
 import InvoiceNewEditForm from '@sections/@dashboard/invoice/new-edit-form';
-import useFetchSingleOrder from '@/react-query/orders/useFetchSingleOrder.ts';
+import useFetchSingleFactor from '@/react-query/factors/useFetchSingleFactor.ts';
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ export default function InvoiceEdit() {
 
   const { id } = query;
 
-  const { data: order, isLoading } = useFetchSingleOrder(+id);
+  const { data: factor, isLoading } = useFetchSingleFactor(+id);
 
   return (
     <Page title="ویرایش فاکتورها">
@@ -41,10 +41,10 @@ export default function InvoiceEdit() {
           links={[
             { name: 'داشبورد', href: PATH_DASHBOARD.root },
             { name: 'فاکتورها', href: PATH_DASHBOARD.invoice.list },
-            { name: order?.id || '' },
+            { name: factor?.id?.toString() || '' },
           ]}
         />
-        {isLoading ? <CircularProgress /> : <InvoiceNewEditForm isEdit currentOrder={order} />}
+        {isLoading ? <CircularProgress /> : <InvoiceNewEditForm isEdit currentFactor={factor} />}
       </Container>
     </Page>
   );

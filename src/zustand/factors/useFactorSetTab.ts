@@ -6,9 +6,9 @@ type TabState = {
   setActiveTab: (event: any, tab: 'All' | FactorStatusEnum) => void;
 };
 
-const useOrderSetTab = create<TabState>((set) => ({
+const useFactorSetTab = create<TabState>((set) => ({
   activeTab: 'All',
   setActiveTab: (_, tab) => set({ activeTab: tab }),
 }));
 
-export default useOrderSetTab;
+export default useFactorSetTab;
