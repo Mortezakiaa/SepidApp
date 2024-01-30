@@ -108,7 +108,7 @@ export default function InvoiceTableRow({ row, onEditRow, onDeleteRow }: Invoice
                 onClick={(e) => {
                   e.stopPropagation();
                   setOpenDeleteModal(true);
-                  handleCloseMenu();
+                  handleCloseMenu(e);
                 }}
                 sx={{ color: 'error.main' }}
               >
@@ -130,7 +130,7 @@ export default function InvoiceTableRow({ row, onEditRow, onDeleteRow }: Invoice
                 onClick={(e) => {
                   e.stopPropagation();
                   onEditRow();
-                  handleCloseMenu();
+                  handleCloseMenu(e);
                 }}
               >
                 <Iconify icon={'eva:edit-fill'} />

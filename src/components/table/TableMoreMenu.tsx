@@ -10,7 +10,7 @@ import { ReactNode } from 'react';
 type TableMoreMenuPropTypes = {
   actions: ReactNode;
   open: any;
-  onClose: () => void;
+  onClose: (e: any) => void;
   onOpen: (value: any) => void;
 };
 
