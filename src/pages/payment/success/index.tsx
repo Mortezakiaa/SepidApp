@@ -24,13 +24,13 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-Page404.getLayout = function getLayout(page: React.ReactNode) {
+SuccessPayment.getLayout = function getLayout(page: React.ReactNode) {
   return <Layout variant="logoOnly">{page}</Layout>;
 };
 
 // ----------------------------------------------------------------------
 
-export default function Page404() {
+export default function SuccessPayment() {
   return (
     <Page title="پرداخت موفق" sx={{ height: 1 }}>
       <RootStyle>

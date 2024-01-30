@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Card, Stack } from '@mui/material';
+import { Box, Button, Card, Link, Stack, Typography } from '@mui/material';
 // components
 import { FormProvider } from '@components/hook-form';
 //
@@ -19,6 +19,7 @@ import { FactorTypeEnum } from '@/types/enums/factor-type.enum.ts';
 import useCreateFactor from '@/react-query/factors/useCreateFactor.ts';
 import useUpdateFactor from '@/react-query/factors/useUpdateFactor.ts';
 import toast from 'react-hot-toast';
+import { InvoiceLink } from '@sections/@dashboard/invoice/details/InvoiceLink.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -102,7 +103,6 @@ export default function InvoiceNewEditForm({ isEdit, currentFactor }: InvoiceNew
       }
     }
   }, [errorCreate, errorUpdate]);
-
   const onSubmit = (data: Partial<Factor>) => {
     if (isEdit) {
       updateFactor({ id: currentFactor.id, body: data });
@@ -110,11 +110,11 @@ export default function InvoiceNewEditForm({ isEdit, currentFactor }: InvoiceNew
   };
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <InvoiceLink currentFactor={currentFactor} />
       <Card>
         <InvoiceNewEditStatusDate />
         <InvoiceNewEditDetails />
       </Card>
-
       <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
         <LoadingButton size="large" type={'submit'} variant="contained" loading={loadingSend && isSubmitting}>
           {isEdit ? 'آپدیت' : 'ساخت'} فاکتور

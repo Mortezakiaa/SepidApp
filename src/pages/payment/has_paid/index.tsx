@@ -24,36 +24,35 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-FailedPayment.getLayout = function getLayout(page: React.ReactNode) {
+HasPaid.getLayout = function getLayout(page: React.ReactNode) {
   return <Layout variant="logoOnly">{page}</Layout>;
 };
 
 // ----------------------------------------------------------------------
 
-export default function FailedPayment() {
+export default function HasPaid() {
   return (
-    <Page title="پرداخت ناموفق" sx={{ height: 1 }}>
+    <Page title="پرداخت انجام شده" sx={{ height: 1 }}>
       <RootStyle>
         <Container component={MotionContainer}>
           <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
             <m.div variants={varBounce().in}>
               <Typography variant="h3" paragraph>
-                پرداخت ناموفق
+                پرداخت قبلا انجام شده!
               </Typography>
             </m.div>
-            <Typography sx={{ color: 'text.secondary' }}> پرداخت ناموفق بود</Typography>
             <m.div variants={varBounce().in}>
               <Box
                 sx={{
                   height: 100,
                   width: 100,
-                  border: '4px solid red',
+                  border: '4px solid orange',
                   borderRadius: '100%',
                   my: { xs: 5, sm: 10 },
                   mx: 'auto',
                 }}
               >
-                <Iconify icon="ant-design:close-outlined" sx={{ fontSize: 64, color: 'red', pt: 3 }} />
+                <Iconify icon="ant-design:warning-outlined" sx={{ fontSize: 64, color: 'orange', pt: 3 }} />
               </Box>
             </m.div>
             <Link href="/">
