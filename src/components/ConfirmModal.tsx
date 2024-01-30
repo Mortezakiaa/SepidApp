@@ -45,10 +45,23 @@ export default function ConfirmModal({ open = false, handleClose, text, onConfir
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'center' }} mt={2} gap={2}>
-            <LoadingButton loading={isLoading} onClick={onConfirm} color={'primary'}>
+            <LoadingButton
+              loading={isLoading}
+              onClick={(e) => {
+                e.stopPropagation();
+                onConfirm();
+              }}
+              color={'primary'}
+            >
               تایید
             </LoadingButton>
-            <Button onClick={() => handleClose()} color={'error'}>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClose();
+              }}
+              color={'error'}
+            >
               رد
             </Button>
           </Box>

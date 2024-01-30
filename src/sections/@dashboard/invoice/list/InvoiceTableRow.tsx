@@ -14,6 +14,7 @@ import { TableMoreMenu } from '@components/table';
 import ConfirmModal from '@components/ConfirmModal.tsx';
 import useDeleteFactor from '@/react-query/factors/useDeleteFactor.ts';
 import { FACTOR_STATUS_TRANSLATE } from '@locales/enumTranslate.ts';
+import { useRouter } from 'next/router';
 
 // ----------------------------------------------------------------------
 
@@ -34,17 +35,20 @@ export default function InvoiceTableRow({ row, onEditRow, onDeleteRow }: Invoice
   const [openMenu, setOpenMenuActions] = useState(null);
   const { isPending } = useDeleteFactor();
   const handleOpenMenu = (event) => {
+    event.stopPropagation();
     setOpenMenuActions(event.currentTarget);
   };
 
   // Handle closing the menu
-  const handleCloseMenu = () => {
+  const handleCloseMenu = (e) => {
+    e.stopPropagation();
     setOpenMenuActions(null);
   };
+  const router = useRouter();
 
   // Render the row
   return (
-    <TableRow hover>
+    <TableRow onClick={() => router.push(`${id}/edit`)} sx={{ cursor: 'pointer' }} hover>
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
         <Stack>
           <Typography variant="subtitle2" noWrap>
@@ -101,7 +105,8 @@ export default function InvoiceTableRow({ row, onEditRow, onDeleteRow }: Invoice
           actions={
             <>
               <MenuItem
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setOpenDeleteModal(true);
                   handleCloseMenu();
                 }}
@@ -122,7 +127,8 @@ export default function InvoiceTableRow({ row, onEditRow, onDeleteRow }: Invoice
               {/*</MenuItem>*/}
 
               <MenuItem
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   onEditRow();
                   handleCloseMenu();
                 }}
